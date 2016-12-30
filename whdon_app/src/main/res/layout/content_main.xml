@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/actmain"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:background="@color/colorBackground">
+
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorBackground"
+        android:shrinkColumns="*"
+        android:textAlignment="center"
+        android:weightSum="5">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvAppName"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/app_name"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvUitleg"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="@string/uitleg"
+                    android:textColor="@color/colorTekst"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:clipChildren="false">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:clipChildren="false"
+                android:orientation="horizontal">
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/btnJa"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="0dp"
+                    android:layout_marginEnd="50dp"
+                    android:layout_marginRight="50dp"
+                    android:layout_marginTop="0dp"
+                    android:src="@drawable/imgdroog"
+                    app:useCompatPadding="true" />
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/btnNee"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="50dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginBottom="0dp"
+                    android:layout_marginStart="50dp"
+                    android:clipChildren="false"
+                    app:useCompatPadding="true"
+                    android:src="@drawable/imgnat" />
+
+            </LinearLayout>
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:gravity="center"
+                    android:text="@string/SpreukVddag"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvSpreuk"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:gravity="center"
+                    android:textColor="@color/colorTekst"
+                    android:textSize="12sp"
+                    android:textStyle="italic" />
+            </LinearLayout>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvWeerkop"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/Weer3uur"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvWeeronbekend"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:text="@string/WeerOnbekend"
+                        android:textColor="@color/colorTekst"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:id="@+id/imWeer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:contentDescription="@string/weer"
+                        android:src="@drawable/i01d" />
+
+                    <TextView
+                        android:id="@+id/tvGrad"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="15dp"
+                        android:layout_marginRight="15dp"
+                        android:text="@string/grad"
+                        android:textColor="@color/colorTekst"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:id="@+id/imWind"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:contentDescription="@string/wind"
+                        android:src="@drawable/zuidwest" />
+
+                    <TextView
+                        android:id="@+id/tvWind"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="15dp"
+                        android:layout_marginRight="15dp"
+                        android:text="@string/windkracht"
+                        android:textColor="@color/colorTekst"
+                        android:textSize="14sp" />
+
+                    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <com.github.mikephil.charting.charts.BarChart
+                            android:id="@+id/bcBuienRadar"
+                            android:layout_width="100dp"
+                            android:layout_height="75dp"
+                            android:minHeight="75dp"
+                            android:minWidth="100dp" />
+
+                        <TextView
+                            android:id="@+id/tvDroogBr"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="30dp"
+                            android:text="@string/Droog"
+                            android:textColor="@color/colorDroogDark"
+                            android:textSize="13sp" />
+
+                    </RelativeLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:clipChildren="false">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:clipChildren="false"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/llLaatste"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:clipChildren="false"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tvLaatste"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="@string/laatste"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvDatumtijd"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:textColor="@color/colorTekst"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tvLocatie"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:textColor="@color/colorTekst"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tvDroogNat"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:textColor="@color/colorTekst"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/btnMenu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|end"
+                    android:layout_marginLeft="50dp"
+                    android:layout_marginStart="50dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginBottom="0dp"
+                    app:useCompatPadding="true"
+                    android:src="@drawable/menu" />
+            </LinearLayout>
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvPersStats"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/persstats"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <FrameLayout
+                    android:id="@+id/flPersStats"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <include layout="@layout/progressbar" />
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/tvHuidigeLocatie"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
+                    android:gravity="center"
+                    android:text="@string/onbekend"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="10sp"
+                    android:textStyle="italic" />
+
+            </LinearLayout>
+
+        </TableRow>
+    </TableLayout>
+
+    <ImageView
+        android:id="@+id/ivmore"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="10dp"
+        android:contentDescription="@string/menu"
+        android:onClick="moreClick"
+        android:paddingLeft="0dp"
+        android:paddingRight="0dp"
+        android:src="@drawable/cmenu" />
+
+</RelativeLayout>

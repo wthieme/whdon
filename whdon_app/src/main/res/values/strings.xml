@@ -1,0 +1,45 @@
+<resources>
+    <string name="app_name">Was het droog of niet?</string>
+    <string name="action_settings">Settings</string>
+    <string name="laatste">Laatste melding</string>
+    <string name="datumtijd">06-01-2016 13:10</string>
+    <string name="waar">Wageningen</string>
+    <string name="droognat">Droog</string>
+    <string name="persstats">Droog/Nat</string>
+    <string name="onbekend">Onbekend</string>
+    <string name="droog">Droog 9 (90%)</string>
+    <string name="nat">Nat 1 (10%)</string>
+    <string name="eigen_meldingen">Eigen meldingen</string>
+    <string name="aantal_droog">Aantal droog:</string>
+    <string name="aantal_nat">Aantal nat:</string>
+    <string name="uitleg">Met deze App kunt u aangeven of het droog was of regende de laatste keer dat u naar buiten ging.\n
+        Druk op de knop Droog of op de knop Regen.</string>
+    <string name="sinds">Sinds:</string>
+    <string name="gemmpd">Gemiddeld/dag:</string>
+    <string name="per_plaats">% per plaats</string>
+    <string name="per_datum">Aantal per dag</string>
+    <string name="aantal_gebruikers">Aantal gebruikers</string>
+    <string name="aantal_meldingen_per_dag">Aantal meldingen per dag</string>
+    <string name="EersteMelding">Eerste melding:</string>
+    <string name="LaatsteMelding">Laatste melding:</string>
+    <string name="SpreukVddag">Spreuk van de dag</string>
+    <string name="Weer3uur">Het weer in %s</string>
+    <string name="grad">3 °C</string>
+    <string name="windkracht">15 km/h</string>
+    <string name="Neerslag">3.5 mm</string>
+    <string name="WeerOnbekend">Weergegevens niet beschikbaar</string>
+    <string name="buienradar2u">buienradar 2u</string>
+    <string name="uurVerwachting">Buienradar 2 uur</string>
+    <string name="nodata">Geen gegevens</string>
+    <string name="VerwachteNeerslag">Verwachte neerslag komende 2 uur:</string>
+    <string name="verwacht2uur">Verwachte regen voor de komende 2 uur in</string>
+    <string name="percent100">100%</string>
+    <string name="per_maand">% per maand</string>
+    <string name="NoBrData">No Data</string>
+    <string name="Droog">Droog</string>
+    <string name="laatste25">Laatste 25</string>
+    <string name="clear_cache">Cache herstellen</string>
+    <string name="weer">Weer</string>
+    <string name="wind">Wind</string>
+    <string name="menu">Menu</string>
+</resources>
