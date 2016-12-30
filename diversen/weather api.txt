@@ -1,0 +1,136 @@
+API key
+e246fa149696b433128c8e774219bbc8
+
+http://api.openweathermap.org/data/2.5/forecast?q={wageningen,nl}&appid=e246fa149696b433128c8e774219bbc8&cnt=1&units=metric
+
+http://api.openweathermap.org/data/2.5/forecast?lat=51.9666&lon=5.666&appid=e246fa149696b433128c8e774219bbc8&cnt=1&units=metric
+
+api.openweathermap.org/data/2.5/forecast?lat=35&lon=139 
+
+
+weatherdata><location><name>Gemeente Wageningen</name><type/><country>NL</country><timezone/><location altitude="0" latitude="51.966671" longitude="5.66667" geobase="geonames" geobaseid="0"/></location><credit/><meta><lastupdate/><calctime>0.004</calctime><nextupdate/></meta><sun rise="2016-02-03T07:13:42" set="2016-02-03T16:29:20"/><forecast><time from="2016-02-03T18:00:00" to="2016-02-03T21:00:00"><symbol number="500" name="light rain" var="10n"/><precipitation unit="3h" value="0.01" type="rain"/><windDirection deg="300.501" code="WNW" name="West-northwest"/><windSpeed mps="5.27" name="Gentle Breeze"/><temperature unit="celsius" value="4.5" min="4.5" max="4.52"/><pressure unit="hPa" value="1034.19"/><humidity value="78" unit="%"/><clouds value="clear sky" all="8" unit="%"/></time></forecast></weatherdata>
+
+{  
+   "city":{  
+      "id":2745088,
+      "name":"Wageningen",
+      "coord":{  
+         "lon":5.66667,
+         "lat":51.970001
+      },
+      "country":"NL",
+      "population":0,
+      "sys":{  
+         "population":0
+      }
+   },
+   "cod":"200",
+   "message":0.0051,
+   "cnt":1,
+   "list":[  
+      {  
+         "dt":1454544000,
+         "main":{  
+            "temp":4.36,
+            "temp_min":4.36,
+            "temp_max":4.36,
+            "pressure":1035.35,
+            "sea_level":1036.31,
+            "grnd_level":1035.35,
+            "humidity":85,
+            "temp_kf":0
+         },
+         "weather":[  
+            {  
+               "id":500,
+               "main":"Rain",
+               "description":"light rain",
+               "icon":"10n"
+            }
+         ],
+         "clouds":{  
+            "all":64
+         },
+         "wind":{  
+            "speed":5.16,
+            "deg":283
+         },
+         "rain":{  
+            "3h":0.085
+         },
+         "sys":{  
+            "pod":"n"
+         },
+         "dt_txt":"2016-02-04 00:00:00"
+      }
+   ]
+}
+
+
+
+
+wget http://openweathermap.org/img/w/01d.png  	-OutFile 
+wget http://openweathermap.org/img/w/01n.png  	
+wget http://openweathermap.org/img/w/02d.png  
+wget http://openweathermap.org/img/w/02n.png  
+wget http://openweathermap.org/img/w/03d.png
+wget http://openweathermap.org/img/w/03n.png
+wget http://openweathermap.org/img/w/04d.png
+wget http://openweathermap.org/img/w/04n.png 
+wget http://openweathermap.org/img/w/09d.png
+wget http://openweathermap.org/img/w/09n.png 
+wget http://openweathermap.org/img/w/10d.png
+wget http://openweathermap.org/img/w/10n.png 
+wget http://openweathermap.org/img/w/11d.png
+wget http://openweathermap.org/img/w/11n.png 
+wget http://openweathermap.org/img/w/13d.png
+wget http://openweathermap.org/img/w/13n.png 
+wget http://openweathermap.org/img/w/50d.png
+wget http://openweathermap.org/img/w/50n.png
+
+
+http://api.openweathermap.org/data/2.5/weather?q=Wageningen%2Cnl&appid=e246fa149696b433128c8e774219bbc8&cnt=1&units=metric
+{  
+   "coord":{  
+      "lon":5.67,
+      "lat":51.97
+   },
+   "weather":[  
+      {  
+         "id":804,
+         "main":"Clouds",
+         "description":"overcast clouds",
+         "icon":"04n"
+      }
+   ],
+   "base":"cmc stations",
+   "main":{  
+      "temp":4.53,
+      "pressure":1016.4,
+      "humidity":92,
+      "temp_min":4.53,
+      "temp_max":4.53,
+      "sea_level":1018.14,
+      "grnd_level":1016.4
+   },
+   "wind":{  
+      "speed":2.23,
+      "deg":232.503
+   },
+   "clouds":{  
+      "all":88
+   },
+   "dt":1455213453,
+   "sys":{  
+      "message":0.0043,
+      "country":"NL",
+      "sunrise":1455173980,
+      "sunset":1455209052
+   },
+   "id":2745088,
+   "name":"Wageningen",
+   "cod":200
+}
+
+http://gps.buienradar.nl/getrr.php?lat=51.6&lon=4.5
+http://gps.buienradar.nl/getrr.php?lat=51.99999&lon=5.66667"

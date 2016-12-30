@@ -1,0 +1,2087 @@
+200 OK
+ 
+- Show headers -
+  
+{
+ "items": [
+  {
+   "locatie": "Veenendaal",
+   "datum": "1455569545301",
+   "nat": false,
+   "droog": true,
+   "id": "a7bdb1a3-c3e8-4e5f-859c-74a0802ef5ba",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1455557464538",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1455539100888",
+   "nat": false,
+   "droog": true,
+   "id": "a7bdb1a3-c3e8-4e5f-859c-74a0802ef5ba",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1455521743489",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1455481513989",
+   "nat": true,
+   "droog": false,
+   "id": "75a99d3d-ad87-4a81-8973-76f527a1e801",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Ede",
+   "datum": "1455479773165",
+   "nat": true,
+   "droog": false,
+   "id": "96e2c289-c4c8-4f70-b486-ade6289a7993",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1455436847303",
+   "nat": true,
+   "droog": false,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wijk en Aalburg",
+   "datum": "1455436847303",
+   "nat": true,
+   "droog": false,
+   "id": "a7bdb1a3-c3e8-4e5f-859c-74a0802ef5ba",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Den Haag",
+   "datum": "1455388143174",
+   "nat": false,
+   "droog": true,
+   "id": "1d6cd331-daea-45ab-a41d-ced069bb9e6b",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1455387688996",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Veenendaal",
+   "datum": "1455368134746",
+   "nat": false,
+   "droog": true,
+   "id": "a7bdb1a3-c3e8-4e5f-859c-74a0802ef5ba",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1455357264298",
+   "nat": false,
+   "droog": true,
+   "id": "75a99d3d-ad87-4a81-8973-76f527a1e801",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1455321459499",
+   "nat": false,
+   "droog": true,
+   "id": "75a99d3d-ad87-4a81-8973-76f527a1e801",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Ede",
+   "datum": "1455310639559",
+   "nat": false,
+   "droog": true,
+   "id": "96e2c289-c4c8-4f70-b486-ade6289a7993",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1455310610410",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Veenendaal",
+   "datum": "1455298465753",
+   "nat": false,
+   "droog": true,
+   "id": "a7bdb1a3-c3e8-4e5f-859c-74a0802ef5ba",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1455295816637",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Ede",
+   "datum": "1455261251779",
+   "nat": false,
+   "droog": true,
+   "id": "96e2c289-c4c8-4f70-b486-ade6289a7993",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1455261212627",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1455218862483",
+   "nat": false,
+   "droog": true,
+   "id": "75a99d3d-ad87-4a81-8973-76f527a1e801",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Veenendaal",
+   "datum": "1455210792214",
+   "nat": false,
+   "droog": true,
+   "id": "a7bdb1a3-c3e8-4e5f-859c-74a0802ef5ba",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1455209178026",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Ede",
+   "datum": "1455205727756",
+   "nat": false,
+   "droog": true,
+   "id": "96e2c289-c4c8-4f70-b486-ade6289a7993",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1455183722278",
+   "nat": false,
+   "droog": true,
+   "id": "75a99d3d-ad87-4a81-8973-76f527a1e801",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Ede",
+   "datum": "1455178298907",
+   "nat": false,
+   "droog": true,
+   "id": "96e2c289-c4c8-4f70-b486-ade6289a7993",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1455175349420",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Veenendaal",
+   "datum": "1455124744456",
+   "nat": false,
+   "droog": true,
+   "id": "a7bdb1a3-c3e8-4e5f-859c-74a0802ef5ba",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1455121883487",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Ede",
+   "datum": "1455119883644",
+   "nat": true,
+   "droog": false,
+   "id": "96e2c289-c4c8-4f70-b486-ade6289a7993",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1455098759978",
+   "nat": false,
+   "droog": true,
+   "id": "a7bdb1a3-c3e8-4e5f-859c-74a0802ef5ba",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1455088883612",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1455088009590",
+   "nat": false,
+   "droog": true,
+   "id": "75a99d3d-ad87-4a81-8973-76f527a1e801",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1455059077026",
+   "nat": false,
+   "droog": true,
+   "id": "75a99d3d-ad87-4a81-8973-76f527a1e801",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Ede",
+   "datum": "1455049720574",
+   "nat": true,
+   "droog": false,
+   "id": "96e2c289-c4c8-4f70-b486-ade6289a7993",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Ede",
+   "datum": "1455038778914",
+   "nat": true,
+   "droog": false,
+   "id": "96e2c289-c4c8-4f70-b486-ade6289a7993",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Veenendaal",
+   "datum": "1455038113943",
+   "nat": true,
+   "droog": false,
+   "id": "a7bdb1a3-c3e8-4e5f-859c-74a0802ef5ba",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1455037695935",
+   "nat": true,
+   "droog": false,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1455031720693",
+   "nat": false,
+   "droog": true,
+   "id": "a7bdb1a3-c3e8-4e5f-859c-74a0802ef5ba",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1455002579955",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1454970459690",
+   "nat": true,
+   "droog": false,
+   "id": "75a99d3d-ad87-4a81-8973-76f527a1e801",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Veenendaal",
+   "datum": "1454967400191",
+   "nat": true,
+   "droog": false,
+   "id": "a7bdb1a3-c3e8-4e5f-859c-74a0802ef5ba",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Ede",
+   "datum": "1454956398872",
+   "nat": true,
+   "droog": false,
+   "id": "96e2c289-c4c8-4f70-b486-ade6289a7993",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1454949895459",
+   "nat": true,
+   "droog": false,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1454931519194",
+   "nat": false,
+   "droog": true,
+   "id": "a7bdb1a3-c3e8-4e5f-859c-74a0802ef5ba",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1454915575574",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1454860536517",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1454847686754",
+   "nat": false,
+   "droog": true,
+   "id": "75a99d3d-ad87-4a81-8973-76f527a1e801",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Ede",
+   "datum": "1454847644473",
+   "nat": false,
+   "droog": true,
+   "id": "96e2c289-c4c8-4f70-b486-ade6289a7993",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Ede",
+   "datum": "1454790983062",
+   "nat": false,
+   "droog": true,
+   "id": "96e2c289-c4c8-4f70-b486-ade6289a7993",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1454771912222",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Den Haag",
+   "datum": "1454770003905",
+   "nat": false,
+   "droog": true,
+   "id": "1d6cd331-daea-45ab-a41d-ced069bb9e6b",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Ede",
+   "datum": "1454761210606",
+   "nat": false,
+   "droog": true,
+   "id": "96e2c289-c4c8-4f70-b486-ade6289a7993",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Onbekend",
+   "datum": "1454719366462",
+   "nat": true,
+   "droog": false,
+   "id": "1da65ae4-af45-462c-8784-2cedd6dcd530",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Onbekend",
+   "datum": "1454719349343",
+   "nat": true,
+   "droog": false,
+   "id": "1da65ae4-af45-462c-8784-2cedd6dcd530",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Onbekend",
+   "datum": "1454719341241",
+   "nat": false,
+   "droog": true,
+   "id": "1da65ae4-af45-462c-8784-2cedd6dcd530",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1454706143282",
+   "nat": false,
+   "droog": true,
+   "id": "75a99d3d-ad87-4a81-8973-76f527a1e801",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Veenendaal",
+   "datum": "1454698047742",
+   "nat": true,
+   "droog": false,
+   "id": "a7bdb1a3-c3e8-4e5f-859c-74a0802ef5ba",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1454689373739",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Ede",
+   "datum": "1454684052821",
+   "nat": false,
+   "droog": true,
+   "id": "96e2c289-c4c8-4f70-b486-ade6289a7993",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Den Haag",
+   "datum": "1454684048571",
+   "nat": false,
+   "droog": true,
+   "id": "1d6cd331-daea-45ab-a41d-ced069bb9e6b",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Ede",
+   "datum": "1454668021872",
+   "nat": false,
+   "droog": true,
+   "id": "96e2c289-c4c8-4f70-b486-ade6289a7993",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1454657643927",
+   "nat": true,
+   "droog": false,
+   "id": "a7bdb1a3-c3e8-4e5f-859c-74a0802ef5ba",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1454656617609",
+   "nat": true,
+   "droog": false,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1454655420817",
+   "nat": false,
+   "droog": true,
+   "id": "75a99d3d-ad87-4a81-8973-76f527a1e801",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1454620421453",
+   "nat": false,
+   "droog": true,
+   "id": "75a99d3d-ad87-4a81-8973-76f527a1e801",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Den Haag",
+   "datum": "1454615505322",
+   "nat": true,
+   "droog": false,
+   "id": "1d6cd331-daea-45ab-a41d-ced069bb9e6b",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1454607602741",
+   "nat": false,
+   "droog": true,
+   "id": "a7bdb1a3-c3e8-4e5f-859c-74a0802ef5ba",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1454606863884",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1454594689586",
+   "nat": true,
+   "droog": false,
+   "id": "a7bdb1a3-c3e8-4e5f-859c-74a0802ef5ba",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Ede",
+   "datum": "1454578633146",
+   "nat": false,
+   "droog": true,
+   "id": "96e2c289-c4c8-4f70-b486-ade6289a7993",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1454577130003",
+   "nat": true,
+   "droog": false,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Ede",
+   "datum": "1454527486925",
+   "nat": false,
+   "droog": true,
+   "id": "96e2c289-c4c8-4f70-b486-ade6289a7993",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Veenendaal",
+   "datum": "1454520834108",
+   "nat": true,
+   "droog": false,
+   "id": "a7bdb1a3-c3e8-4e5f-859c-74a0802ef5ba",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Ede",
+   "datum": "1454516645488",
+   "nat": false,
+   "droog": true,
+   "id": "96e2c289-c4c8-4f70-b486-ade6289a7993",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1454516642222",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1454495243454",
+   "nat": false,
+   "droog": true,
+   "id": "a7bdb1a3-c3e8-4e5f-859c-74a0802ef5ba",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1454487113950",
+   "nat": false,
+   "droog": true,
+   "id": "75a99d3d-ad87-4a81-8973-76f527a1e801",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1454483966254",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Veenendaal",
+   "datum": "1454481592083",
+   "nat": false,
+   "droog": true,
+   "id": "a7bdb1a3-c3e8-4e5f-859c-74a0802ef5ba",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1454449979991",
+   "nat": false,
+   "droog": true,
+   "id": "75a99d3d-ad87-4a81-8973-76f527a1e801",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1454447613479",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Ede",
+   "datum": "1454447322774",
+   "nat": false,
+   "droog": true,
+   "id": "96e2c289-c4c8-4f70-b486-ade6289a7993",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Ede",
+   "datum": "1454438507205",
+   "nat": false,
+   "droog": true,
+   "id": "96e2c289-c4c8-4f70-b486-ade6289a7993",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1454435212740",
+   "nat": false,
+   "droog": true,
+   "id": "75a99d3d-ad87-4a81-8973-76f527a1e801",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1454432689816",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Ede",
+   "datum": "1454426232593",
+   "nat": false,
+   "droog": true,
+   "id": "96e2c289-c4c8-4f70-b486-ade6289a7993",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1454398086710",
+   "nat": false,
+   "droog": true,
+   "id": "a7bdb1a3-c3e8-4e5f-859c-74a0802ef5ba",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1454396615918",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1454395342366",
+   "nat": false,
+   "droog": true,
+   "id": "75a99d3d-ad87-4a81-8973-76f527a1e801",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1454356009666",
+   "nat": true,
+   "droog": false,
+   "id": "75a99d3d-ad87-4a81-8973-76f527a1e801",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Veenendaal",
+   "datum": "1454355068695",
+   "nat": false,
+   "droog": true,
+   "id": "a7bdb1a3-c3e8-4e5f-859c-74a0802ef5ba",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1454352239930",
+   "nat": false,
+   "droog": true,
+   "id": "75a99d3d-ad87-4a81-8973-76f527a1e801",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Ede",
+   "datum": "1454352083643",
+   "nat": false,
+   "droog": true,
+   "id": "96e2c289-c4c8-4f70-b486-ade6289a7993",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1454352032521",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1454327274661",
+   "nat": true,
+   "droog": false,
+   "id": "a7bdb1a3-c3e8-4e5f-859c-74a0802ef5ba",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Kolham",
+   "datum": "1454325613419",
+   "nat": false,
+   "droog": true,
+   "id": "6ecacc06-cca2-4eaa-be79-41017af7a1e4",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Kolham",
+   "datum": "1454315575186",
+   "nat": true,
+   "droog": false,
+   "id": "6ecacc06-cca2-4eaa-be79-41017af7a1e4",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Kolham",
+   "datum": "1454315365998",
+   "nat": true,
+   "droog": false,
+   "id": "a7d59806-40a8-4fc1-8dee-39e8dfdcdc52",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1454311557858",
+   "nat": true,
+   "droog": false,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Kolham",
+   "datum": "1454305780328",
+   "nat": true,
+   "droog": false,
+   "id": "a7d59806-40a8-4fc1-8dee-39e8dfdcdc52",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1454275390977",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Kiel-Windeweer",
+   "datum": "1454263013496",
+   "nat": true,
+   "droog": false,
+   "id": "db14b600-0b50-485c-81be-78ed28b9caa5",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Haren",
+   "datum": "1454259186155",
+   "nat": true,
+   "droog": false,
+   "id": "95be7f43-b489-4d65-abbc-392835a718ad",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Ede",
+   "datum": "1454242814950",
+   "nat": false,
+   "droog": true,
+   "id": "96e2c289-c4c8-4f70-b486-ade6289a7993",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1454242482449",
+   "nat": false,
+   "droog": true,
+   "id": "75a99d3d-ad87-4a81-8973-76f527a1e801",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1454242264294",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Amsterdam",
+   "datum": "1454188586471",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1454179006660",
+   "nat": true,
+   "droog": false,
+   "id": "75a99d3d-ad87-4a81-8973-76f527a1e801",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Amsterdam",
+   "datum": "1454178630601",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Enschede",
+   "datum": "1454173146449",
+   "nat": true,
+   "droog": false,
+   "id": "bedd894b-f8aa-4891-ae29-162f65837649",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1454161424759",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1454157248680",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Ede",
+   "datum": "1454156313355",
+   "nat": true,
+   "droog": false,
+   "id": "96e2c289-c4c8-4f70-b486-ade6289a7993",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Breda",
+   "datum": "1454152478344",
+   "nat": false,
+   "droog": true,
+   "id": "76f65526-ca55-430f-9c06-157193e757f4",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Ede",
+   "datum": "1454144032793",
+   "nat": true,
+   "droog": false,
+   "id": "96e2c289-c4c8-4f70-b486-ade6289a7993",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Ede",
+   "datum": "1454095530786",
+   "nat": true,
+   "droog": false,
+   "id": "96e2c289-c4c8-4f70-b486-ade6289a7993",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Veenendaal",
+   "datum": "1454094119437",
+   "nat": true,
+   "droog": false,
+   "id": "a7bdb1a3-c3e8-4e5f-859c-74a0802ef5ba",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1454087119653",
+   "nat": true,
+   "droog": false,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Enschede",
+   "datum": "1454063849850",
+   "nat": true,
+   "droog": false,
+   "id": "bedd894b-f8aa-4891-ae29-162f65837649",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1454053833673",
+   "nat": false,
+   "droog": true,
+   "id": "a7bdb1a3-c3e8-4e5f-859c-74a0802ef5ba",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Ede",
+   "datum": "1454051662361",
+   "nat": false,
+   "droog": true,
+   "id": "96e2c289-c4c8-4f70-b486-ade6289a7993",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1454051492348",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Veenendaal",
+   "datum": "1454049815213",
+   "nat": false,
+   "droog": true,
+   "id": "a7bdb1a3-c3e8-4e5f-859c-74a0802ef5ba",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1454018690779",
+   "nat": false,
+   "droog": true,
+   "id": "75a99d3d-ad87-4a81-8973-76f527a1e801",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Ede",
+   "datum": "1454000825428",
+   "nat": false,
+   "droog": true,
+   "id": "96e2c289-c4c8-4f70-b486-ade6289a7993",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1453999998593",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1453965996840",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1453935606290",
+   "nat": true,
+   "droog": false,
+   "id": "75a99d3d-ad87-4a81-8973-76f527a1e801",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1453929980968",
+   "nat": true,
+   "droog": false,
+   "id": "75a99d3d-ad87-4a81-8973-76f527a1e801",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1453919962884",
+   "nat": true,
+   "droog": false,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Ede",
+   "datum": "1453919275577",
+   "nat": false,
+   "droog": true,
+   "id": "96e2c289-c4c8-4f70-b486-ade6289a7993",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1453914490983",
+   "nat": true,
+   "droog": false,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Ede",
+   "datum": "1453893085757",
+   "nat": true,
+   "droog": false,
+   "id": "96e2c289-c4c8-4f70-b486-ade6289a7993",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1453879308979",
+   "nat": true,
+   "droog": false,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Hendrik-Ido-Ambacht",
+   "datum": "1453843954009",
+   "nat": true,
+   "droog": false,
+   "id": "ef8c683e-8d8c-4705-8d22-3139d1a70be6",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1453835155284",
+   "nat": true,
+   "droog": false,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1453825434080",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1453792369203",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1453755836661",
+   "nat": false,
+   "droog": true,
+   "id": "75a99d3d-ad87-4a81-8973-76f527a1e801",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Hoogezand",
+   "datum": "1453750652272",
+   "nat": false,
+   "droog": true,
+   "id": "db14b600-0b50-485c-81be-78ed28b9caa5",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Veenendaal",
+   "datum": "1453747616807",
+   "nat": false,
+   "droog": true,
+   "id": "a7bdb1a3-c3e8-4e5f-859c-74a0802ef5ba",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1453740705013",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Maassluis",
+   "datum": "1453734702417",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Maassluis",
+   "datum": "1453726377284",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1453706496389",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Veenendaal",
+   "datum": "1453669101698",
+   "nat": true,
+   "droog": false,
+   "id": "a7bdb1a3-c3e8-4e5f-859c-74a0802ef5ba",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1453648381011",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Ede",
+   "datum": "1453628751648",
+   "nat": true,
+   "droog": false,
+   "id": "96e2c289-c4c8-4f70-b486-ade6289a7993",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Ede",
+   "datum": "1453588561731",
+   "nat": false,
+   "droog": true,
+   "id": "96e2c289-c4c8-4f70-b486-ade6289a7993",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1453560193965",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Ede",
+   "datum": "1453547880190",
+   "nat": false,
+   "droog": true,
+   "id": "96e2c289-c4c8-4f70-b486-ade6289a7993",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Ede",
+   "datum": "1453491611811",
+   "nat": true,
+   "droog": false,
+   "id": "96e2c289-c4c8-4f70-b486-ade6289a7993",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Ede",
+   "datum": "1453484421815",
+   "nat": true,
+   "droog": false,
+   "id": "96e2c289-c4c8-4f70-b486-ade6289a7993",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Kropswolde",
+   "datum": "1453481598381",
+   "nat": true,
+   "droog": false,
+   "id": "db14b600-0b50-485c-81be-78ed28b9caa5",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1453480699229",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Ede",
+   "datum": "1453480283640",
+   "nat": false,
+   "droog": true,
+   "id": "96e2c289-c4c8-4f70-b486-ade6289a7993",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Ede",
+   "datum": "1453475473222",
+   "nat": false,
+   "droog": true,
+   "id": "96e2c289-c4c8-4f70-b486-ade6289a7993",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1453467304790",
+   "nat": false,
+   "droog": true,
+   "id": "a7bdb1a3-c3e8-4e5f-859c-74a0802ef5ba",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1453446459779",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1453445131800",
+   "nat": false,
+   "droog": true,
+   "id": "75a99d3d-ad87-4a81-8973-76f527a1e801",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Overberg",
+   "datum": "1453410972574",
+   "nat": false,
+   "droog": true,
+   "id": "a7bdb1a3-c3e8-4e5f-859c-74a0802ef5ba",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1453401380283",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1453396111304",
+   "nat": false,
+   "droog": true,
+   "id": "75a99d3d-ad87-4a81-8973-76f527a1e801",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1453360632271",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1453358622861",
+   "nat": false,
+   "droog": true,
+   "id": "75a99d3d-ad87-4a81-8973-76f527a1e801",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Overberg",
+   "datum": "1453358265517",
+   "nat": false,
+   "droog": true,
+   "id": "a7bdb1a3-c3e8-4e5f-859c-74a0802ef5ba",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Ede",
+   "datum": "1453319046239",
+   "nat": false,
+   "droog": true,
+   "id": "96e2c289-c4c8-4f70-b486-ade6289a7993",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1453308451101",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1453290421797",
+   "nat": false,
+   "droog": true,
+   "id": "a7bdb1a3-c3e8-4e5f-859c-74a0802ef5ba",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1453275022113",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1453243621825",
+   "nat": false,
+   "droog": true,
+   "id": "75a99d3d-ad87-4a81-8973-76f527a1e801",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Veenendaal",
+   "datum": "1453239413682",
+   "nat": false,
+   "droog": true,
+   "id": "a7bdb1a3-c3e8-4e5f-859c-74a0802ef5ba",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Ede",
+   "datum": "1453228057673",
+   "nat": false,
+   "droog": true,
+   "id": "96e2c289-c4c8-4f70-b486-ade6289a7993",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1453221711429",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Ede",
+   "datum": "1453196750743",
+   "nat": false,
+   "droog": true,
+   "id": "96e2c289-c4c8-4f70-b486-ade6289a7993",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1453189405725",
+   "nat": false,
+   "droog": true,
+   "id": "a7bdb1a3-c3e8-4e5f-859c-74a0802ef5ba",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1453187486214",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1453186167754",
+   "nat": false,
+   "droog": true,
+   "id": "75a99d3d-ad87-4a81-8973-76f527a1e801",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Veenendaal",
+   "datum": "1453151932796",
+   "nat": false,
+   "droog": true,
+   "id": "a7bdb1a3-c3e8-4e5f-859c-74a0802ef5ba",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Enschede",
+   "datum": "1453148488243",
+   "nat": true,
+   "droog": false,
+   "id": "bedd894b-f8aa-4891-ae29-162f65837649",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1453147942960",
+   "nat": false,
+   "droog": true,
+   "id": "75a99d3d-ad87-4a81-8973-76f527a1e801",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1453139370317",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Ede",
+   "datum": "1453137689993",
+   "nat": false,
+   "droog": true,
+   "id": "96e2c289-c4c8-4f70-b486-ade6289a7993",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Hoogezand",
+   "datum": "1453130872239",
+   "nat": false,
+   "droog": true,
+   "id": "db14b600-0b50-485c-81be-78ed28b9caa5",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1453103540103",
+   "nat": false,
+   "droog": true,
+   "id": "a7bdb1a3-c3e8-4e5f-859c-74a0802ef5ba",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1453101735617",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Ede",
+   "datum": "1453061152898",
+   "nat": false,
+   "droog": true,
+   "id": "96e2c289-c4c8-4f70-b486-ade6289a7993",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1453058354535",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Kropswolde",
+   "datum": "1453047357340",
+   "nat": false,
+   "droog": true,
+   "id": "db14b600-0b50-485c-81be-78ed28b9caa5",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1453037413086",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Ede",
+   "datum": "1453036803157",
+   "nat": false,
+   "droog": true,
+   "id": "96e2c289-c4c8-4f70-b486-ade6289a7993",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1453035541315",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1453035467713",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1453035256683",
+   "nat": false,
+   "droog": true,
+   "id": "31040023-196f-46f8-b79f-04e9b27cf7df",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Hoogezand",
+   "datum": "1453032131223",
+   "nat": false,
+   "droog": true,
+   "id": "db14b600-0b50-485c-81be-78ed28b9caa5",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1453030314034",
+   "nat": true,
+   "droog": false,
+   "id": "31040023-196f-46f8-b79f-04e9b27cf7df",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1453026072341",
+   "nat": false,
+   "droog": true,
+   "id": "31040023-196f-46f8-b79f-04e9b27cf7df",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1453022413088",
+   "nat": false,
+   "droog": true,
+   "id": "31040023-196f-46f8-b79f-04e9b27cf7df",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1452989732343",
+   "nat": true,
+   "droog": false,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1452989202816",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1452988378155",
+   "nat": false,
+   "droog": true,
+   "id": "72724d44-acac-4b31-aa87-d8eccb632ded",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1452978189248",
+   "nat": true,
+   "droog": false,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1452963064682",
+   "nat": false,
+   "droog": true,
+   "id": "6762271d-c8b5-49b1-819f-c2f202026cf9",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1452956195628",
+   "nat": false,
+   "droog": true,
+   "id": "6762271d-c8b5-49b1-819f-c2f202026cf9",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1452950505595",
+   "nat": true,
+   "droog": false,
+   "id": "ae157b46-ce5d-4b89-8b45-0cede20e15ff",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Sassenheim",
+   "datum": "1452944984003",
+   "nat": false,
+   "droog": true,
+   "id": "d25e759c-0d0a-4e64-a765-f0509eec0d96",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Sassenheim",
+   "datum": "1452944796381",
+   "nat": true,
+   "droog": false,
+   "id": "cf48be6c-74f2-4da7-ba80-d816858fbea5",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Sassenheim",
+   "datum": "1452944278908",
+   "nat": false,
+   "droog": true,
+   "id": "c8425216-b266-4578-9c48-13a6ce2dadce",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1452928122792",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1452891251292",
+   "nat": false,
+   "droog": true,
+   "id": "1fb8710a-9be6-4a51-8962-c04af820e183",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1452887534071",
+   "nat": true,
+   "droog": false,
+   "id": "1fb8710a-9be6-4a51-8962-c04af820e183",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1452887483315",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1452887474169",
+   "nat": false,
+   "droog": true,
+   "id": "1fb8710a-9be6-4a51-8962-c04af820e183",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1452887349661",
+   "nat": false,
+   "droog": true,
+   "id": "1fb8710a-9be6-4a51-8962-c04af820e183",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1452887347508",
+   "nat": false,
+   "droog": true,
+   "id": "d81371b2-f958-4f80-abc6-66fed2c38713",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1452887308303",
+   "nat": false,
+   "droog": true,
+   "id": "1fb8710a-9be6-4a51-8962-c04af820e183",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1452887245118",
+   "nat": true,
+   "droog": false,
+   "id": "1fb8710a-9be6-4a51-8962-c04af820e183",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1452886604907",
+   "nat": false,
+   "droog": true,
+   "id": "1fb8710a-9be6-4a51-8962-c04af820e183",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1452873997788",
+   "nat": false,
+   "droog": true,
+   "id": "1fb8710a-9be6-4a51-8962-c04af820e183",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1452873997788",
+   "nat": false,
+   "droog": true,
+   "id": "1fb8710a-9be6-4a51-8962-c04af820e183",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Veenendaal",
+   "datum": "1452873600000",
+   "nat": false,
+   "droog": true,
+   "id": "a7bdb1a3-c3e8-4e5f-859c-74a0802ef5ba",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1452841200000",
+   "nat": false,
+   "droog": true,
+   "id": "a7bdb1a3-c3e8-4e5f-859c-74a0802ef5ba",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Veenendaal",
+   "datum": "1452787200000",
+   "nat": false,
+   "droog": true,
+   "id": "a7bdb1a3-c3e8-4e5f-859c-74a0802ef5ba",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1452754800000",
+   "nat": false,
+   "droog": true,
+   "id": "a7bdb1a3-c3e8-4e5f-859c-74a0802ef5ba",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Veenendaal",
+   "datum": "1452700800000",
+   "nat": true,
+   "droog": false,
+   "id": "a7bdb1a3-c3e8-4e5f-859c-74a0802ef5ba",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1452668400000",
+   "nat": true,
+   "droog": false,
+   "id": "a7bdb1a3-c3e8-4e5f-859c-74a0802ef5ba",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Veenendaal",
+   "datum": "1452614400000",
+   "nat": false,
+   "droog": true,
+   "id": "a7bdb1a3-c3e8-4e5f-859c-74a0802ef5ba",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1452582000000",
+   "nat": false,
+   "droog": true,
+   "id": "a7bdb1a3-c3e8-4e5f-859c-74a0802ef5ba",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Veenendaal",
+   "datum": "1452528000000",
+   "nat": true,
+   "droog": false,
+   "id": "a7bdb1a3-c3e8-4e5f-859c-74a0802ef5ba",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  },
+  {
+   "locatie": "Wageningen",
+   "datum": "1452495600000",
+   "nat": true,
+   "droog": false,
+   "id": "a7bdb1a3-c3e8-4e5f-859c-74a0802ef5ba",
+   "error": "",
+   "kind": "whdonApi#resourcesItem"
+  }
+ ],
+ "kind": "whdonApi#resources",
+ "etag": "\"LgxM-4HocJovwAJQJ13UZqBC25o/qnwzD3GK3suqRFL9zN7oVUZCkU4\""
+}
+ 
+Custom API key and OAuth 2.0 client ID:
+You can create credentials, enable/disable APIs, and manage quota in the Google Developers Console.
+APIs Explorer credentialsCustom credentials
+API Key: 	
+OAuth 2.0 Client ID: 	
+SaveCancel
