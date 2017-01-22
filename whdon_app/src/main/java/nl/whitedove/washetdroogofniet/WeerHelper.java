@@ -9,16 +9,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Random;
 import java.util.regex.Pattern;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 class WeerHelper {
 
@@ -110,10 +109,6 @@ class WeerHelper {
 
     private static String getBrData(String lat, String lon) {
 
-        HttpURLConnection con = null;
-        InputStream is = null;
-        String brData = null;
-
         Uri.Builder builder = new Uri.Builder();
         builder.scheme("http")
                 .authority("gadgets.buienradar.nl")
@@ -123,54 +118,26 @@ class WeerHelper {
                 .appendQueryParameter("lon", lon);
 
         String url = builder.build().toString();
-
         Helper.Log("Buienradar url:" + url);
+
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        String brData = null;
+        Response response;
         try {
-            con = (HttpURLConnection) (new URL(url)).openConnection();
-            con.setRequestMethod("GET");
-            con.setDoInput(true);
-            con.setDoOutput(true);
-            con.connect();
-
-            // Let's read the response
-            StringBuilder buffer = new StringBuilder();
-            is = con.getInputStream();
-            BufferedReader br = new BufferedReader(new InputStreamReader(is));
-            String line;
-            while ((line = br.readLine()) != null)
-                buffer.append(line).append("\r\n");
-
-            is.close();
-            con.disconnect();
-            brData = buffer.toString();
-        } catch (Throwable t) {
-            t.printStackTrace();
-        } finally {
-            try {
-                if (is != null) {
-                    is.close();
-                }
-            } catch (Throwable ignored) {
-            }
-            try {
-                if (con != null) {
-                    con.disconnect();
-                }
-            } catch (Throwable ignored) {
-            }
+            response = client.newCall(request).execute();
+            brData = response.body().string();
+        } catch (IOException ignored) {
         }
-
         return brData;
     }
 
     private static String getWeatherData(Context cxt) {
 
-        HttpURLConnection con = null;
-        InputStream is = null;
-
         String locatie = LocationHelper.GetLocatieVoorWeer(cxt);
-        StringBuilder buffer = new StringBuilder();
-        String weatherData = null;
 
         Uri.Builder builder = new Uri.Builder();
         builder.scheme("http")
@@ -186,39 +153,18 @@ class WeerHelper {
         String url = builder.build().toString();
         Helper.Log("weather url:" + url);
 
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        String weatherData = null;
+        Response response;
         try {
-            con = (HttpURLConnection) (new URL(url)).openConnection();
-            con.setRequestMethod("GET");
-            con.setDoInput(true);
-            con.setDoOutput(true);
-            con.connect();
-
-            is = con.getInputStream();
-            BufferedReader br = new BufferedReader(new InputStreamReader(is));
-            String line;
-            while ((line = br.readLine()) != null)
-                buffer.append(line).append("\r\n");
-
-            is.close();
-            con.disconnect();
-            weatherData = buffer.toString();
-        } catch (Throwable t) {
-            t.printStackTrace();
-        } finally {
-            try {
-                if (is != null) {
-                    is.close();
-                }
-            } catch (Throwable ignored) {
-            }
-            try {
-                if (con != null) {
-                    con.disconnect();
-                }
-            } catch (Throwable ignored) {
-            }
+            response = client.newCall(request).execute();
+            weatherData = response.body().string();
+        } catch (IOException ignored) {
         }
-
         return weatherData;
     }
 
