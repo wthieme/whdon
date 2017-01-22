@@ -296,7 +296,9 @@ public class MainActivity extends Activity {
         ImageView imWind = (ImageView) findViewById(R.id.imWind);
         int richting = weerData.getWindRichting();
 
-        if (richting > 0 && richting <= 22.5) {
+        if (richting == -1) {
+            imWind.setImageResource(R.drawable.variabel);
+        } else if (richting > 0 && richting <= 22.5) {
             imWind.setImageResource(R.drawable.noord);
         } else if (richting > 22.5 && richting <= 67.5) {
             imWind.setImageResource(R.drawable.noordoost);
@@ -312,7 +314,9 @@ public class MainActivity extends Activity {
             imWind.setImageResource(R.drawable.west);
         } else if (richting > 292.5 && richting <= 337.5) {
             imWind.setImageResource(R.drawable.noordwest);
-        } else if (richting > 337.5 && richting <= 360) {
+        } else if (richting > 337.5 && richting <= 360)
+
+        {
             imWind.setImageResource(R.drawable.noord);
         }
     }

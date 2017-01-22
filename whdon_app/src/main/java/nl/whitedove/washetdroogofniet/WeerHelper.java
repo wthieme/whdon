@@ -39,10 +39,10 @@ class WeerHelper {
         String plaats = jObj.getString("name");
         plaats = plaats.replace("Gemeente", "");
         result.setPlaats(plaats);
-        result.setIcon(weather.getString("icon"));
-        result.setGraden((int) Math.round(main.getDouble("temp")));
-        result.setWind((int) Math.round(3.6f * wind.getDouble("speed")));
-        result.setWindRichting((int) Math.round(wind.getDouble("deg")));
+        if (weather.has("icon")) result.setIcon(weather.getString("icon"));
+        if (main.has("temp")) result.setGraden((int) Math.round(main.getDouble("temp")));
+        result.setWind(wind.has("speed") ? (int) Math.round(3.6f * wind.getDouble("speed")) : 0);
+        result.setWindRichting(wind.has("deg") ? (int) Math.round(wind.getDouble("deg")) : -1);
         return result;
     }
 
@@ -80,7 +80,7 @@ class WeerHelper {
 
         result.setNoData(false);
 
-        int i=0;
+        int i;
         //int j = 0;
         ArrayList<RegenEntry> regenData = new ArrayList<>();
         String[] parts = brString.split("\r\n");
@@ -112,9 +112,7 @@ class WeerHelper {
 
         HttpURLConnection con = null;
         InputStream is = null;
-
-        // String BrUrl = "http://gps.buienradar.nl/getrr.php?lat=%s&lon=%s";
-        // http://gadgets.buienradar.nl/data/raintext?lat=51&lon=3.9
+        String brData = null;
 
         Uri.Builder builder = new Uri.Builder();
         builder.scheme("http")
@@ -144,7 +142,7 @@ class WeerHelper {
 
             is.close();
             con.disconnect();
-            return buffer.toString();
+            brData = buffer.toString();
         } catch (Throwable t) {
             t.printStackTrace();
         } finally {
@@ -162,7 +160,7 @@ class WeerHelper {
             }
         }
 
-        return null;
+        return brData;
     }
 
     private static String getWeatherData(Context cxt) {
@@ -171,6 +169,8 @@ class WeerHelper {
         InputStream is = null;
 
         String locatie = LocationHelper.GetLocatieVoorWeer(cxt);
+        StringBuilder buffer = new StringBuilder();
+        String weatherData = null;
 
         Uri.Builder builder = new Uri.Builder();
         builder.scheme("http")
@@ -185,6 +185,7 @@ class WeerHelper {
 
         String url = builder.build().toString();
         Helper.Log("weather url:" + url);
+
         try {
             con = (HttpURLConnection) (new URL(url)).openConnection();
             con.setRequestMethod("GET");
@@ -192,8 +193,6 @@ class WeerHelper {
             con.setDoOutput(true);
             con.connect();
 
-            // Let's read the response
-            StringBuilder buffer = new StringBuilder();
             is = con.getInputStream();
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             String line;
@@ -202,7 +201,7 @@ class WeerHelper {
 
             is.close();
             con.disconnect();
-            return buffer.toString();
+            weatherData = buffer.toString();
         } catch (Throwable t) {
             t.printStackTrace();
         } finally {
@@ -220,7 +219,7 @@ class WeerHelper {
             }
         }
 
-        return null;
+        return weatherData;
     }
 
     static float BerekenNuXPositie(BuienData buienData) {

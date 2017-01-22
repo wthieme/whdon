@@ -4,13 +4,13 @@ android {
     signingConfigs {
     }
     compileSdkVersion 25
-    buildToolsVersion "25.0.1"
+    buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "nl.whitedove.washetdroogofniet"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 41
-        versionName "1.4.6"
+        versionCode 42
+        versionName "1.4.7"
     }
     buildTypes {
         release {
@@ -30,10 +30,10 @@ repositories {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:25.0.1'
-    compile 'com.android.support:design:25.0.1'
+    compile 'com.android.support:appcompat-v7:25.1.0'
+    compile 'com.android.support:design:25.1.0'
     compile 'joda-time:joda-time:2.9.6'
-    compile 'com.google.android.gms:play-services-location:9.8.0'
+    compile 'com.google.android.gms:play-services-location:10.0.1'
     compile 'com.github.PhilJay:MPAndroidChart:v2.2.3'
     compile project(path: ':whdon_backend', configuration: 'android-endpoints')
 }
