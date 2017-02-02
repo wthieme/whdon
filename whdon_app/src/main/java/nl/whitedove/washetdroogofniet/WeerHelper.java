@@ -21,9 +21,9 @@ import okhttp3.Response;
 
 class WeerHelper {
 
-    static Weer BepaalWeer(Context cxt) throws JSONException {
+    static Weer BepaalWeer() throws JSONException {
 
-        String weatherJson = WeerHelper.getWeatherData(cxt);
+        String weatherJson = WeerHelper.getWeatherData();
         if (weatherJson == null || weatherJson.isEmpty()) {
             return null;
         }
@@ -135,9 +135,9 @@ class WeerHelper {
         return brData;
     }
 
-    private static String getWeatherData(Context cxt) {
+    private static String getWeatherData() {
 
-        String locatie = LocationHelper.GetLocatieVoorWeer(cxt);
+        String locatie = LocationHelper.GetLocatieVoorWeer();
 
         Uri.Builder builder = new Uri.Builder();
         builder.scheme("http")

@@ -14,6 +14,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -59,6 +60,7 @@ public class MainActivity extends Activity {
 
     DatabaseHelper mDH;
     ProgressDialog mProgress;
+    static final int MY_PERMISSIONS_REQUEST_LOCATION = 1;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -174,6 +176,21 @@ public class MainActivity extends Activity {
         customDialog.show();
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    InitLocation();
+                } else {
+                    Helper.ShowMessage(this, "Zonder locatietoegang is het niet mogelijk om meldingen te doen en de buienradar te bekijken");
+                }
+            }
+        }
+    }
+
     public void moreClick(View oView) {
         PopupMenu popup = new PopupMenu(this, oView);
         MenuInflater inflater = popup.getMenuInflater();
@@ -268,7 +285,7 @@ public class MainActivity extends Activity {
 
     @SuppressLint("DefaultLocale")
     private void ToonWeerdata(Weer weerData) {
-        String locatie = LocationHelper.GetLocatieVoorWeer(this);
+        String locatie = LocationHelper.GetLocatieVoorWeer();
         if (weerData == null) {
             String weeronbekend = this.getString(R.string.WeerOnbekend);
             Helper.ShowMessage(this, weeronbekend);
@@ -422,13 +439,13 @@ public class MainActivity extends Activity {
         if (!Helper.TestInternet(cxt)) {
             return;
         }
-        new AsyncGetWeerVoorspelling().execute(cxt);
-        new AsyncGetBuienData().execute(cxt);
+        new AsyncGetWeerVoorspelling().execute();
+        new AsyncGetBuienData().execute();
     }
 
     private void SlaMeldingOp(Boolean droog) {
         Context cxt = getApplicationContext();
-        String locatie = LocationHelper.GetLocatieVoorWeer(cxt);
+        String locatie = LocationHelper.GetLocatieVoorWeer();
         Melding melding = new Melding();
         melding.setDroog(droog);
         melding.setLocatie(locatie);
@@ -447,11 +464,6 @@ public class MainActivity extends Activity {
     private void ToonLaatsteMelding(Melding melding) {
 
         Context cxt = getApplicationContext();
-        // Alleen als we geen echte locatie hebben bewaren we de locatie van de laatste melding
-        if ((Helper.mLocatie == null) || Helper.mLocatie.equalsIgnoreCase("Onbekend")) {
-            LocationHelper.BewaarLocatie(cxt, melding.getLocatie());
-        }
-
         if (Helper.DEBUG) {
             TextView tvLaatste = (TextView) findViewById(R.id.tvLaatste);
             tvLaatste.setTextColor(Color.RED);
@@ -592,24 +604,37 @@ public class MainActivity extends Activity {
             }
         };
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                    MY_PERMISSIONS_REQUEST_LOCATION);
             return;
         }
 
-        // Register the listener with the Location Manager to receive location updates
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, Helper.ONE_MINUTE, Helper.ONE_KM, locationListener);
+        Location gpsLastLocation = null;
+        Location netLastLocation = null;
+        Location pasLastLocation = null;
 
-        String locationProvider = LocationManager.NETWORK_PROVIDER;
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, Helper.ONE_MINUTE, Helper.ONE_KM, locationListener);
+            gpsLastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        }
 
-        Location lastLocation = locationManager.getLastKnownLocation(locationProvider);
-        makeUseOfNewLocation(lastLocation);
+        if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, Helper.ONE_MINUTE, Helper.ONE_KM, locationListener);
+            netLastLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        }
+
+        if (locationManager.isProviderEnabled(LocationManager.PASSIVE_PROVIDER)) {
+            locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, Helper.ONE_MINUTE, Helper.ONE_KM, locationListener);
+            pasLastLocation = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+        }
+
+        if (gpsLastLocation != null) makeUseOfNewLocation(gpsLastLocation);
+        else if (netLastLocation != null) makeUseOfNewLocation(netLastLocation);
+        else makeUseOfNewLocation(pasLastLocation);
     }
 
     private void Init() {
@@ -622,11 +647,10 @@ public class MainActivity extends Activity {
     }
 
     private void makeUseOfNewLocation(Location location) {
-        Context cxt = getApplicationContext();
         Helper.mCurrentBestLocation = location;
         LocationHelper.BepaalLocatie(this);
         ToonHuidigeLocatie();
-        new AsyncGetWeerVoorspelling().execute(cxt);
+        new AsyncGetWeerVoorspelling().execute();
     }
 
     private void SetDbSyncDate() {
@@ -705,15 +729,13 @@ public class MainActivity extends Activity {
         }
     }
 
-    private class AsyncGetWeerVoorspelling extends AsyncTask<Context, Void, Weer> {
+    private class AsyncGetWeerVoorspelling extends AsyncTask<Void, Void, Weer> {
 
         @Override
-        protected Weer doInBackground(Context... params) {
-
-            Context context = params[0];
+        protected Weer doInBackground(Void... params) {
             Weer weer = null;
             try {
-                weer = WeerHelper.BepaalWeer(context);
+                weer = WeerHelper.BepaalWeer();
             } catch (JSONException ignored) {
             }
             return weer;
@@ -725,10 +747,10 @@ public class MainActivity extends Activity {
         }
     }
 
-    private class AsyncGetBuienData extends AsyncTask<Context, Void, BuienData> {
+    private class AsyncGetBuienData extends AsyncTask<Void, Void, BuienData> {
 
         @Override
-        protected BuienData doInBackground(Context... params) {
+        protected BuienData doInBackground(Void... params) {
 
             BuienData buienData = null;
             try {
