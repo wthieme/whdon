@@ -176,21 +176,6 @@ public class MainActivity extends Activity {
         customDialog.show();
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_LOCATION: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    InitLocation();
-                } else {
-                    Helper.ShowMessage(this, "Zonder locatietoegang is het niet mogelijk om meldingen te doen en de buienradar te bekijken");
-                }
-            }
-        }
-    }
-
     public void moreClick(View oView) {
         PopupMenu popup = new PopupMenu(this, oView);
         MenuInflater inflater = popup.getMenuInflater();
@@ -604,37 +589,36 @@ public class MainActivity extends Activity {
             }
         };
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
                     MY_PERMISSIONS_REQUEST_LOCATION);
             return;
         }
 
-        Location gpsLastLocation = null;
         Location netLastLocation = null;
-        Location pasLastLocation = null;
-
-        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, Helper.ONE_MINUTE, Helper.ONE_KM, locationListener);
-            gpsLastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        }
 
         if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, Helper.ONE_MINUTE, Helper.ONE_KM, locationListener);
             netLastLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
         }
 
-        if (locationManager.isProviderEnabled(LocationManager.PASSIVE_PROVIDER)) {
-            locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, Helper.ONE_MINUTE, Helper.ONE_KM, locationListener);
-            pasLastLocation = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
-        }
+        if (netLastLocation != null) makeUseOfNewLocation(netLastLocation);
+    }
 
-        if (gpsLastLocation != null) makeUseOfNewLocation(gpsLastLocation);
-        else if (netLastLocation != null) makeUseOfNewLocation(netLastLocation);
-        else makeUseOfNewLocation(pasLastLocation);
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    InitLocation();
+                } else {
+                    Helper.ShowMessage(this, "Zonder locatietoegang is het niet mogelijk om meldingen te doen en de buienradar te bekijken");
+                }
+            }
+        }
     }
 
     private void Init() {
