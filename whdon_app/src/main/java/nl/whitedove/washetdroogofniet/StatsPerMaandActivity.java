@@ -1,7 +1,6 @@
 package nl.whitedove.washetdroogofniet;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -10,13 +9,15 @@ import android.support.v4.content.ContextCompat;
 import android.view.View;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.formatter.IValueFormatter;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
@@ -54,7 +55,6 @@ public class StatsPerMaandActivity extends Activity {
     }
 
     private void ToondataBackground() {
-        Context cxt = getApplicationContext();
         new AsyncGetStatistiekenTask().execute();
     }
 
@@ -66,15 +66,31 @@ public class StatsPerMaandActivity extends Activity {
         chart.setHighlightPerTapEnabled(false);
         chart.setHighlightPerDragEnabled(false);
         chart.setAutoScaleMinMaxEnabled(true);
-        chart.setDescription("");
+        Description desc = new Description();
+        desc.setText("");
+        chart.setDescription(desc);
         chart.setNoDataText(getString(R.string.nodata));
         chart.setScaleEnabled(false);
-        XAxis xAs1 = chart.getXAxis();
-        xAs1.setLabelsToSkip(0);
-        xAs1.setDrawGridLines(false);
+        XAxis xAs = chart.getXAxis();
+        xAs.setDrawGridLines(false);
+        xAs.setDrawLabels(true);
+        xAs.setDrawAxisLine(false);
+        xAs.setYOffset(5.0f);
+        xAs.setTextSize(10.0f);
+        xAs.setLabelCount(12);
+
+        YAxis leftAxis = chart.getAxisLeft();
+        leftAxis.setLabelCount(6, true);
+        leftAxis.setAxisMinimum(0f);
+        leftAxis.setAxisMaximum(100f);
+
+        YAxis rightAxis = chart.getAxisRight();
+        rightAxis.setLabelCount(6, true);
+        rightAxis.setAxisMinimum(0f);
+        rightAxis.setAxisMaximum(100f);
 
         ArrayList<BarEntry> dataT = new ArrayList<>();
-        ArrayList<String> xVals = new ArrayList<>();
+        ArrayList<String> labels = new ArrayList<>();
 
         for (int i = 0; i < 12; i++) {
             int aantalNat = stats.get(i).getAantalNat();
@@ -88,29 +104,31 @@ public class StatsPerMaandActivity extends Activity {
                 percNat = 100 - percDroog;
             }
 
-            dataT.add(new BarEntry(new float[]{percNat, percDroog}, i));
             DateTime datum = new DateTime(2000, stats.get(i).getMaand(), 1, 0, 0);
-            xVals.add(datum.toString("MMM", Locale.getDefault()));
+            dataT.add(new BarEntry(i, new float[]{percNat, percDroog}));
+            labels.add(datum.toString("MMM", Locale.getDefault()));
         }
 
-        BarDataSet dsT = new BarDataSet(dataT, "");
-        dsT.setStackLabels(new String[]{"Nat", "Droog"});
+        xAs.setValueFormatter(new IndexAxisValueFormatter(labels));
 
-        dsT.setColors(new int[]{ContextCompat.getColor(this, R.color.colorNatStart), ContextCompat.getColor(this, R.color.colorDroogStart)});
-        ValueFormatter myformat = new ValueFormatter() {
+        BarDataSet dsT = new BarDataSet(dataT, "");
+        dsT.setStackLabels(new String[]{this.getString(R.string.NatTxt), this.getString(R.string.DroogTxt)});
+        dsT.setColors(ContextCompat.getColor(this, R.color.colorNatStart), ContextCompat.getColor(this, R.color.colorDroogStart));
+
+        IValueFormatter myValueFormat = new IValueFormatter() {
             @Override
             public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
                 return "";
             }
         };
 
-        dsT.setValueFormatter(myformat);
+        dsT.setValueFormatter(myValueFormat);
         dsT.setAxisDependency(YAxis.AxisDependency.LEFT);
 
         ArrayList<IBarDataSet> dataSets = new ArrayList<>();
         dataSets.add(dsT);
 
-        BarData data = new BarData(xVals, dataSets);
+        BarData data = new BarData(dataSets);
         chart.setData(data);
         chart.animateXY(500, 500);
         chart.invalidate();

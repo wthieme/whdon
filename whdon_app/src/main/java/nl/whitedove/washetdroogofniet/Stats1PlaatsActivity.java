@@ -2,7 +2,6 @@ package nl.whitedove.washetdroogofniet;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,17 +11,20 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.LegendEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Stats1PlaatsActivity extends Activity {
 
@@ -58,7 +60,6 @@ public class Stats1PlaatsActivity extends Activity {
     }
 
     private void ToondataBackground(String locatie) {
-        Context cxt = getApplicationContext();
         new AsyncGetStatistiekLocatieTask().execute(locatie);
     }
 
@@ -96,31 +97,49 @@ public class Stats1PlaatsActivity extends Activity {
         tvPsGemm.setText(String.format("%.1f", aantalGemm));
 
         final PieChart chart = (PieChart) findViewById(R.id.lcPerdag);
-        chart.setDescription("");
+
+        Description desc = new Description();
+        desc.setText("");
+        chart.setDescription(desc);
+
         chart.setTouchEnabled(false);
         chart.setNoDataText(getString(R.string.nodata));
         chart.getLegend().setEnabled(false);
 
-        List<String> xVals = new ArrayList<>();
-        xVals.add(String.format("%d%%", percDroog));
-        xVals.add(String.format("%d%%", percNat));
+        ArrayList<PieEntry> dataT = new ArrayList<>();
 
-        ArrayList<Entry> dataT = new ArrayList<>();
+        dataT.add(new PieEntry(percDroog, String.format("%d%%", percDroog)));
+        dataT.add(new PieEntry(percNat, String.format("%d%%", percNat)));
 
-        dataT.add(new Entry(percDroog, 1));
-        dataT.add(new Entry(percNat, 2));
+        Legend legend = chart.getLegend();
+        LegendEntry le1 = new LegendEntry();
+        le1.formColor = ContextCompat.getColor(this, R.color.colorNatStart);
+        le1.label = this.getString(R.string.NatTxt);
+        le1.form = Legend.LegendForm.SQUARE;
+        le1.formSize = 10;
+        LegendEntry le2 = new LegendEntry();
+        le2.formColor = ContextCompat.getColor(this, R.color.colorDroogStart);
+        le2.label = this.getString(R.string.DroogTxt);
+        le2.form = Legend.LegendForm.SQUARE;
+        le2.formSize = 10;
+
+        legend.setCustom(new LegendEntry[]{le1, le2});
+        legend.setEnabled(true);
+        legend.setXEntrySpace(20f);
+        legend.setTextSize(12f);
+        legend.setWordWrapEnabled(true);
 
         PieDataSet dsT = new PieDataSet(dataT, "");
-        dsT.setColors(new int[]{ContextCompat.getColor(this, R.color.colorDroogStart), ContextCompat.getColor(this, R.color.colorNatStart)});
-        ValueFormatter myformat = new ValueFormatter() {
+        dsT.setColors(ContextCompat.getColor(this, R.color.colorDroogStart), ContextCompat.getColor(this, R.color.colorNatStart));
+        IValueFormatter myValueFormat = new IValueFormatter() {
             @Override
             public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
                 return "";
             }
         };
-        dsT.setValueFormatter(myformat);
+        dsT.setValueFormatter(myValueFormat);
 
-        PieData data = new PieData(xVals, dsT);
+        PieData data = new PieData(dsT);
         data.setValueTextSize(14f);
         data.setValueTextColor(ContextCompat.getColor(this, R.color.colorTekst));
 

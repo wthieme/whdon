@@ -47,7 +47,7 @@ class WeerHelper {
 
     static String BepaalBrDataTxt(Context cxt, BuienData buienData) {
         if (buienData == null || buienData.getNoData()) return cxt.getString(R.string.NoBrData);
-        return cxt.getString(R.string.Droog);
+        return cxt.getString(R.string.DroogTxt);
     }
 
     static BuienData BepaalBuien() throws IOException {
@@ -79,7 +79,7 @@ class WeerHelper {
 
         result.setNoData(false);
 
-        int i;
+        int i=0;
         //int j = 0;
         ArrayList<RegenEntry> regenData = new ArrayList<>();
         String[] parts = brString.split("\r\n");

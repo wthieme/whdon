@@ -20,7 +20,7 @@ import java.util.UUID;
 
 import nl.whitedove.washetdroogofniet.backend.whdonApi.WhdonApi;
 
-public class Helper {
+class Helper {
 
     private static final String ApiUrl = "https://8-dot-washetdroogofnietbackend.appspot.com/_ah/api/";
     static WhdonApi myApiService = new WhdonApi.Builder(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), null)
@@ -40,7 +40,7 @@ public class Helper {
         }
     }
 
-    public static Boolean TestInternet(Context ctx) {
+    static Boolean TestInternet(Context ctx) {
         Boolean result;
 
         ConnectivityManager cm = (ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE);

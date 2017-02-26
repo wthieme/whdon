@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -19,8 +21,9 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.github.mikephil.charting.formatter.YAxisValueFormatter;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.formatter.IValueFormatter;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
@@ -64,13 +67,15 @@ public class BuienradarActivity extends Activity {
         chart.setHighlightPerTapEnabled(false);
         chart.setHighlightPerDragEnabled(false);
         chart.setVisibleYRangeMaximum(255, YAxis.AxisDependency.LEFT);
-        chart.setDescription("");
+        Description desc = new Description();
+        desc.setText("");
+        chart.setDescription(desc);
         chart.setScaleEnabled(false);
         chart.setNoDataText(getString(R.string.nodata));
 
-        YAxisValueFormatter myYFormat = new YAxisValueFormatter() {
+        IAxisValueFormatter myYFormat = new IAxisValueFormatter() {
             @Override
-            public String getFormattedValue(float value, YAxis yAxis) {
+            public String getFormattedValue(float value, AxisBase axis) {
                 if (value >= 0 && value < 40) return "0";
                 else if (value >= 40 && value < 80) return "1";
                 else if (value >= 80 && value < 120) return "2";
@@ -82,15 +87,15 @@ public class BuienradarActivity extends Activity {
         };
 
         YAxis yAs1 = chart.getAxisLeft();
-        yAs1.setAxisMaxValue(255);
-        yAs1.setAxisMinValue(0);
+        yAs1.setAxisMaximum(255);
+        yAs1.setAxisMinimum(0);
         yAs1.setLabelCount(7, true);
         yAs1.setValueFormatter(myYFormat);
 
         YAxis yAs2 = chart.getAxisRight();
         yAs2.setDrawLabels(false);
-        yAs2.setAxisMaxValue(255);
-        yAs2.setAxisMinValue(0);
+        yAs2.setAxisMaximum(255);
+        yAs2.setAxisMinimum(0);
         yAs2.setLabelCount(0, true);
 
         XAxis xAs = chart.getXAxis();
@@ -107,7 +112,7 @@ public class BuienradarActivity extends Activity {
         xAs.setDrawLimitLinesBehindData(true);
 
         ArrayList<BarEntry> dataT = new ArrayList<>();
-        ArrayList<String> xVals = new ArrayList<>();
+        ArrayList<String> labels = new ArrayList<>();
 
         double mm = 0;
         for (int i = 0; i < weer.getRegenData().size(); i++) {
@@ -121,26 +126,28 @@ public class BuienradarActivity extends Activity {
             }
 
             mm += peruur / 12.0f;
-            dataT.add(new BarEntry(regen, i));
-            xVals.add(weer.getRegenData().get(i).getTijd());
+            dataT.add(new BarEntry(i, regen));
+            labels.add(weer.getRegenData().get(i).getTijd());
         }
 
+        xAs.setValueFormatter(new IndexAxisValueFormatter(labels));
+
         BarDataSet dsT = new BarDataSet(dataT, "Intensiteit: 1 (lichte regen) t/m 5 (tropische regen)");
-        dsT.setColors(new int[]{ContextCompat.getColor(this, R.color.colorNatStart)});
-        ValueFormatter myformat = new ValueFormatter() {
+        dsT.setColors(ContextCompat.getColor(this, R.color.colorNatStart));
+        IValueFormatter myValueFormat = new IValueFormatter() {
             @Override
             public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
                 return "";
             }
         };
 
-        dsT.setValueFormatter(myformat);
+        dsT.setValueFormatter(myValueFormat);
         dsT.setAxisDependency(YAxis.AxisDependency.LEFT);
 
         ArrayList<IBarDataSet> dataSets = new ArrayList<>();
         dataSets.add(dsT);
 
-        BarData data = new BarData(xVals, dataSets);
+        BarData data = new BarData(dataSets);
         chart.setData(data);
         chart.animateXY(500, 500);
         chart.invalidate();

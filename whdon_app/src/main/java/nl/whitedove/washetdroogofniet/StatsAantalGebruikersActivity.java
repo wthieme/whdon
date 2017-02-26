@@ -2,19 +2,20 @@ package nl.whitedove.washetdroogofniet;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
@@ -49,7 +50,6 @@ public class StatsAantalGebruikersActivity extends Activity {
     }
 
     private void ToondataBackground() {
-        Context cxt = getApplicationContext();
         new AsyncGetAantalGebruikersStatistiekenTask().execute();
     }
 
@@ -62,33 +62,34 @@ public class StatsAantalGebruikersActivity extends Activity {
         chart.setHighlightPerTapEnabled(false);
         chart.setHighlightPerDragEnabled(false);
         chart.setAutoScaleMinMaxEnabled(true);
-        chart.setDescription("");
+        Description desc = new Description();
+        desc.setText("");
+        chart.setDescription(desc);
         chart.setScaleEnabled(false);
         chart.setNoDataText(getString(R.string.nodata));
 
         ArrayList<Entry> dataY = new ArrayList<>();
-        ArrayList<String> xVals = new ArrayList<>();
 
         for (int i = 0; i < 31; i++) {
-            Entry e = new Entry(stats.get(i).getAantalGebruikers(), i);
+            Entry e = new Entry(-1 * stats.get(i).getDag(), stats.get(i).getAantalGebruikers());
             dataY.add(e);
-            xVals.add(String.format("%d", -1 * stats.get(i).getDag()));
         }
 
         LineDataSet ds = new LineDataSet(dataY, "Cumulatief aantal gebruikers in de afgelopen 30 dagen");
-        ds.setColor(R.color.colorTekst);
-        ValueFormatter myformat = new ValueFormatter() {
+        ds.setColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
+        ds.setCircleColor(ContextCompat.getColor(this, R.color.colorNatStart));
+        IValueFormatter myValueFormat = new IValueFormatter() {
             @Override
             public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
                 return "";
             }
         };
 
-        ds.setValueFormatter(myformat);
+        ds.setValueFormatter(myValueFormat);
         ds.setAxisDependency(YAxis.AxisDependency.LEFT);
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
         dataSets.add(ds);
-        LineData data = new LineData(xVals, dataSets);
+        LineData data = new LineData(dataSets);
         chart.setData(data);
         chart.animateXY(500, 500);
         chart.invalidate();

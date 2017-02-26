@@ -36,7 +36,8 @@
     <string name="percent100">100%</string>
     <string name="per_maand">% per maand</string>
     <string name="NoBrData">No Data</string>
-    <string name="Droog">Droog</string>
+    <string name="DroogTxt">Droog</string>
+    <string name="NatTxt">Nat</string>
     <string name="laatste25">Laatste 25</string>
     <string name="clear_cache">Cache herstellen</string>
     <string name="weer">Weer</string>

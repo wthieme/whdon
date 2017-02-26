@@ -33,6 +33,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
@@ -41,7 +42,7 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
@@ -331,11 +332,14 @@ public class MainActivity extends Activity {
         chart.setHighlightPerTapEnabled(false);
         chart.setHighlightPerDragEnabled(false);
         chart.setVisibleYRangeMaximum(255, YAxis.AxisDependency.LEFT);
-        chart.setDescription(getString(R.string.buienradar2u));
-        chart.setDescriptionPosition(Utils.convertDpToPixel(88), Utils.convertDpToPixel(12));
 
-        chart.setDescriptionTextSize(12);
-        chart.setDescriptionColor(ContextCompat.getColor(this, R.color.colorPrimary));
+        Description desc = new Description();
+        desc.setPosition(Utils.convertDpToPixel(88), Utils.convertDpToPixel(12));
+        desc.setTextSize(12);
+        desc.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
+        desc.setText(getString(R.string.buienradar2u));
+        chart.setDescription(desc);
+
         chart.setScaleEnabled(false);
         chart.setGridBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
         chart.setNoDataText("");
@@ -346,16 +350,16 @@ public class MainActivity extends Activity {
         legend.setEnabled(false);
 
         YAxis yAs1 = chart.getAxisLeft();
-        yAs1.setAxisMaxValue(255);
-        yAs1.setAxisMinValue(0);
+        yAs1.setAxisMaximum(255);
+        yAs1.setAxisMinimum(0);
         yAs1.setLabelCount(0, true);
         yAs1.setDrawGridLines(false);
         yAs1.setDrawLabels(false);
         yAs1.setDrawAxisLine(false);
 
         YAxis yAs2 = chart.getAxisRight();
-        yAs2.setAxisMaxValue(255);
-        yAs2.setAxisMinValue(0);
+        yAs2.setAxisMaximum(255);
+        yAs2.setAxisMinimum(0);
         yAs2.setLabelCount(0, true);
         yAs2.setDrawGridLines(false);
         yAs2.setDrawLabels(false);
@@ -379,33 +383,31 @@ public class MainActivity extends Activity {
         xAs.setDrawLimitLinesBehindData(true);
 
         ArrayList<BarEntry> dataT = new ArrayList<>();
-        ArrayList<String> xVals = new ArrayList<>();
 
         int som = 0;
         for (int i = 0; i < weerData.getRegenData().size(); i++) {
             int regen = weerData.getRegenData().get(i).getRegen();
             som += regen;
-            dataT.add(new BarEntry(regen, i));
-            xVals.add(weerData.getRegenData().get(i).getTijd());
+            dataT.add(i, new BarEntry(i, regen));
         }
 
         BarDataSet dsT = new BarDataSet(dataT, "");
 
-        dsT.setColors(new int[]{ContextCompat.getColor(this, R.color.colorNatStart)});
-        ValueFormatter myformat = new ValueFormatter() {
+        dsT.setColors(ContextCompat.getColor(this, R.color.colorNatStart));
+        IValueFormatter myValueFormat = new IValueFormatter() {
             @Override
             public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
                 return "";
             }
         };
 
-        dsT.setValueFormatter(myformat);
+        dsT.setValueFormatter(myValueFormat);
         dsT.setAxisDependency(YAxis.AxisDependency.LEFT);
 
         ArrayList<IBarDataSet> dataSets = new ArrayList<>();
         dataSets.add(dsT);
 
-        BarData data = new BarData(xVals, dataSets);
+        BarData data = new BarData(dataSets);
         chart.setData(data);
         chart.invalidate();
 
