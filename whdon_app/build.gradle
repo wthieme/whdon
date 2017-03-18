@@ -30,11 +30,16 @@ repositories {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:25.2.0'
-    compile 'com.android.support:design:25.2.0'
+    compile 'com.android.support:appcompat-v7:25.3.0'
+    compile 'com.android.support:design:25.3.0'
     compile 'joda-time:joda-time:2.9.7'
     compile 'com.google.android.gms:play-services-location:10.2.0'
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.1'
     compile 'com.squareup.okhttp3:okhttp:3.6.0'
+    compile ('com.google.api-client:google-api-client-android:1.22.0')
+            {
+                exclude group: 'org.apache.httpcomponents', module: 'httpclient'
+            }
+
     compile project(path: ':whdon_backend', configuration: 'android-endpoints')
 }

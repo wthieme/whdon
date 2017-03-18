@@ -79,7 +79,7 @@ class WeerHelper {
 
         result.setNoData(false);
 
-        int i=0;
+        int i = 0;
         //int j = 0;
         ArrayList<RegenEntry> regenData = new ArrayList<>();
         String[] parts = brString.split("\r\n");
@@ -129,7 +129,7 @@ class WeerHelper {
         Response response;
         try {
             response = client.newCall(request).execute();
-            brData = response.body().string();
+            if (response.isSuccessful()) brData = response.body().string();
         } catch (IOException ignored) {
         }
         return brData;
@@ -162,7 +162,7 @@ class WeerHelper {
         Response response;
         try {
             response = client.newCall(request).execute();
-            weatherData = response.body().string();
+            if (response.isSuccessful()) weatherData = response.body().string();
         } catch (IOException ignored) {
         }
         return weatherData;

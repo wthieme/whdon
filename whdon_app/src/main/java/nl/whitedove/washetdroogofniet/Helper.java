@@ -8,6 +8,7 @@ import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 
+
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 
@@ -26,6 +27,7 @@ class Helper {
     static WhdonApi myApiService = new WhdonApi.Builder(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), null)
             .setRootUrl(Helper.ApiUrl)
             .build();
+
     static DateTimeFormatter dFormat = DateTimeFormat.forPattern("dd-MM-yyyy").withLocale(Locale.getDefault());
     static DateTimeFormatter dtFormat = DateTimeFormat.forPattern("dd-MM-yyyy HH:mm").withLocale(Locale.getDefault());
     static Location mCurrentBestLocation;
