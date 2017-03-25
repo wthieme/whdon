@@ -43,4 +43,8 @@
     <string name="weer">Weer</string>
     <string name="wind">Wind</string>
     <string name="menu">Menu</string>
+    <string name="CacheBijwerken">Lokale cache bijwerken</string>
+    <string name="MeldingVerwerken">Melding wordt opgeslagen</string>
+    <string name="OnverwachteFoutOpslaanMelding">Onverwachte fout tijdens ophalen van laatste melding</string>
+    <string name="BedanktMelding">Bedankt voor je melding</string>
 </resources>

@@ -200,7 +200,7 @@ public class MainActivity extends Activity {
 
     private void ResetCache() {
         ClearCache();
-        SyncLocalDb(false);
+        SyncLocalDb(false, true);
     }
 
     private void ClearCache() {
@@ -431,6 +431,7 @@ public class MainActivity extends Activity {
     }
 
     private void SlaMeldingOp(Boolean droog) {
+        ShowMeldingProgress();
         Context cxt = getApplicationContext();
         String locatie = LocationHelper.GetLocatieVoorWeer();
         Melding melding = new Melding();
@@ -457,7 +458,7 @@ public class MainActivity extends Activity {
         }
 
         if (melding == null) {
-            Helper.ShowMessage(cxt, "Onverwachte fout tijdens ophalen van laatste melding");
+            Helper.ShowMessage(cxt, getString(R.string.OnverwachteFoutOpslaanMelding));
             return;
         }
 
@@ -625,7 +626,7 @@ public class MainActivity extends Activity {
 
     private void Init() {
         mDH = new DatabaseHelper(getApplicationContext());
-        SyncLocalDb(false);
+        SyncLocalDb(false, true);
         InitViews(false);
         InitWeerViews(false);
         InitBrViews(false);
@@ -644,7 +645,7 @@ public class MainActivity extends Activity {
         Helper.SetLastSyncDate(cxt, DateTime.now());
     }
 
-    private void SyncLocalDb(Boolean force) {
+    private void SyncLocalDb(Boolean force, Boolean withProgress) {
         Context cxt = getApplicationContext();
         DateTime last = Helper.GetLastSyncDate(cxt);
 
@@ -652,7 +653,7 @@ public class MainActivity extends Activity {
             if (!Helper.TestInternet(cxt)) {
                 return;
             }
-            ShowDbProgress();
+            if (withProgress) ShowDbProgress();
             new AsyncSyncLocalDbTask().execute(last);
         } else {
             DateTime nu = DateTime.now();
@@ -660,15 +661,23 @@ public class MainActivity extends Activity {
                 if (!Helper.TestInternet(cxt)) {
                     return;
                 }
-                ShowDbProgress();
+                if (withProgress) ShowDbProgress();
                 new AsyncSyncLocalDbTask().execute(last);
             }
         }
     }
 
+    private void ShowMeldingProgress() {
+        mProgress = new ProgressDialog(this);
+        mProgress.setMessage(getString(R.string.MeldingVerwerken));
+        mProgress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mProgress.setCancelable(false);
+        mProgress.show();
+    }
+
     private void ShowDbProgress() {
         mProgress = new ProgressDialog(this);
-        mProgress.setMessage("Lokale cache bijwerken ...");
+        mProgress.setMessage(getString(R.string.CacheBijwerken));
         mProgress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         mProgress.setCancelable(false);
         mProgress.show();
@@ -771,14 +780,15 @@ public class MainActivity extends Activity {
 
         @Override
         protected void onPostExecute(Pair<Context, Melding> result) {
+            mProgress.hide();
             Melding melding = result.second;
             if (melding == null) return;
             String err = melding.getError();
             if (err != null && !err.isEmpty()) {
                 Helper.ShowMessage(result.first, err);
             } else {
-                Helper.ShowMessage(result.first, "Bedankt voor je melding");
-                SyncLocalDb(true);
+                Helper.ShowMessage(result.first, getString(R.string.BedanktMelding));
+                SyncLocalDb(true, false);
             }
             ToondataBackground();
         }

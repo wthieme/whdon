@@ -9,8 +9,8 @@ android {
         applicationId "nl.whitedove.washetdroogofniet"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 47
-        versionName "1.5.2"
+        versionCode 48
+        versionName "1.5.3"
     }
     buildTypes {
         release {
@@ -33,7 +33,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.3.0'
     compile 'com.android.support:design:25.3.0'
     compile 'joda-time:joda-time:2.9.7'
-    compile 'com.google.android.gms:play-services-location:10.2.0'
+    compile 'com.google.android.gms:play-services-location:10.2.1'
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.1'
     compile 'com.squareup.okhttp3:okhttp:3.6.0'
     compile ('com.google.api-client:google-api-client-android:1.22.0')
