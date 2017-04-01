@@ -377,7 +377,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
         return stat;
     }
 
-    ArrayList<Statistiek1Maand> GetStatistiek12Maanden() {
+    ArrayList<Statistiek1Maand> GetStatistiek12Maanden(int jaar) {
 
         ArrayList<Statistiek1Maand> stats = new ArrayList<>();
 
@@ -391,8 +391,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
             SQLiteDatabase db = this.getWritableDatabase();
             Cursor cursor;
-            DateTime nu = new DateTime();
-            DateTime va = new DateTime(nu.getYear(), nu.getMonthOfYear(), 1, 0, 0).minusMonths(11 - i);
+            DateTime va = new DateTime(jaar, i + 1, 1, 0, 0);
             DateTime tm = va.plusMonths(1);
             cursor = db.rawQuery(selectQuery, new String[]{Long.toString(va.getMillis()), Long.toString(tm.getMillis())});
 

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Description;
@@ -28,6 +29,7 @@ import java.util.Locale;
 
 public class StatsPerMaandActivity extends Activity {
     DatabaseHelper mDH;
+    static int jaar = DateTime.now().getYear();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +43,25 @@ public class StatsPerMaandActivity extends Activity {
             }
         });
         InitDb();
+        InitSwipes();
         ToondataBackground();
+    }
+
+    private void InitSwipes() {
+        final BarChart chart = (BarChart) findViewById(R.id.bcPerMaand);
+
+        chart.setOnTouchListener(new OnSwipeTouchListener(StatsPerMaandActivity.this) {
+            public void onSwipeLeft() {
+                jaar++;
+                ToondataBackground();
+            }
+
+            public void onSwipeRight() {
+                jaar--;
+                ToondataBackground();
+            }
+        });
+        Helper.ShowMessage(StatsPerMaandActivity.this, getString(R.string.SwipeLinksOfRechts));
     }
 
     private void InitDb() {
@@ -62,6 +82,8 @@ public class StatsPerMaandActivity extends Activity {
         if (stats == null || stats.size() == 0) {
             return;
         }
+        final TextView tvMaandTitel = (TextView) findViewById(R.id.tvMaandTitel);
+        tvMaandTitel.setText(getString(R.string.per_maand) + " " + Integer.toString(jaar));
         final BarChart chart = (BarChart) findViewById(R.id.bcPerMaand);
         chart.setHighlightPerTapEnabled(false);
         chart.setHighlightPerDragEnabled(false);
@@ -138,13 +160,12 @@ public class StatsPerMaandActivity extends Activity {
 
         @Override
         protected ArrayList<Statistiek1Maand> doInBackground(Void... params) {
-            return mDH.GetStatistiek12Maanden();
+            return mDH.GetStatistiek12Maanden(jaar);
         }
 
         @Override
         protected void onPostExecute(ArrayList<Statistiek1Maand> stats) {
             ToonStatistiekenPerMaand(stats);
         }
-
     }
 }
