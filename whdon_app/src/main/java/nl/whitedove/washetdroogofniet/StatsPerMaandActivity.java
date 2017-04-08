@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -48,6 +49,20 @@ public class StatsPerMaandActivity extends Activity {
     }
 
     private void InitSwipes() {
+        final RelativeLayout rlPerMaand = (RelativeLayout) findViewById(R.id.rlPerMaand);
+
+        rlPerMaand.setOnTouchListener(new OnSwipeTouchListener(StatsPerMaandActivity.this) {
+            public void onSwipeLeft() {
+                jaar++;
+                ToondataBackground();
+            }
+
+            public void onSwipeRight() {
+                jaar--;
+                ToondataBackground();
+            }
+        });
+
         final BarChart chart = (BarChart) findViewById(R.id.bcPerMaand);
 
         chart.setOnTouchListener(new OnSwipeTouchListener(StatsPerMaandActivity.this) {
@@ -61,6 +76,7 @@ public class StatsPerMaandActivity extends Activity {
                 ToondataBackground();
             }
         });
+
         Helper.ShowMessage(StatsPerMaandActivity.this, getString(R.string.SwipeLinksOfRechts));
     }
 

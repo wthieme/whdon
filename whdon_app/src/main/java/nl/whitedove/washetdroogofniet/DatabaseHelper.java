@@ -258,11 +258,11 @@ class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    ArrayList<Statistiek1Dag> GetStatistiek30Dagen() {
+    ArrayList<Statistiek1Dag> GetStatistiek30Dagen(DateTime vanafDatum) {
 
         ArrayList<Statistiek1Dag> stats = new ArrayList<>();
 
-        for (int i = 0; i < 31; i++) {
+        for (int i = 0; i < 30; i++) {
 
             String selectQuery = "SELECT "
                     + "SUM(" + MDG_DROOG + ") AS DROOG,"
@@ -272,13 +272,12 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
             SQLiteDatabase db = this.getWritableDatabase();
             Cursor cursor;
-            DateTime nu = new DateTime();
-            DateTime va = new DateTime(nu.getYear(), nu.getMonthOfYear(), nu.getDayOfMonth(), 0, 0).minusDays(30 - i);
+            DateTime va = new DateTime(vanafDatum.getYear(), vanafDatum.getMonthOfYear(), vanafDatum.getDayOfMonth(), 0, 0).plusDays(i);
             DateTime tm = va.plusDays(1);
             cursor = db.rawQuery(selectQuery, new String[]{Long.toString(va.getMillis()), Long.toString(tm.getMillis())});
 
             Statistiek1Dag stat = new Statistiek1Dag();
-            stat.setDag(30 - i);
+            stat.setDatum(va);
 
             if (cursor.moveToFirst()) {
                 stat.setAantalDroog(cursor.getInt(0));

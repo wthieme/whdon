@@ -1,17 +1,19 @@
 package nl.whitedove.washetdroogofniet;
 
+import org.joda.time.DateTime;
+
 class Statistiek1Dag {
 
-    private int dag;
+    private DateTime datum;
     private int aantalDroog;
     private int aantalNat;
 
-    int getDag() {
-        return dag;
+    DateTime getDatum() {
+        return datum;
     }
 
-    void setDag(int dag) {
-        this.dag = dag;
+    void setDatum(DateTime datum) {
+        this.datum = datum;
     }
 
     int getAantalDroog() {

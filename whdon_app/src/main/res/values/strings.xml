@@ -47,5 +47,6 @@
     <string name="MeldingVerwerken">Melding wordt opgeslagen</string>
     <string name="OnverwachteFoutOpslaanMelding">Onverwachte fout tijdens ophalen van laatste melding</string>
     <string name="BedanktMelding">Bedankt voor je melding</string>
-    <string name="SwipeLinksOfRechts">Swipe rechts of links om andere jaren te bekijken</string>
+    <string name="SwipeLinksOfRechts">Swipe rechts of links om terug en vooruit in de tijd gaan</string>
+    <string name="vantmdatum" formatted="false">%s t/m %s</string>
 </resources>
