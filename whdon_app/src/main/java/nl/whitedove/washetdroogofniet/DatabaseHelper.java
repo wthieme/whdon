@@ -294,12 +294,12 @@ class DatabaseHelper extends SQLiteOpenHelper {
         return stats;
     }
 
-    ArrayList<StatistiekAantalGebruikers> GetAantalGebruikers30Dagen() {
+    ArrayList<StatistiekAantalGebruikers> GetAantalGebruikers30Dagen(DateTime vanafDatum) {
 
         ArrayList<StatistiekAantalGebruikers> stats = new ArrayList<>();
-        for (int i = 0; i < 31; i++) {
+        for (int i = 0; i < 30; i++) {
             StatistiekAantalGebruikers stat = new StatistiekAantalGebruikers();
-            stat.setDag(30 - i);
+            stat.setDatum(vanafDatum);
             stat.setAantalGebruikers(0);
             stats.add(stat);
         }
@@ -314,16 +314,14 @@ class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor;
         cursor = db.rawQuery(selectQuery, null);
 
-        DateTime nu = new DateTime();
-
         if (cursor.moveToFirst()) {
             do {
                 DateTime vroegsteDat = new DateTime(cursor.getLong(1));
 
-                for (int i = 0; i < 31; i++) {
-                    DateTime va = new DateTime(nu.getYear(), nu.getMonthOfYear(), nu.getDayOfMonth(), 0, 0).minusDays(29 - i);
+                for (int i = 0; i < 30; i++) {
+                    DateTime tm = vanafDatum.plusDays(i);
 
-                    if (va.isAfter(vroegsteDat)) {
+                    if (tm.isAfter(vroegsteDat)) {
                         StatistiekAantalGebruikers stat = stats.get(i);
                         stat.setAantalGebruikers(stat.getAantalGebruikers() + 1);
                     }

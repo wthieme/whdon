@@ -8,21 +8,29 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IValueFormatter;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ViewPortHandler;
+
+import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 
 public class StatsAantalGebruikersActivity extends Activity {
     DatabaseHelper mDH;
+    static DateTime datum = new DateTime(DateTime.now().getYear(), DateTime.now().getMonthOfYear(), DateTime.now().getDayOfMonth(), 0, 0).minusDays(29);
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +44,40 @@ public class StatsAantalGebruikersActivity extends Activity {
             }
         });
         InitDb();
+        InitSwipes();
         ToondataBackground();
+    }
+
+    private void InitSwipes() {
+        final RelativeLayout rlPerDatum = (RelativeLayout) findViewById(R.id.rlPerDatum);
+
+        rlPerDatum.setOnTouchListener(new OnSwipeTouchListener(StatsAantalGebruikersActivity.this) {
+            public void onSwipeLeft() {
+                datum = datum.plusDays(30);
+                ToondataBackground();
+            }
+
+            public void onSwipeRight() {
+                datum = datum.minusDays(30);
+                ToondataBackground();
+            }
+        });
+
+        final LineChart chart = (BarChart) findViewById(R.id.lcAantalGebruikers);
+
+        chart.setOnTouchListener(new OnSwipeTouchListener(StatsAantalGebruikersActivity.this) {
+            public void onSwipeLeft() {
+                datum = datum.plusDays(30);
+                ToondataBackground();
+            }
+
+            public void onSwipeRight() {
+                datum = datum.minusDays(30);
+                ToondataBackground();
+            }
+        });
+
+        Helper.ShowMessage(StatsAantalGebruikersActivity.this, getString(R.string.SwipeLinksOfRechts));
     }
 
     private void InitDb() {
@@ -58,6 +99,11 @@ public class StatsAantalGebruikersActivity extends Activity {
         if (stats == null || stats.size() == 0) {
             return;
         }
+        final TextView tvAantalGebruikersSubtitel = (TextView) findViewById(R.id.tvAantalGebruikersSubtitel);
+        String vanaf = Helper.dFormat.print(datum);
+        String tm = Helper.dFormat.print(datum.plusDays(29));
+        tvAantalGebruikersSubtitel.setText(String.format(getString(R.string.vantmdatum), vanaf, tm));
+
         final LineChart chart = (LineChart) findViewById(R.id.lcAantalGebruikers);
         chart.setHighlightPerTapEnabled(false);
         chart.setHighlightPerDragEnabled(false);
@@ -68,14 +114,24 @@ public class StatsAantalGebruikersActivity extends Activity {
         chart.setScaleEnabled(false);
         chart.setNoDataText(getString(R.string.nodata));
 
-        ArrayList<Entry> dataY = new ArrayList<>();
+        XAxis xAs = chart.getXAxis();
+        xAs.setDrawGridLines(false);
+        xAs.setTextSize(10.0f);
+        xAs.setLabelCount(30);
 
-        for (int i = 0; i < 31; i++) {
-            Entry e = new Entry(-1 * stats.get(i).getDag(), stats.get(i).getAantalGebruikers());
+        ArrayList<Entry> dataY = new ArrayList<>();
+        ArrayList<String> labels = new ArrayList<>();
+
+        for (int i = 0; i < 30; i++) {
+            Entry e = new Entry(stats.get(i).getDag(), stats.get(i).getAantalGebruikers());
+            String sDatum = (i == 0 || i == 15 || i == 29) ? Helper.dmFormat.print(stats.get(i).getDatum()) : "";
+            labels.add(sDatum);
             dataY.add(e);
         }
 
-        LineDataSet ds = new LineDataSet(dataY, "Cumulatief aantal gebruikers in de afgelopen 30 dagen");
+        xAs.setValueFormatter(new IndexAxisValueFormatter(labels));
+
+        LineDataSet ds = new LineDataSet(dataY, "Cumulatief aantal gebruikers");
         ds.setColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
         ds.setCircleColor(ContextCompat.getColor(this, R.color.colorNatStart));
         IValueFormatter myValueFormat = new IValueFormatter() {
@@ -99,7 +155,7 @@ public class StatsAantalGebruikersActivity extends Activity {
 
         @Override
         protected ArrayList<StatistiekAantalGebruikers> doInBackground(Void... params) {
-            return mDH.GetAantalGebruikers30Dagen();
+            return mDH.GetAantalGebruikers30Dagen(datum);
         }
 
         @Override

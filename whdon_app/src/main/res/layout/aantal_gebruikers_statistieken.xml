@@ -12,7 +12,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/tvAppName"
+            android:id="@+id/tvAantalGebruikersTitel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -24,6 +24,19 @@
             android:textColor="@color/colorPrimary"
             android:textSize="24sp"
             android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvAantalGebruikersSubtitel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="20dp"
+            android:gravity="end"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/vantmdatum"
+            android:textColor="@color/colorPrimary"
+            android:textSize="14sp"/>
 
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/lcAantalGebruikers"
