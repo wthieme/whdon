@@ -4,13 +4,13 @@ android {
     signingConfigs {
     }
     compileSdkVersion 25
-    buildToolsVersion '25.0.0'
+    buildToolsVersion '25.0.2'
     defaultConfig {
         applicationId "nl.whitedove.washetdroogofniet"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 50
-        versionName "1.5.5"
+        versionCode 51
+        versionName "1.5.6"
     }
     buildTypes {
         release {
@@ -35,7 +35,7 @@ dependencies {
     compile 'joda-time:joda-time:2.9.9'
     compile 'com.google.android.gms:play-services-location:10.2.1'
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
-    compile 'com.squareup.okhttp3:okhttp:3.6.0'
+    compile 'com.squareup.okhttp3:okhttp:3.7.0'
     compile ('com.google.api-client:google-api-client-android:1.22.0')
             {
                 exclude group: 'org.apache.httpcomponents', module: 'httpclient'

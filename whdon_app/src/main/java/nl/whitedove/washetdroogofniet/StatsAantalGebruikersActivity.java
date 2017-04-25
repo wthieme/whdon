@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
@@ -49,9 +48,9 @@ public class StatsAantalGebruikersActivity extends Activity {
     }
 
     private void InitSwipes() {
-        final RelativeLayout rlPerDatum = (RelativeLayout) findViewById(R.id.rlPerDatum);
+        final RelativeLayout rlAantalGebruikers = (RelativeLayout) findViewById(R.id.rlAantalGebruikers);
 
-        rlPerDatum.setOnTouchListener(new OnSwipeTouchListener(StatsAantalGebruikersActivity.this) {
+        rlAantalGebruikers.setOnTouchListener(new OnSwipeTouchListener(StatsAantalGebruikersActivity.this) {
             public void onSwipeLeft() {
                 datum = datum.plusDays(30);
                 ToondataBackground();
@@ -63,7 +62,7 @@ public class StatsAantalGebruikersActivity extends Activity {
             }
         });
 
-        final LineChart chart = (BarChart) findViewById(R.id.lcAantalGebruikers);
+        final LineChart chart = (LineChart) findViewById(R.id.lcAantalGebruikers);
 
         chart.setOnTouchListener(new OnSwipeTouchListener(StatsAantalGebruikersActivity.this) {
             public void onSwipeLeft() {
@@ -123,7 +122,7 @@ public class StatsAantalGebruikersActivity extends Activity {
         ArrayList<String> labels = new ArrayList<>();
 
         for (int i = 0; i < 30; i++) {
-            Entry e = new Entry(stats.get(i).getDag(), stats.get(i).getAantalGebruikers());
+            Entry e = new Entry(i, stats.get(i).getAantalGebruikers());
             String sDatum = (i == 0 || i == 15 || i == 29) ? Helper.dmFormat.print(stats.get(i).getDatum()) : "";
             labels.add(sDatum);
             dataY.add(e);

@@ -298,38 +298,27 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
         ArrayList<StatistiekAantalGebruikers> stats = new ArrayList<>();
         for (int i = 0; i < 30; i++) {
+            String selectQuery = "SELECT "
+                    + "COUNT(DISTINCT " + MDG_TELID + ") AS AANTAL"
+                    + " FROM " + TAB_MELDING
+                    + " WHERE " + MDG_DATUM + " < ?";
+
+            SQLiteDatabase db = this.getWritableDatabase();
+            Cursor cursor;
+            DateTime tm = vanafDatum.plusDays(i);
+
+            cursor = db.rawQuery(selectQuery, new String[]{Long.toString(tm.getMillis())});
             StatistiekAantalGebruikers stat = new StatistiekAantalGebruikers();
-            stat.setDatum(vanafDatum);
-            stat.setAantalGebruikers(0);
+            stat.setDatum(tm);
+
+            if (cursor.moveToFirst())
+                stat.setAantalGebruikers(cursor.getInt(0));
+            else
+                stat.setAantalGebruikers(0);
+
+            cursor.close();
             stats.add(stat);
         }
-
-        String selectQuery = "SELECT "
-                + MDG_TELID + ","
-                + "MIN(" + MDG_DATUM + ") AS MINDATUM"
-                + " FROM " + TAB_MELDING
-                + " GROUP BY " + MDG_TELID;
-
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor;
-        cursor = db.rawQuery(selectQuery, null);
-
-        if (cursor.moveToFirst()) {
-            do {
-                DateTime vroegsteDat = new DateTime(cursor.getLong(1));
-
-                for (int i = 0; i < 30; i++) {
-                    DateTime tm = vanafDatum.plusDays(i);
-
-                    if (tm.isAfter(vroegsteDat)) {
-                        StatistiekAantalGebruikers stat = stats.get(i);
-                        stat.setAantalGebruikers(stat.getAantalGebruikers() + 1);
-                    }
-                }
-
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
         return stats;
     }
 
