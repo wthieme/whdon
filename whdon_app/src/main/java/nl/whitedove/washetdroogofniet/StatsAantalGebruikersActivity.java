@@ -113,6 +113,29 @@ public class StatsAantalGebruikersActivity extends Activity {
         chart.setScaleEnabled(false);
         chart.setNoDataText(getString(R.string.nodata));
 
+        int minVal = Integer.MAX_VALUE;
+        int maxVal = Integer.MIN_VALUE;
+
+        for (int i = 0; i < 30; i++) {
+            int aantal = stats.get(i).getAantalGebruikers();
+            if (aantal < minVal) minVal = aantal;
+            if (aantal > maxVal) maxVal = aantal;
+        }
+
+        minVal = minVal - 1;
+        if (minVal < 0) minVal = 0;
+        int labelCount = maxVal - minVal + 2;
+        while (labelCount > 10) labelCount = labelCount / 2;
+
+        YAxis yAsL = chart.getAxisLeft();
+        yAsL.setLabelCount(labelCount, true);
+        yAsL.setAxisMinimum(minVal);
+        yAsL.setAxisMaximum(maxVal + 1);
+        YAxis yAsR = chart.getAxisRight();
+        yAsR.setAxisMinimum(minVal);
+        yAsR.setAxisMaximum(maxVal + 1);
+        yAsR.setLabelCount(labelCount, true);
+
         XAxis xAs = chart.getXAxis();
         xAs.setDrawGridLines(false);
         xAs.setTextSize(10.0f);

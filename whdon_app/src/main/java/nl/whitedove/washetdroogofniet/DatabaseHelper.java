@@ -305,7 +305,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
             SQLiteDatabase db = this.getWritableDatabase();
             Cursor cursor;
-            DateTime tm = vanafDatum.plusDays(i);
+            DateTime tm = vanafDatum.plusDays(i+1);
 
             cursor = db.rawQuery(selectQuery, new String[]{Long.toString(tm.getMillis())});
             StatistiekAantalGebruikers stat = new StatistiekAantalGebruikers();
