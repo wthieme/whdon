@@ -1,7 +1,6 @@
 package nl.whitedove.washetdroogofniet;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -48,7 +47,6 @@ public class StatsPerPlaatsActivity extends Activity {
     }
 
     private void ToondataBackground() {
-        Context cxt = getApplicationContext();
         new AsyncGetStatistiekenTask().execute();
     }
 

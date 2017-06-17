@@ -53,6 +53,11 @@
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
         <activity
+            android:name=".StatsPerUurActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
             android:name=".StatsAantalGebruikersActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" >

@@ -135,6 +135,7 @@ public class MainActivity extends Activity {
         contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.staafvert2), getString(R.string.per_maand)));
         contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.lijn1), getString(R.string.aantal_gebruikers)));
         contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.list25), getString(R.string.laatste25)));
+        contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.staafvert3), getString(R.string.AantalPerUur)));
 
         adapter = new ContextMenuAdapter(this, contextMenuItems);
         listView.setAdapter(adapter);
@@ -168,6 +169,10 @@ public class MainActivity extends Activity {
 
                     case 5:
                         Laatste25();
+                        return;
+
+                    case 6:
+                        GrafiekUur();
                 }
             }
         });
@@ -252,6 +257,11 @@ public class MainActivity extends Activity {
 
     private void GrafiekMaand() {
         Intent intent = new Intent(this, StatsPerMaandActivity.class);
+        startActivity(intent);
+    }
+
+    private void GrafiekUur() {
+        Intent intent = new Intent(this, StatsPerUurActivity.class);
         startActivity(intent);
     }
 

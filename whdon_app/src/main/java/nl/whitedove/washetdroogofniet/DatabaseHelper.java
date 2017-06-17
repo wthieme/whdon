@@ -63,8 +63,8 @@ class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("BEGIN TRANSACTION");
         for (Melding melding : meldingen) {
 
-            String selectQuery = "SELECT "
-                    + MDG_ID
+            String selectQuery = "SELECT"
+                    + " " + MDG_ID
                     + " FROM " + TAB_MELDING
                     + " WHERE " + MDG_TELID + " = ?"
                     + " AND " + MDG_DATUM + " = ?"
@@ -90,9 +90,9 @@ class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     Statistiek GetPersoonlijkeStatistiek(String id) {
-        String selectQuery = "SELECT "
-                + "SUM(" + MDG_DROOG + ") AS DROOG,"
-                + "SUM(" + MDG_NAT + ") AS NAT"
+        String selectQuery = "SELECT"
+                + " SUM(" + MDG_DROOG + ") AS DROOG,"
+                + " SUM(" + MDG_NAT + ") AS NAT"
                 + " FROM " + TAB_MELDING
                 + " WHERE " + MDG_TELID + " = ?";
 
@@ -122,11 +122,11 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
     Melding GetLaatsteMelding(String id) {
 
-        String selectQuery = "SELECT "
-                + MDG_LOCATIE + ","
-                + MDG_DATUM + ","
-                + MDG_DROOG + ","
-                + MDG_NAT
+        String selectQuery = "SELECT"
+                + " " + MDG_LOCATIE + ","
+                + " " + MDG_DATUM + ","
+                + " " + MDG_DROOG + ","
+                + " " + MDG_NAT
                 + " FROM " + TAB_MELDING
                 + " WHERE " + MDG_TELID + " = ?"
                 + " ORDER BY " + MDG_DATUM + " DESC"
@@ -154,10 +154,10 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
     ArrayList<Statistiek> GetStatistieken() {
 
-        String selectQuery = "SELECT "
-                + MDG_LOCATIE + ","
-                + "SUM(" + MDG_DROOG + ") AS DROOG,"
-                + "SUM(" + MDG_NAT + ") AS NAT"
+        String selectQuery = "SELECT"
+                + " " + MDG_LOCATIE + ","
+                + " SUM(" + MDG_DROOG + ") AS DROOG,"
+                + " SUM(" + MDG_NAT + ") AS NAT"
                 + " FROM " + TAB_MELDING
                 + " GROUP BY " + MDG_LOCATIE
                 + " ORDER BY " + MDG_LOCATIE;
@@ -194,11 +194,11 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
     ArrayList<Melding> GetLaatste25Meldingen() {
 
-        String selectQuery = "SELECT "
-                + MDG_LOCATIE + ","
-                + MDG_DATUM + ","
-                + MDG_DROOG + ","
-                + MDG_NAT
+        String selectQuery = "SELECT"
+                + " " + MDG_LOCATIE + ","
+                + " " + MDG_DATUM + ","
+                + " " + MDG_DROOG + ","
+                + " " + MDG_NAT
                 + " FROM " + TAB_MELDING
                 + " ORDER BY " + MDG_DATUM + " DESC"
                 + " LIMIT 25";
@@ -226,11 +226,11 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
     ArrayList<Melding> GetMeldingen(String id) {
 
-        String selectQuery = "SELECT "
-                + MDG_LOCATIE + ","
-                + MDG_DATUM + ","
-                + MDG_DROOG + ","
-                + MDG_NAT
+        String selectQuery = "SELECT"
+                + " " + MDG_LOCATIE + ","
+                + " " + MDG_DATUM + ","
+                + " " + MDG_DROOG + ","
+                + " " + MDG_NAT
                 + " FROM " + TAB_MELDING
                 + " WHERE " + MDG_TELID + " = ?"
                 + " ORDER BY " + MDG_DATUM + " DESC";
@@ -257,16 +257,15 @@ class DatabaseHelper extends SQLiteOpenHelper {
         return meldingen;
     }
 
-
     ArrayList<Statistiek1Dag> GetStatistiek30Dagen(DateTime vanafDatum) {
 
         ArrayList<Statistiek1Dag> stats = new ArrayList<>();
 
         for (int i = 0; i < 30; i++) {
 
-            String selectQuery = "SELECT "
-                    + "SUM(" + MDG_DROOG + ") AS DROOG,"
-                    + "SUM(" + MDG_NAT + ") AS NAT"
+            String selectQuery = "SELECT"
+                    + " SUM(" + MDG_DROOG + ") AS DROOG,"
+                    + " SUM(" + MDG_NAT + ") AS NAT"
                     + " FROM " + TAB_MELDING
                     + " WHERE " + MDG_DATUM + " BETWEEN ? AND ?";
 
@@ -298,8 +297,8 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
         ArrayList<StatistiekAantalGebruikers> stats = new ArrayList<>();
         for (int i = 0; i < 30; i++) {
-            String selectQuery = "SELECT "
-                    + "COUNT(DISTINCT " + MDG_TELID + ") AS AANTAL"
+            String selectQuery = "SELECT"
+                    + " COUNT(DISTINCT " + MDG_TELID + ") AS AANTAL"
                     + " FROM " + TAB_MELDING
                     + " WHERE " + MDG_DATUM + " < ?";
 
@@ -329,19 +328,19 @@ class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         if (locatie.equals("Totaal")) {
-            selectQuery = "SELECT "
-                    + "SUM(" + MDG_DROOG + ") AS DROOG,"
-                    + "SUM(" + MDG_NAT + ") AS NAT,"
-                    + "MIN(" + MDG_DATUM + ") AS MINDATUM,"
-                    + "MAX(" + MDG_DATUM + ") AS MAXDATUM"
+            selectQuery = "SELECT"
+                    + " SUM(" + MDG_DROOG + ") AS DROOG,"
+                    + " SUM(" + MDG_NAT + ") AS NAT,"
+                    + " MIN(" + MDG_DATUM + ") AS MINDATUM,"
+                    + " MAX(" + MDG_DATUM + ") AS MAXDATUM"
                     + " FROM " + TAB_MELDING;
             cursor = db.rawQuery(selectQuery, null);
         } else {
-            selectQuery = "SELECT "
-                    + "SUM(" + MDG_DROOG + ") AS DROOG,"
-                    + "SUM(" + MDG_NAT + ") AS NAT,"
-                    + "MIN(" + MDG_DATUM + ") AS MINDATUM,"
-                    + "MAX(" + MDG_DATUM + ") AS MAXDATUM"
+            selectQuery = "SELECT"
+                    + " SUM(" + MDG_DROOG + ") AS DROOG,"
+                    + " SUM(" + MDG_NAT + ") AS NAT,"
+                    + " MIN(" + MDG_DATUM + ") AS MINDATUM,"
+                    + " MAX(" + MDG_DATUM + ") AS MAXDATUM"
                     + " FROM " + TAB_MELDING
                     + " WHERE " + MDG_LOCATIE + "=?";
 
@@ -370,8 +369,8 @@ class DatabaseHelper extends SQLiteOpenHelper {
         for (int i = 0; i < 12; i++) {
 
             String selectQuery = "SELECT "
-                    + "SUM(" + MDG_DROOG + ") AS DROOG,"
-                    + "SUM(" + MDG_NAT + ") AS NAT"
+                    + " SUM(" + MDG_DROOG + ") AS DROOG,"
+                    + " SUM(" + MDG_NAT + ") AS NAT"
                     + " FROM " + TAB_MELDING
                     + " WHERE " + MDG_DATUM + " BETWEEN ? AND ?";
 
@@ -395,6 +394,35 @@ class DatabaseHelper extends SQLiteOpenHelper {
             cursor.close();
             stats.add(stat);
         }
+        return stats;
+    }
+
+    ArrayList<Statistiek1Uur> GetStatistiek24Uur() {
+
+        String selectQuery = "SELECT"
+                + " (" + MDG_DATUM + "/ (1000*60*60)) % 24 AS UUR,"
+                + " SUM(" + MDG_DROOG + ") AS DROOG,"
+                + " SUM(" + MDG_NAT + ") AS NAT"
+                + " FROM " + TAB_MELDING
+                + " GROUP BY (" + MDG_DATUM + "/ (1000*60*60)) % 24"
+                + " ORDER BY UUR";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor;
+        cursor = db.rawQuery(selectQuery, null);
+
+        ArrayList<Statistiek1Uur> stats = new ArrayList<>();
+
+        if (cursor.moveToFirst()) {
+            do {
+                Statistiek1Uur stat = new Statistiek1Uur();
+                stat.setUur(cursor.getInt(0));
+                stat.setAantalDroog(cursor.getInt(1));
+                stat.setAantalNat(cursor.getInt(2));
+                stats.add(stat);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
         return stats;
     }
 }
