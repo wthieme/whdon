@@ -400,11 +400,11 @@ class DatabaseHelper extends SQLiteOpenHelper {
     ArrayList<Statistiek1Uur> GetStatistiek24Uur() {
 
         String selectQuery = "SELECT"
-                + " (" + MDG_DATUM + "/ (1000*60*60)) % 24 AS UUR,"
+                + " ((3600000 + " + MDG_DATUM + ") / 3600000) % 24 AS UUR,"
                 + " SUM(" + MDG_DROOG + ") AS DROOG,"
                 + " SUM(" + MDG_NAT + ") AS NAT"
                 + " FROM " + TAB_MELDING
-                + " GROUP BY (" + MDG_DATUM + "/ (1000*60*60)) % 24"
+                + " GROUP BY ((3600000 + " + MDG_DATUM + ") / 3600000) % 24"
                 + " ORDER BY UUR";
 
         SQLiteDatabase db = this.getWritableDatabase();
