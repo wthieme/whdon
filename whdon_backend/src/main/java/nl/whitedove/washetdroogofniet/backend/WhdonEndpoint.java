@@ -117,9 +117,9 @@ public class WhdonEndpoint {
         Query.Filter datumFilter = new Query.FilterPredicate(DATUM, Query.FilterOperator.GREATER_THAN_OR_EQUAL, datumVanaf);
         Query qMeldingen = new Query(MELDING).setFilter(datumFilter);
 
-        PreparedQuery pq = datastore.prepare(qMeldingen);
+        List<Entity> meldingen = datastore.prepare(qMeldingen).asList(FetchOptions.Builder.withChunkSize(100));
 
-        for (Entity rMeld : pq.asIterable()) {
+        for (Entity rMeld : meldingen) {
             Melding melding = new Melding();
             melding.setError("");
             melding.setDroog((Boolean) rMeld.getProperty(DROOG));
