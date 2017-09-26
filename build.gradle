@@ -3,9 +3,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        // V2: Include this dependency when using Endpoints Framework v2
         classpath 'com.google.guava:guava:20.0'
-
         classpath 'com.android.tools.build:gradle:2.3.3'
     }
 }
