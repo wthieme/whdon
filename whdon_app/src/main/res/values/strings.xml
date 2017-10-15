@@ -50,4 +50,5 @@
     <string name="SwipeLinksOfRechts">Swipe rechts of links om terug en vooruit in de tijd gaan</string>
     <string name="vantmdatum" formatted="false">%s t/m %s</string>
     <string name="AantalPerUur">Per uur van de dag</string>
+    <string name="GemmTemp">Gemiddelde temperatuur:</string>
 </resources>

@@ -2,7 +2,6 @@ package nl.whitedove.washetdroogofniet;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -25,7 +24,7 @@ public class Laatste25Activity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.laatste25);
 
-        FloatingActionButton fabTerug = (FloatingActionButton) findViewById(R.id.btnTerug);
+        FloatingActionButton fabTerug = findViewById(R.id.btnTerug);
         fabTerug.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -47,7 +46,6 @@ public class Laatste25Activity extends Activity {
     }
 
     private void ToondataBackground() {
-        Context cxt = getApplicationContext();
         new AsyncGetLaatste25Task().execute();
     }
 
@@ -57,18 +55,26 @@ public class Laatste25Activity extends Activity {
             return;
         }
 
-        TextView tvPsAantalDroog = (TextView) findViewById(R.id.tvPsAantalDroog);
-        TextView tvPsAantalNat = (TextView) findViewById(R.id.tvPsAantalNat);
-        TextView tvPsGemm = (TextView) findViewById(R.id.tvPsGemm);
+        TextView tvPsAantalDroog = findViewById(R.id.tvPsAantalDroog);
+        TextView tvPsAantalNat = findViewById(R.id.tvPsAantalNat);
+        TextView tvPsGemm = findViewById(R.id.tvPsGemm);
+        TextView tvPsGemmTemp = findViewById(R.id.tvPsGemmTemp);
 
         int aantalDroog = 0;
         int aantalNat = 0;
+        long tempSom = 0;
         float aantalGemm;
+        float tempGemm;
+        int aantalTemp = 0;
         DateTime datum = DateTime.now();
 
         for (Melding rMeld : meldingen) {
             aantalDroog += rMeld.getDroog() ? 1 : 0;
             aantalNat += rMeld.getNat() ? 1 : 0;
+            if (rMeld.getTemperatuur() != 999) {
+                tempSom += rMeld.getTemperatuur();
+                aantalTemp++;
+            }
             DateTime melddat = new DateTime(rMeld.getDatum());
             if (melddat.isBefore(datum)) {
                 datum = new DateTime(rMeld.getDatum());
@@ -77,24 +83,26 @@ public class Laatste25Activity extends Activity {
 
         int aantalDagen = Days.daysBetween(datum, DateTime.now()).getDays() + 1;
         aantalGemm = (aantalNat + aantalDroog) / (1.0f * aantalDagen);
+        tempGemm = (tempSom) / (1.0f * aantalTemp);
 
         tvPsAantalDroog.setText(String.format("%d", aantalDroog));
         tvPsAantalNat.setText(String.format("%d", aantalNat));
         tvPsGemm.setText(String.format("%.1f", aantalGemm));
+        tvPsGemmTemp.setText(String.format("%.1f", tempGemm));
 
-        final ListView lvLaatste25 = (ListView) findViewById(R.id.lvLaatste25);
+        final ListView lvLaatste25 = findViewById(R.id.lvLaatste25);
         lvLaatste25.setAdapter(new CustomListAdapterMeldingen(this, meldingen));
     }
 
-    private class AsyncGetLaatste25Task extends AsyncTask<Void, Void,  ArrayList<Melding>> {
+    private class AsyncGetLaatste25Task extends AsyncTask<Void, Void, ArrayList<Melding>> {
 
         @Override
-        protected  ArrayList<Melding> doInBackground(Void... params) {
+        protected ArrayList<Melding> doInBackground(Void... params) {
             return mDH.GetLaatste25Meldingen();
         }
 
         @Override
-        protected void onPostExecute( ArrayList<Melding> meldingen) {
+        protected void onPostExecute(ArrayList<Melding> meldingen) {
             ToonLaatste25(meldingen);
         }
     }

@@ -21,6 +21,7 @@ import okhttp3.Response;
 
 class WeerHelper {
 
+    private static int HuidigeTemperatuur = 999;
     static Weer BepaalWeer() throws JSONException {
 
         String weatherJson = WeerHelper.getWeatherData();
@@ -79,7 +80,7 @@ class WeerHelper {
 
         result.setNoData(false);
 
-        int i = 0;
+        int i;
         //int j = 0;
         ArrayList<RegenEntry> regenData = new ArrayList<>();
         String[] parts = brString.split("\r\n");
@@ -181,5 +182,13 @@ class WeerHelper {
         if (first.isAfter(nu)) first = first.minusDays(1);
         int minuten = Minutes.minutesBetween(first, nu).getMinutes();
         return 24f * (minuten / 120f);
+    }
+
+    static int GetHuidigeTemperatuur() {
+        return HuidigeTemperatuur;
+    }
+
+    static void SetHuidigeTemperatuur(int temperatuur) {
+        HuidigeTemperatuur = temperatuur;
     }
 }

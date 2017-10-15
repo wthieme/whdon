@@ -15,7 +15,7 @@ import nl.whitedove.washetdroogofniet.backend.whdonApi.model.Melding;
 
 class DatabaseHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private static final String DATABASE_NAME = "whdon";
 
     private static final String TAB_MELDING = "Melding";
@@ -25,6 +25,8 @@ class DatabaseHelper extends SQLiteOpenHelper {
     private static final String MDG_DATUM = "Datum";
     private static final String MDG_DROOG = "Droog";
     private static final String MDG_NAT = "Nat";
+    private static final String MDG_TEMPERATUUR = "Temperatuur";
+
 
     DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -39,7 +41,8 @@ class DatabaseHelper extends SQLiteOpenHelper {
                 + MDG_LOCATIE + " TEXT NOT NULL,"
                 + MDG_DATUM + " INTEGER NOT NULL,"
                 + MDG_DROOG + " INTEGER NOT NULL,"
-                + MDG_NAT + " INTEGER NOT NULL"
+                + MDG_NAT + " INTEGER NOT NULL,"
+                + MDG_TEMPERATUUR + " INTEGER NOT NULL"
                 + ")";
         db.execSQL(sql);
 
@@ -56,6 +59,10 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        if (oldVersion < 2) {
+            String sql = "ALTER TABLE " + TAB_MELDING + " ADD COLUMN " + MDG_TEMPERATUUR + " INTEGER NOT NULL DEFAULT 999";
+            db.execSQL(sql);
+        }
     }
 
     void addMeldingen(List<Melding> meldingen) {
@@ -82,6 +89,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
                 values.put(MDG_DATUM, melding.getDatum());
                 values.put(MDG_DROOG, melding.getDroog() ? 1 : 0);
                 values.put(MDG_NAT, melding.getNat() ? 1 : 0);
+                values.put(MDG_TEMPERATUUR, melding.getTemperatuur());
                 db.insert(TAB_MELDING, null, values);
             }
         }
@@ -126,7 +134,8 @@ class DatabaseHelper extends SQLiteOpenHelper {
                 + " " + MDG_LOCATIE + ","
                 + " " + MDG_DATUM + ","
                 + " " + MDG_DROOG + ","
-                + " " + MDG_NAT
+                + " " + MDG_NAT + ","
+                + " " + MDG_TEMPERATUUR
                 + " FROM " + TAB_MELDING
                 + " WHERE " + MDG_TELID + " = ?"
                 + " ORDER BY " + MDG_DATUM + " DESC"
@@ -144,6 +153,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
             melding.setDatum(cursor.getLong(1));
             melding.setDroog(cursor.getInt(2) == 1);
             melding.setNat(cursor.getInt(3) == 1);
+            melding.setTemperatuur(cursor.getLong(4));
         } else {
             melding.setError("Geen meldingen");
         }
@@ -198,7 +208,8 @@ class DatabaseHelper extends SQLiteOpenHelper {
                 + " " + MDG_LOCATIE + ","
                 + " " + MDG_DATUM + ","
                 + " " + MDG_DROOG + ","
-                + " " + MDG_NAT
+                + " " + MDG_NAT + ","
+                + " " + MDG_TEMPERATUUR
                 + " FROM " + TAB_MELDING
                 + " ORDER BY " + MDG_DATUM + " DESC"
                 + " LIMIT 25";
@@ -216,6 +227,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
                 melding.setDatum(cursor.getLong(1));
                 melding.setDroog(cursor.getInt(2) == 1);
                 melding.setNat(cursor.getInt(3) == 1);
+                melding.setTemperatuur(cursor.getLong(4));
                 meldingen.add(melding);
             } while (cursor.moveToNext());
         }
@@ -230,7 +242,8 @@ class DatabaseHelper extends SQLiteOpenHelper {
                 + " " + MDG_LOCATIE + ","
                 + " " + MDG_DATUM + ","
                 + " " + MDG_DROOG + ","
-                + " " + MDG_NAT
+                + " " + MDG_NAT + ","
+                + " " + MDG_TEMPERATUUR
                 + " FROM " + TAB_MELDING
                 + " WHERE " + MDG_TELID + " = ?"
                 + " ORDER BY " + MDG_DATUM + " DESC";
@@ -249,6 +262,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
                 melding.setDatum(cursor.getLong(1));
                 melding.setDroog(cursor.getInt(2) == 1);
                 melding.setNat(cursor.getInt(3) == 1);
+                melding.setTemperatuur(cursor.getLong(4));
                 meldingen.add(melding);
             } while (cursor.moveToNext());
         }

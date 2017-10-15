@@ -25,7 +25,7 @@ public class EigenMeldingenActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.eigen_meldingen);
 
-        FloatingActionButton fabTerug = (FloatingActionButton) findViewById(R.id.btnTerug);
+        FloatingActionButton fabTerug = findViewById(R.id.btnTerug);
         fabTerug.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -57,19 +57,28 @@ public class EigenMeldingenActivity extends Activity {
             return;
         }
 
-        TextView tvPsSinds = (TextView) findViewById(R.id.tvPsSinds);
-        TextView tvPsAantalDroog = (TextView) findViewById(R.id.tvPsAantalDroog);
-        TextView tvPsAantalNat = (TextView) findViewById(R.id.tvPsAantalNat);
-        TextView tvPsGemm = (TextView) findViewById(R.id.tvPsGemm);
+        TextView tvPsSinds = findViewById(R.id.tvPsSinds);
+        TextView tvPsAantalDroog = findViewById(R.id.tvPsAantalDroog);
+        TextView tvPsAantalNat = findViewById(R.id.tvPsAantalNat);
+        TextView tvPsGemm = findViewById(R.id.tvPsGemm);
+        TextView tvPsGemmTemp = findViewById(R.id.tvPsGemmTemp);
 
         int aantalDroog = 0;
         int aantalNat = 0;
+        long tempSom = 0;
         float aantalGemm;
+        float tempGemm;
+        int aantalTemp = 0;
         DateTime datum = DateTime.now();
+
 
         for (Melding rMeld : meldingen) {
             aantalDroog += rMeld.getDroog() ? 1 : 0;
             aantalNat += rMeld.getNat() ? 1 : 0;
+            if (rMeld.getTemperatuur() != 999) {
+                tempSom += rMeld.getTemperatuur();
+                aantalTemp++;
+            }
             DateTime melddat = new DateTime(rMeld.getDatum());
             if (melddat.isBefore(datum)) {
                 datum = new DateTime(rMeld.getDatum());
@@ -78,27 +87,29 @@ public class EigenMeldingenActivity extends Activity {
 
         int aantalDagen = Days.daysBetween(datum, DateTime.now()).getDays() + 1;
         aantalGemm = (aantalNat + aantalDroog) / (1.0f * aantalDagen);
+        tempGemm = (tempSom) / (1.0f * aantalTemp);
 
         tvPsSinds.setText(Helper.dFormat.print(datum));
         tvPsAantalDroog.setText(String.format("%d", aantalDroog));
         tvPsAantalNat.setText(String.format("%d", aantalNat));
         tvPsGemm.setText(String.format("%.1f", aantalGemm));
+        tvPsGemmTemp.setText(String.format("%.1f", tempGemm));
 
-        final ListView lvEigenMeldingen = (ListView) findViewById(R.id.lvEigenMeldingen);
+        final ListView lvEigenMeldingen = findViewById(R.id.lvEigenMeldingen);
         lvEigenMeldingen.setAdapter(new CustomListAdapterMeldingen(this, meldingen));
     }
 
-    private class AsyncGetEigenMeldingenTask extends AsyncTask<Context, Void,  ArrayList<Melding>> {
+    private class AsyncGetEigenMeldingenTask extends AsyncTask<Context, Void, ArrayList<Melding>> {
 
         @Override
-        protected  ArrayList<Melding> doInBackground(Context... params) {
+        protected ArrayList<Melding> doInBackground(Context... params) {
             Context context = params[0];
             String id = Helper.GetGuid(context);
             return mDH.GetMeldingen(id);
         }
 
         @Override
-        protected void onPostExecute( ArrayList<Melding> meldingen) {
+        protected void onPostExecute(ArrayList<Melding> meldingen) {
             ToonEigenMeldingen(meldingen);
         }
     }

@@ -1,5 +1,6 @@
 package nl.whitedove.washetdroogofniet;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
@@ -43,15 +44,17 @@ class CustomListAdapterMeldingen extends BaseAdapter {
         return position;
     }
 
+    @SuppressLint("DefaultLocale")
     public View getView(int position, View convertView, ViewGroup parent) {
 
         ViewHolder holder;
         if (convertView == null) {
             convertView = layoutInflater.inflate(R.layout.meldingen_list_layout, parent, false);
             holder = new ViewHolder();
-            holder.tvPsLocatie = (TextView) convertView.findViewById(R.id.tvPsLocatie);
-            holder.tvPsDatum = (TextView) convertView.findViewById(R.id.tvPsDatum);
-            holder.tvPsDroogNat = (TextView) convertView.findViewById(R.id.tvPsDroogNat);
+            holder.tvPsLocatie = convertView.findViewById(R.id.tvPsLocatie);
+            holder.tvPsDatum = convertView.findViewById(R.id.tvPsDatum);
+            holder.tvPsDroogNat = convertView.findViewById(R.id.tvPsDroogNat);
+            holder.tvPsTemperatuur = convertView.findViewById(R.id.tvPsTemperatuur);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -70,6 +73,13 @@ class CustomListAdapterMeldingen extends BaseAdapter {
             holder.tvPsDroogNat.setTextColor(ContextCompat.getColor(context, R.color.colorTekst));
         }
 
+        long temperatuur = melding.getTemperatuur();
+        if (temperatuur == 999) {
+            holder.tvPsTemperatuur.setText("");
+        } else {
+            holder.tvPsTemperatuur.setText(String.format("%d °C", temperatuur));
+        }
+
         return convertView;
     }
 
@@ -77,5 +87,6 @@ class CustomListAdapterMeldingen extends BaseAdapter {
         TextView tvPsLocatie;
         TextView tvPsDatum;
         TextView tvPsDroogNat;
+        TextView tvPsTemperatuur;
     }
 }

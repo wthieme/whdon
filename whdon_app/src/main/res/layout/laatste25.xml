@@ -45,6 +45,7 @@
                 android:textColor="@color/colorTekst"
                 android:textSize="12sp"
                 android:textStyle="bold" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -97,6 +98,32 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="100dp"
+                android:layout_marginStart="100dp"
+                android:text="@string/GemmTemp"
+                android:textColor="@color/colorTekst"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/tvPsGemmTemp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/colorTekst"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
         <ListView
             android:id="@+id/lvLaatste25"
             android:layout_width="match_parent"
@@ -106,6 +133,7 @@
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:paddingTop="16dp">
+
         </ListView>
 
     </LinearLayout>
@@ -115,10 +143,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="top|start"
+        android:layout_marginBottom="0dp"
         android:layout_marginLeft="0dp"
         android:layout_marginStart="0dp"
         android:layout_marginTop="0dp"
-        android:layout_marginBottom="0dp"
-        app:useCompatPadding="true"
-        android:src="@drawable/back" />
+        android:src="@drawable/back"
+        app:useCompatPadding="true" />
 </RelativeLayout>

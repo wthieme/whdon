@@ -67,7 +67,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        FloatingActionButton fabJa = (FloatingActionButton) findViewById(R.id.btnJa);
+        FloatingActionButton fabJa = findViewById(R.id.btnJa);
         fabJa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -75,7 +75,7 @@ public class MainActivity extends Activity {
             }
         });
 
-        FloatingActionButton fabNee = (FloatingActionButton) findViewById(R.id.btnNee);
+        FloatingActionButton fabNee = findViewById(R.id.btnNee);
         fabNee.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -83,7 +83,7 @@ public class MainActivity extends Activity {
             }
         });
 
-        FloatingActionButton fabMenu = (FloatingActionButton) findViewById(R.id.btnMenu);
+        FloatingActionButton fabMenu = findViewById(R.id.btnMenu);
         fabMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -91,7 +91,7 @@ public class MainActivity extends Activity {
             }
         });
 
-        BarChart bcBuienRadar = (BarChart) findViewById(R.id.bcBuienRadar);
+        BarChart bcBuienRadar = findViewById(R.id.bcBuienRadar);
         bcBuienRadar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -99,7 +99,7 @@ public class MainActivity extends Activity {
             }
         });
 
-        FrameLayout flPersStats = (FrameLayout) findViewById(R.id.flPersStats);
+        FrameLayout flPersStats = findViewById(R.id.flPersStats);
         flPersStats.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -125,7 +125,7 @@ public class MainActivity extends Activity {
 
         inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         child = inflater.inflate(R.layout.listview_context_menu, null);
-        listView = (ListView) child.findViewById(R.id.listView_context_menu);
+        listView = child.findViewById(R.id.listView_context_menu);
 
         contextMenuItems = new ArrayList<>();
 
@@ -271,7 +271,7 @@ public class MainActivity extends Activity {
     }
 
     private void ToonSpreukVdDag() {
-        TextView tvSpreuk = (TextView) findViewById(R.id.tvSpreuk);
+        TextView tvSpreuk = findViewById(R.id.tvSpreuk);
         DateTime nu = DateTime.now();
         int maand = nu.getMonthOfYear();
         int dag = nu.getDayOfMonth();
@@ -281,32 +281,35 @@ public class MainActivity extends Activity {
 
     @SuppressLint("DefaultLocale")
     private void ToonWeerdata(Weer weerData) {
+        Context context = getApplicationContext();
+
         String locatie = LocationHelper.GetLocatieVoorWeer();
         if (weerData == null) {
             String weeronbekend = this.getString(R.string.WeerOnbekend);
             Helper.ShowMessage(this, weeronbekend);
-            TextView tvWeerkop = (TextView) findViewById(R.id.tvWeerkop);
+            TextView tvWeerkop = findViewById(R.id.tvWeerkop);
             tvWeerkop.setText(String.format(this.getString(R.string.Weer3uur), locatie));
             InitWeerViews(false);
             return;
         }
 
         InitWeerViews(true);
-        TextView tvWeerkop = (TextView) findViewById(R.id.tvWeerkop);
+        TextView tvWeerkop = findViewById(R.id.tvWeerkop);
         tvWeerkop.setText(String.format(this.getString(R.string.Weer3uur), weerData.getPlaats()));
 
-        TextView tvGrad = (TextView) findViewById(R.id.tvGrad);
-        tvGrad.setText(String.format("%d °C", weerData.getGraden()));
+        TextView tvGrad = findViewById(R.id.tvGrad);
+        int temperatuur = weerData.getGraden();
+        tvGrad.setText(String.format("%d °C", temperatuur));
+        WeerHelper.SetHuidigeTemperatuur(temperatuur);
 
-        TextView tvWind = (TextView) findViewById(R.id.tvWind);
+        TextView tvWind = findViewById(R.id.tvWind);
         tvWind.setText(String.format("%d km/h", weerData.getWind()));
 
-        ImageView imWeer = (ImageView) findViewById(R.id.imWeer);
-        Context context = imWeer.getContext();
+        ImageView imWeer = findViewById(R.id.imWeer);
         int id = context.getResources().getIdentifier("i" + weerData.getIcon(), "drawable", context.getPackageName());
         imWeer.setImageResource(id);
 
-        ImageView imWind = (ImageView) findViewById(R.id.imWind);
+        ImageView imWind = findViewById(R.id.imWind);
         int richting = weerData.getWindRichting();
 
         if (richting == -1) {
@@ -338,7 +341,7 @@ public class MainActivity extends Activity {
 
         InitBrViews(true);
 
-        BarChart chart = (BarChart) findViewById(R.id.bcBuienRadar);
+        BarChart chart = findViewById(R.id.bcBuienRadar);
         chart.setHighlightPerTapEnabled(false);
         chart.setHighlightPerDragEnabled(false);
         chart.setVisibleYRangeMaximum(255, YAxis.AxisDependency.LEFT);
@@ -380,7 +383,7 @@ public class MainActivity extends Activity {
         xAs.setDrawLabels(false);
         xAs.setDrawAxisLine(false);
 
-        TextView tvDroogBr = (TextView) findViewById(R.id.tvDroogBr);
+        TextView tvDroogBr = findViewById(R.id.tvDroogBr);
         String sBr = WeerHelper.BepaalBrDataTxt(this, weerData);
         tvDroogBr.setText(sBr);
 
@@ -442,20 +445,21 @@ public class MainActivity extends Activity {
 
     private void SlaMeldingOp(Boolean droog) {
         ShowMeldingProgress();
-        Context cxt = getApplicationContext();
+        Context context = getApplicationContext();
         String locatie = LocationHelper.GetLocatieVoorWeer();
         Melding melding = new Melding();
         melding.setDroog(droog);
         melding.setLocatie(locatie);
-        melding.setId(Helper.GetGuid(cxt));
+        melding.setId(Helper.GetGuid(context));
         melding.setNat(!droog);
+        melding.setTemperatuur((long) WeerHelper.GetHuidigeTemperatuur());
 
         //noinspection unchecked
-        new AsyncSlaMeldingOpTask().execute(Pair.create(cxt, melding));
+        new AsyncSlaMeldingOpTask().execute(Pair.create(context, melding));
     }
 
     private void ToonHuidigeLocatie() {
-        TextView tvHuidigeLoc = (TextView) findViewById(R.id.tvHuidigeLocatie);
+        TextView tvHuidigeLoc = findViewById(R.id.tvHuidigeLocatie);
         tvHuidigeLoc.setText(Helper.mLocatie);
     }
 
@@ -463,7 +467,7 @@ public class MainActivity extends Activity {
 
         Context cxt = getApplicationContext();
         if (Helper.DEBUG) {
-            TextView tvLaatste = (TextView) findViewById(R.id.tvLaatste);
+            TextView tvLaatste = findViewById(R.id.tvLaatste);
             tvLaatste.setTextColor(Color.RED);
         }
 
@@ -472,15 +476,17 @@ public class MainActivity extends Activity {
             return;
         }
 
-        TextView tvDt = (TextView) findViewById(R.id.tvDatumtijd);
-        TextView tvLocatie = (TextView) findViewById(R.id.tvLocatie);
-        TextView tvDroogNat = (TextView) findViewById(R.id.tvDroogNat);
+        TextView tvDt = findViewById(R.id.tvDatumtijd);
+        TextView tvLocatie = findViewById(R.id.tvLocatie);
+        TextView tvDroogNat = findViewById(R.id.tvDroogNat);
+        TextView tvTemperatuur = findViewById(R.id.tvTemperatuur);
 
         String er = melding.getError();
         if (er != null && !er.isEmpty()) {
             tvDt.setText(er);
             tvLocatie.setText("");
             tvDroogNat.setText("");
+            tvTemperatuur.setText("");
             return;
         }
 
@@ -497,6 +503,13 @@ public class MainActivity extends Activity {
         } else {
             tvDroogNat.setTextColor(ContextCompat.getColor(this, R.color.colorTekst));
         }
+
+        long temperatuur = melding.getTemperatuur();
+        if (temperatuur == 999) {
+            tvTemperatuur.setText("");
+        } else {
+            tvTemperatuur.setText(String.format("%d °C", temperatuur));
+        }
     }
 
     @SuppressLint("DefaultLocale")
@@ -507,9 +520,9 @@ public class MainActivity extends Activity {
             return;
         }
 
-        TextView tvDroog = (TextView) findViewById(R.id.tvDroog);
-        TextView tvNat = (TextView) findViewById(R.id.tvNat);
-        ProgressBar pbStat = (ProgressBar) findViewById(R.id.pbDroogNatStat);
+        TextView tvDroog = findViewById(R.id.tvDroog);
+        TextView tvNat = findViewById(R.id.tvNat);
+        ProgressBar pbStat = findViewById(R.id.pbDroogNatStat);
         int aantalDroog = stat.getAantalDroog();
         int aantalNat = stat.getAantalNat();
         int totaal = aantalDroog + aantalNat;
@@ -526,10 +539,10 @@ public class MainActivity extends Activity {
 
     private void InitViews(Boolean visible) {
         ToonHuidigeLocatie();
-        TextView tvPersStats = (TextView) findViewById(R.id.tvPersStats);
-        TextView tvDroog = (TextView) findViewById(R.id.tvDroog);
-        TextView tvNat = (TextView) findViewById(R.id.tvNat);
-        ProgressBar pbStat = (ProgressBar) findViewById(R.id.pbDroogNatStat);
+        TextView tvPersStats = findViewById(R.id.tvPersStats);
+        TextView tvDroog = findViewById(R.id.tvDroog);
+        TextView tvNat = findViewById(R.id.tvNat);
+        ProgressBar pbStat = findViewById(R.id.pbDroogNatStat);
 
         if (visible) {
             tvPersStats.setVisibility(View.VISIBLE);
@@ -546,11 +559,11 @@ public class MainActivity extends Activity {
 
     private void InitWeerViews(Boolean visible) {
 
-        TextView tvWeerOnBekend = (TextView) findViewById(R.id.tvWeeronbekend);
-        TextView tvGrad = (TextView) findViewById(R.id.tvGrad);
-        TextView tvWind = (TextView) findViewById(R.id.tvWind);
-        ImageView imWeer = (ImageView) findViewById(R.id.imWeer);
-        ImageView imWind = (ImageView) findViewById(R.id.imWind);
+        TextView tvWeerOnBekend = findViewById(R.id.tvWeeronbekend);
+        TextView tvGrad = findViewById(R.id.tvGrad);
+        TextView tvWind = findViewById(R.id.tvWind);
+        ImageView imWeer = findViewById(R.id.imWeer);
+        ImageView imWind = findViewById(R.id.imWind);
 
         if (visible) {
             tvWeerOnBekend.setVisibility(View.GONE);
@@ -568,8 +581,8 @@ public class MainActivity extends Activity {
     }
 
     private void InitBrViews(Boolean visible) {
-        BarChart bcBuienRadar = (BarChart) findViewById(R.id.bcBuienRadar);
-        TextView tvDroogBr = (TextView) findViewById(R.id.tvDroogBr);
+        BarChart bcBuienRadar = findViewById(R.id.bcBuienRadar);
+        TextView tvDroogBr = findViewById(R.id.tvDroogBr);
 
         if (visible) {
             tvDroogBr.setVisibility(View.VISIBLE);

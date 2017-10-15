@@ -31,6 +31,7 @@ public class WhdonEndpoint {
     private final static String DROOG = "droog";
     private final static String NAT = "nat";
     private final static String ID = "id";
+    private final static String TEMPERATUUR = "temperatuur";
     private final static String LOCATIE = "locatie";
 
     // Get the Datastore Service
@@ -65,6 +66,7 @@ public class WhdonEndpoint {
         meld.setProperty(ID, melding.getId());
         meld.setProperty(LOCATIE, melding.getLocatie());
         meld.setProperty(NAT, melding.getNat());
+        meld.setProperty(TEMPERATUUR, melding.getTemperatuur());
         datastore.put(meld);
 
         Melding response = new Melding();
@@ -76,7 +78,7 @@ public class WhdonEndpoint {
     public Versie GetVersie() {
         Versie response = new Versie();
         response.setNaam("Was Het Droog Of Niet API");
-        response.setversie("8.0");
+        response.setversie("9.0");
         return response;
     }
 
@@ -98,9 +100,14 @@ public class WhdonEndpoint {
         }
         Entity laatste = result.get(0);
         melding.setLocatie((String) laatste.getProperty(LOCATIE));
-        melding.setDatum((Long) laatste.getProperty(DATUM));
+        melding.setDatum((long) laatste.getProperty(DATUM));
         melding.setDroog((Boolean) laatste.getProperty(DROOG));
         melding.setNat((Boolean) laatste.getProperty(NAT));
+        try {
+            melding.setTemperatuur((long) laatste.getProperty(TEMPERATUUR));
+        } catch (Exception e) {
+            melding.setTemperatuur(999L);
+        }
         return melding;
     }
 
@@ -121,6 +128,11 @@ public class WhdonEndpoint {
             melding.setId((String) rMeld.getProperty(ID));
             melding.setDatum((long) rMeld.getProperty(DATUM));
             melding.setNat((Boolean) rMeld.getProperty(NAT));
+            try {
+                melding.setTemperatuur((long) rMeld.getProperty(TEMPERATUUR));
+            } catch (Exception e) {
+                melding.setTemperatuur(999L);
+            }
             response.add(melding);
         }
 

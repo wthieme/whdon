@@ -7,7 +7,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.google.cloud.tools:appengine-gradle-plugin:+'
+        classpath 'com.google.cloud.tools:appengine-gradle-plugin:1.3.3'
         classpath 'com.google.cloud.tools:endpoints-framework-gradle-plugin:1.0.0'
     }
 }
@@ -21,8 +21,8 @@ android {
         applicationId "nl.whitedove.washetdroogofniet"
         minSdkVersion 15
         targetSdkVersion 26
-        versionCode 55
-        versionName "1.6.2"
+        versionCode 56
+        versionName "1.7.0"
     }
     buildTypes {
         release {

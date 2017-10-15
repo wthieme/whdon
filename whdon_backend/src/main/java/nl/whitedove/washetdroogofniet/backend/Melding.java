@@ -8,6 +8,7 @@ public class Melding {
     private Boolean droog;
     private String id;
     private String error;
+    private Long temperatuur;
 
     public String getLocatie() {
         return locatie;
@@ -55,5 +56,13 @@ public class Melding {
 
     public void setError(String error) {
         this.error = error;
+    }
+
+    public Long getTemperatuur() {
+        return temperatuur;
+    }
+
+    public void setTemperatuur(Long temperatuur) {
+        this.temperatuur = temperatuur;
     }
 }

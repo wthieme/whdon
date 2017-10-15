@@ -1,19 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <datastore-indexes autoGenerate="true">
-    <datastore-index ancestor="false" kind="Melding" source="manual">
+   <datastore-index ancestor="false" kind="Melding" source="manual">
         <property name="id" direction="asc" />
         <property name="datum" direction="desc" />
     </datastore-index>
-    <datastore-index ancestor="false" kind="Melding" source="manual">
-        <property name="id" direction="asc" />
-        <property name="datum" direction="asc" />
-    </datastore-index>
-    <datastore-index ancestor="false" kind="Melding" source="manual">
-        <property name="droog" direction="asc" />
-        <property name="datum" direction="asc" />
-    </datastore-index>
-    <datastore-index ancestor="false" kind="Melding" source="manual">
-        <property name="nat" direction="asc" />
-        <property name="datum" direction="asc" />
-    </datastore-index>
 </datastore-indexes>
+
