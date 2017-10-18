@@ -346,7 +346,9 @@ class DatabaseHelper extends SQLiteOpenHelper {
                     + " SUM(" + MDG_DROOG + ") AS DROOG,"
                     + " SUM(" + MDG_NAT + ") AS NAT,"
                     + " MIN(" + MDG_DATUM + ") AS MINDATUM,"
-                    + " MAX(" + MDG_DATUM + ") AS MAXDATUM"
+                    + " MAX(" + MDG_DATUM + ") AS MAXDATUM,"
+                    + " SUM(CASE WHEN " + MDG_TEMPERATUUR + " = 999 THEN 0 ELSE 1 END) AS AANTALTEMPERATUUR,"
+                    + " SUM(CASE WHEN " + MDG_TEMPERATUUR + " = 999 THEN 0 ELSE " + MDG_TEMPERATUUR + " END) AS SOMTEMPERATUUR"
                     + " FROM " + TAB_MELDING;
             cursor = db.rawQuery(selectQuery, null);
         } else {
@@ -354,7 +356,9 @@ class DatabaseHelper extends SQLiteOpenHelper {
                     + " SUM(" + MDG_DROOG + ") AS DROOG,"
                     + " SUM(" + MDG_NAT + ") AS NAT,"
                     + " MIN(" + MDG_DATUM + ") AS MINDATUM,"
-                    + " MAX(" + MDG_DATUM + ") AS MAXDATUM"
+                    + " MAX(" + MDG_DATUM + ") AS MAXDATUM,"
+                    + " SUM(CASE WHEN " + MDG_TEMPERATUUR + " = 999 THEN 0 ELSE 1 END) AS AANTALTEMPERATUUR,"
+                    + " SUM(CASE WHEN " + MDG_TEMPERATUUR + " = 999 THEN 0 ELSE " + MDG_TEMPERATUUR + " END) AS SOMTEMPERATUUR"
                     + " FROM " + TAB_MELDING
                     + " WHERE " + MDG_LOCATIE + "=?";
 
@@ -370,6 +374,8 @@ class DatabaseHelper extends SQLiteOpenHelper {
             stat.setAantalNat(cursor.getInt(1));
             stat.setDatumStart(cursor.getLong(2));
             stat.setDatumEnd(cursor.getLong(3));
+            stat.setAantalTemperatuur(cursor.getInt(4));
+            stat.setSomTemperatuur(cursor.getInt(5));
         }
 
         cursor.close();
@@ -384,7 +390,9 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
             String selectQuery = "SELECT "
                     + " SUM(" + MDG_DROOG + ") AS DROOG,"
-                    + " SUM(" + MDG_NAT + ") AS NAT"
+                    + " SUM(" + MDG_NAT + ") AS NAT,"
+                    + " SUM(CASE WHEN " + MDG_TEMPERATUUR + " = 999 THEN 0 ELSE 1 END) AS AANTALTEMPERATUUR,"
+                    + " SUM(CASE WHEN " + MDG_TEMPERATUUR + " = 999 THEN 0 ELSE " + MDG_TEMPERATUUR + " END) AS SOMTEMPERATUUR"
                     + " FROM " + TAB_MELDING
                     + " WHERE " + MDG_DATUM + " BETWEEN ? AND ?";
 
@@ -400,9 +408,13 @@ class DatabaseHelper extends SQLiteOpenHelper {
             if (cursor.moveToFirst()) {
                 stat.setAantalDroog(cursor.getInt(0));
                 stat.setAantalNat(cursor.getInt(1));
+                stat.setAantalTemperatuur(cursor.getInt(2));
+                stat.setSomTemperatuur(cursor.getInt(3));
             } else {
                 stat.setAantalDroog(0);
                 stat.setAantalNat(0);
+                stat.setAantalTemperatuur(0);
+                stat.setSomTemperatuur(0);
             }
 
             cursor.close();

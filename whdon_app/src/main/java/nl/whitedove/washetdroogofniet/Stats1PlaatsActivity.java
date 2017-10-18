@@ -34,7 +34,7 @@ public class Stats1PlaatsActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.een_plaats_statistieken);
 
-        FloatingActionButton fabTerug = (FloatingActionButton) findViewById(R.id.btnTerug);
+        FloatingActionButton fabTerug = findViewById(R.id.btnTerug);
         fabTerug.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,12 +69,13 @@ public class Stats1PlaatsActivity extends Activity {
             return;
         }
 
-        TextView tvLocatie = (TextView) findViewById(R.id.tvLocatie);
-        TextView tvPsDatumStart = (TextView) findViewById(R.id.tvPsDatumStart);
-        TextView tvPsDatumEnd = (TextView) findViewById(R.id.tvPsDatumEnd);
-        TextView tvPsAantalDroog = (TextView) findViewById(R.id.tvPsAantalDroog);
-        TextView tvPsAantalNat = (TextView) findViewById(R.id.tvPsAantalNat);
-        TextView tvPsGemm = (TextView) findViewById(R.id.tvPsGemm);
+        TextView tvLocatie = findViewById(R.id.tvLocatie);
+        TextView tvPsDatumStart = findViewById(R.id.tvPsDatumStart);
+        TextView tvPsDatumEnd = findViewById(R.id.tvPsDatumEnd);
+        TextView tvPsAantalDroog = findViewById(R.id.tvPsAantalDroog);
+        TextView tvPsAantalNat = findViewById(R.id.tvPsAantalNat);
+        TextView tvPsGemm = findViewById(R.id.tvPsGemm);
+        TextView tvPsGemmTemp = findViewById(R.id.tvPsGemmTemp);
 
         int aantalDroog = stat.getAantalDroog();
         int aantalNat = stat.getAantalNat();
@@ -85,6 +86,7 @@ public class Stats1PlaatsActivity extends Activity {
         DateTime datumEnd = new DateTime(stat.getDatumEnd());
 
         int aantalDagen = Days.daysBetween(datumStart, datumEnd).getDays() + 1;
+
         aantalGemm = (aantalNat + aantalDroog) / (1.0f * aantalDagen);
         int percDroog = Math.round(100.0F * aantalDroog / totaal);
         int percNat = 100 - percDroog;
@@ -96,7 +98,15 @@ public class Stats1PlaatsActivity extends Activity {
         tvPsAantalNat.setText(String.format("%d", aantalNat));
         tvPsGemm.setText(String.format("%.1f", aantalGemm));
 
-        final PieChart chart = (PieChart) findViewById(R.id.lcPerdag);
+        int aantalTemp = stat.getAantalTemperatuur();
+
+        if (aantalTemp > 0) {
+            int tempSom = stat.getSomTemperatuur();
+            float tempGemm = (1.0f * tempSom) / (1.0f * aantalTemp);
+            tvPsGemmTemp.setText(String.format("%.1f", tempGemm));
+        }
+
+        final PieChart chart = findViewById(R.id.lcPerdag);
 
         Description desc = new Description();
         desc.setText("");

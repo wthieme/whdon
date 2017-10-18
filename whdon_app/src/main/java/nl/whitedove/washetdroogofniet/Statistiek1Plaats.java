@@ -1,51 +1,68 @@
 package nl.whitedove.washetdroogofniet;
 
- class Statistiek1Plaats {
+class Statistiek1Plaats {
 
     private String locatie;
     private int aantalDroog;
     private int aantalNat;
     private Long datumStart;
     private Long datumEnd;
+    private int aantalTemperatuur;
+    private int somTemperatuur;
 
-     int getAantalDroog() {
+    int getAantalDroog() {
         return aantalDroog;
     }
 
-     void setAantalDroog(int aantalDroog) {
+    void setAantalDroog(int aantalDroog) {
         this.aantalDroog = aantalDroog;
     }
 
-     int getAantalNat() {
+    int getAantalNat() {
         return aantalNat;
     }
 
-     void setAantalNat(int aantalNat) {
+    void setAantalNat(int aantalNat) {
         this.aantalNat = aantalNat;
     }
 
-     String getLocatie() {
+    String getLocatie() {
         return locatie;
     }
 
-     void setLocatie(String locatie) {
+    void setLocatie(String locatie) {
         this.locatie = locatie;
     }
 
-     Long getDatumStart() {
+    Long getDatumStart() {
         return datumStart;
     }
 
-     void setDatumStart(Long datumStart) {
+    void setDatumStart(Long datumStart) {
         this.datumStart = datumStart;
     }
 
-     Long getDatumEnd() {
+    Long getDatumEnd() {
         return datumEnd;
     }
 
-     void setDatumEnd(Long datumEnd) {
+    void setDatumEnd(Long datumEnd) {
         this.datumEnd = datumEnd;
     }
 
+    public int getAantalTemperatuur() {
+        return aantalTemperatuur;
+    }
+
+    public void setAantalTemperatuur(int aantalTemperatuur) {
+        this.aantalTemperatuur = aantalTemperatuur;
+    }
+
+    public int getSomTemperatuur() {
+        return somTemperatuur;
+    }
+
+    public void setSomTemperatuur(int somTemperatuur) {
+        this.somTemperatuur = somTemperatuur;
+    }
 }

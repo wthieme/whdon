@@ -20,7 +20,6 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import org.joda.time.DateTime;
@@ -98,20 +97,20 @@ public class StatsAantalGebruikersActivity extends Activity {
         if (stats == null || stats.size() == 0) {
             return;
         }
-        final TextView tvAantalGebruikersSubtitel = (TextView) findViewById(R.id.tvAantalGebruikersSubtitel);
+        final TextView tvAantalGebruikersSubtitel = findViewById(R.id.tvAantalGebruikersSubtitel);
         String vanaf = Helper.dFormat.print(datum);
         String tm = Helper.dFormat.print(datum.plusDays(29));
         tvAantalGebruikersSubtitel.setText(String.format(getString(R.string.vantmdatum), vanaf, tm));
 
-        final LineChart chart = (LineChart) findViewById(R.id.lcAantalGebruikers);
-        chart.setHighlightPerTapEnabled(false);
-        chart.setHighlightPerDragEnabled(false);
-        chart.setAutoScaleMinMaxEnabled(true);
+        final LineChart lChart = findViewById(R.id.lcAantalGebruikers);
+        lChart.setHighlightPerTapEnabled(false);
+        lChart.setHighlightPerDragEnabled(false);
+        lChart.setAutoScaleMinMaxEnabled(true);
         Description desc = new Description();
         desc.setText("");
-        chart.setDescription(desc);
-        chart.setScaleEnabled(false);
-        chart.setNoDataText(getString(R.string.nodata));
+        lChart.setDescription(desc);
+        lChart.setScaleEnabled(false);
+        lChart.setNoDataText(getString(R.string.nodata));
 
         int minVal = Integer.MAX_VALUE;
         int maxVal = Integer.MIN_VALUE;
@@ -127,16 +126,16 @@ public class StatsAantalGebruikersActivity extends Activity {
         int labelCount = maxVal - minVal + 2;
         while (labelCount > 10) labelCount = labelCount / 2;
 
-        YAxis yAsL = chart.getAxisLeft();
+        YAxis yAsL = lChart.getAxisLeft();
         yAsL.setLabelCount(labelCount, true);
         yAsL.setAxisMinimum(minVal);
         yAsL.setAxisMaximum(maxVal + 1);
-        YAxis yAsR = chart.getAxisRight();
+        YAxis yAsR = lChart.getAxisRight();
         yAsR.setAxisMinimum(minVal);
         yAsR.setAxisMaximum(maxVal + 1);
         yAsR.setLabelCount(labelCount, true);
 
-        XAxis xAs = chart.getXAxis();
+        XAxis xAs = lChart.getXAxis();
         xAs.setDrawGridLines(false);
         xAs.setTextSize(10.0f);
         xAs.setLabelCount(30);
@@ -154,8 +153,12 @@ public class StatsAantalGebruikersActivity extends Activity {
         xAs.setValueFormatter(new IndexAxisValueFormatter(labels));
 
         LineDataSet ds = new LineDataSet(dataY, "Cumulatief aantal gebruikers");
-        ds.setColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
-        ds.setCircleColor(ContextCompat.getColor(this, R.color.colorNatStart));
+        ds.setColor(ContextCompat.getColor(this, R.color.colorTemperatuurDark));
+        ds.setCircleColor(ContextCompat.getColor(this, R.color.colorTemperatuur));
+        ds.setCircleColorHole(ContextCompat.getColor(this, R.color.colorTemperatuur));
+        ds.setCircleRadius(2.5f);
+        ds.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
+        ds.setCubicIntensity(0.2f);
         IValueFormatter myValueFormat = new IValueFormatter() {
             @Override
             public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
@@ -165,12 +168,11 @@ public class StatsAantalGebruikersActivity extends Activity {
 
         ds.setValueFormatter(myValueFormat);
         ds.setAxisDependency(YAxis.AxisDependency.LEFT);
-        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-        dataSets.add(ds);
-        LineData data = new LineData(dataSets);
-        chart.setData(data);
-        chart.animateXY(500, 500);
-        chart.invalidate();
+
+        LineData data = new LineData(ds);
+        lChart.setData(data);
+        lChart.animateXY(500, 500);
+        lChart.invalidate();
     }
 
     private class AsyncGetAantalGebruikersStatistiekenTask extends AsyncTask<Void, Void, ArrayList<StatistiekAantalGebruikers>> {

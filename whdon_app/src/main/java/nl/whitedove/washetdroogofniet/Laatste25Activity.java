@@ -83,12 +83,15 @@ public class Laatste25Activity extends Activity {
 
         int aantalDagen = Days.daysBetween(datum, DateTime.now()).getDays() + 1;
         aantalGemm = (aantalNat + aantalDroog) / (1.0f * aantalDagen);
-        tempGemm = (tempSom) / (1.0f * aantalTemp);
 
         tvPsAantalDroog.setText(String.format("%d", aantalDroog));
         tvPsAantalNat.setText(String.format("%d", aantalNat));
         tvPsGemm.setText(String.format("%.1f", aantalGemm));
-        tvPsGemmTemp.setText(String.format("%.1f", tempGemm));
+
+        if (aantalTemp > 0) {
+            tempGemm = (tempSom) / (1.0f * aantalTemp);
+            tvPsGemmTemp.setText(String.format("%.1f", tempGemm));
+        }
 
         final ListView lvLaatste25 = findViewById(R.id.lvLaatste25);
         lvLaatste25.setAdapter(new CustomListAdapterMeldingen(this, meldingen));

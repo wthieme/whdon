@@ -10,4 +10,6 @@
     <color name="colorDroogEnd">#F5F6CE</color>
     <color name="colorNatStart">#81BEF7</color>
     <color name="colorNatEnd">#CEE3F6</color>
+    <color name ="colorTemperatuur">#cc3300</color>
+    <color name ="colorTemperatuurDark">#661a00</color>
 </resources>

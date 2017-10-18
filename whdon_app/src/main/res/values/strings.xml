@@ -19,7 +19,7 @@
     <string name="per_plaats">% per plaats</string>
     <string name="per_datum">Aantal per dag</string>
     <string name="aantal_gebruikers">Aantal gebruikers</string>
-    <string name="aantal_meldingen_per_dag">Aantal meldingen per dag</string>
+    <string name="aantal_meldingen_per_dag">Aantal per dag</string>
     <string name="EersteMelding">Eerste melding:</string>
     <string name="LaatsteMelding">Laatste melding:</string>
     <string name="SpreukVddag">Spreuk van de dag</string>
@@ -34,7 +34,7 @@
     <string name="VerwachteNeerslag">Verwachte neerslag komende 2 uur:</string>
     <string name="verwacht2uur">Verwachte regen voor de komende 2 uur in</string>
     <string name="percent100">100%</string>
-    <string name="per_maand">% per maand</string>
+    <string name="per_maand">Per maand</string>
     <string name="NoBrData">No Data</string>
     <string name="DroogTxt">Droog</string>
     <string name="NatTxt">Nat</string>
