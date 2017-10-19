@@ -16,10 +16,10 @@
         Druk op de knop Droog of op de knop Regen.</string>
     <string name="sinds">Sinds:</string>
     <string name="gemmpd">Gemiddeld/dag:</string>
-    <string name="per_plaats">% per plaats</string>
-    <string name="per_datum">Aantal per dag</string>
+    <string name="per_plaats">Per plaats</string>
+    <string name="per_datum">Per dag</string>
     <string name="aantal_gebruikers">Aantal gebruikers</string>
-    <string name="aantal_meldingen_per_dag">Aantal per dag</string>
+    <string name="aantal_meldingen_per_dag">Per dag</string>
     <string name="EersteMelding">Eerste melding:</string>
     <string name="LaatsteMelding">Laatste melding:</string>
     <string name="SpreukVddag">Spreuk van de dag</string>

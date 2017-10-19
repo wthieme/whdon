@@ -32,19 +32,19 @@ class Statistiek1Maand {
         this.aantalNat = aantalNat;
     }
 
-    public int getAantalTemperatuur() {
+    int getAantalTemperatuur() {
         return aantalTemperatuur;
     }
 
-    public void setAantalTemperatuur(int aantalTemperatuur) {
+    void setAantalTemperatuur(int aantalTemperatuur) {
         this.aantalTemperatuur = aantalTemperatuur;
     }
 
-    public int getSomTemperatuur() {
+    int getSomTemperatuur() {
         return somTemperatuur;
     }
 
-    public void setSomTemperatuur(int somTemperatuur) {
+    void setSomTemperatuur(int somTemperatuur) {
         this.somTemperatuur = somTemperatuur;
     }
 }

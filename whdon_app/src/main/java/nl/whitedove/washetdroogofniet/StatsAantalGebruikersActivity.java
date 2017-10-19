@@ -47,9 +47,7 @@ public class StatsAantalGebruikersActivity extends Activity {
     }
 
     private void InitSwipes() {
-        final RelativeLayout rlAantalGebruikers = (RelativeLayout) findViewById(R.id.rlAantalGebruikers);
-
-        rlAantalGebruikers.setOnTouchListener(new OnSwipeTouchListener(StatsAantalGebruikersActivity.this) {
+        OnSwipeTouchListener sl = new OnSwipeTouchListener(StatsAantalGebruikersActivity.this) {
             public void onSwipeLeft() {
                 datum = datum.plusDays(30);
                 ToondataBackground();
@@ -59,21 +57,13 @@ public class StatsAantalGebruikersActivity extends Activity {
                 datum = datum.minusDays(30);
                 ToondataBackground();
             }
-        });
+        };
 
-        final LineChart chart = (LineChart) findViewById(R.id.lcAantalGebruikers);
+        final RelativeLayout rlAantalGebruikers =  findViewById(R.id.rlAantalGebruikers);
+        rlAantalGebruikers.setOnTouchListener(sl);
 
-        chart.setOnTouchListener(new OnSwipeTouchListener(StatsAantalGebruikersActivity.this) {
-            public void onSwipeLeft() {
-                datum = datum.plusDays(30);
-                ToondataBackground();
-            }
-
-            public void onSwipeRight() {
-                datum = datum.minusDays(30);
-                ToondataBackground();
-            }
-        });
+        final LineChart chart =  findViewById(R.id.lcAantalGebruikers);
+        chart.setOnTouchListener(sl);
 
         Helper.ShowMessage(StatsAantalGebruikersActivity.this, getString(R.string.SwipeLinksOfRechts));
     }
@@ -145,7 +135,7 @@ public class StatsAantalGebruikersActivity extends Activity {
 
         for (int i = 0; i < 30; i++) {
             Entry e = new Entry(i, stats.get(i).getAantalGebruikers());
-            String sDatum = (i == 0 || i == 15 || i == 29) ? Helper.dmFormat.print(stats.get(i).getDatum()) : "";
+            String sDatum = (i == 0 || i==10 || i==20 || i == 29) ? Helper.dmFormat.print(stats.get(i).getDatum()) : "";
             labels.add(sDatum);
             dataY.add(e);
         }

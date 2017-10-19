@@ -53,9 +53,7 @@ public class StatsPerMaandActivity extends Activity {
     }
 
     private void InitSwipes() {
-        final RelativeLayout rlPerMaand = findViewById(R.id.rlPerMaand);
-
-        rlPerMaand.setOnTouchListener(new OnSwipeTouchListener(StatsPerMaandActivity.this) {
+        OnSwipeTouchListener sl = new OnSwipeTouchListener(StatsPerMaandActivity.this) {
             public void onSwipeLeft() {
                 jaar++;
                 ToondataBackground();
@@ -65,35 +63,16 @@ public class StatsPerMaandActivity extends Activity {
                 jaar--;
                 ToondataBackground();
             }
-        });
+        };
+
+        final RelativeLayout rlPerMaand = findViewById(R.id.rlPerMaand);
+        rlPerMaand.setOnTouchListener(sl);
 
         final BarChart bChart = findViewById(R.id.bcPerMaand);
-
-        bChart.setOnTouchListener(new OnSwipeTouchListener(StatsPerMaandActivity.this) {
-            public void onSwipeLeft() {
-                jaar++;
-                ToondataBackground();
-            }
-
-            public void onSwipeRight() {
-                jaar--;
-                ToondataBackground();
-            }
-        });
+        bChart.setOnTouchListener(sl);
 
         final LineChart lChart = findViewById(R.id.lcPerMaand);
-
-        lChart.setOnTouchListener(new OnSwipeTouchListener(StatsPerMaandActivity.this) {
-            public void onSwipeLeft() {
-                jaar++;
-                ToondataBackground();
-            }
-
-            public void onSwipeRight() {
-                jaar--;
-                ToondataBackground();
-            }
-        });
+        lChart.setOnTouchListener(sl);
 
         Helper.ShowMessage(StatsPerMaandActivity.this, getString(R.string.SwipeLinksOfRechts));
     }
@@ -204,8 +183,7 @@ public class StatsPerMaandActivity extends Activity {
         lXAs.setTextSize(10.0f);
         lXAs.setLabelCount(12,true);
 
-        int minVal = -10;
-        int maxVal = 25;
+        int maxVal = -999;
 
         List<Entry> lDataT = new ArrayList<>();
         List<String> lLabels = new ArrayList<>();
@@ -216,7 +194,6 @@ public class StatsPerMaandActivity extends Activity {
             if (aantalTemp > 0) {
                 int tempSom = stats.get(i).getSomTemperatuur();
                 tempGemm = (1.0f * tempSom) / (1.0f * aantalTemp);
-                if (tempGemm < minVal) minVal = Math.round(tempGemm);
                 if (tempGemm > maxVal) maxVal = Math.round(tempGemm);
             }
             Entry e = new Entry(i,tempGemm);
@@ -228,8 +205,12 @@ public class StatsPerMaandActivity extends Activity {
 
         lXAs.setValueFormatter(new IndexAxisValueFormatter(lLabels));
 
-        minVal = minVal - 1;
-        if (minVal < 0) minVal = 0;
+        if (maxVal == -999)
+        {
+            maxVal = 9;
+        }
+
+        int minVal = 0;
         int labelCount = maxVal - minVal + 2;
         while (labelCount > 10) labelCount = labelCount / 2;
 

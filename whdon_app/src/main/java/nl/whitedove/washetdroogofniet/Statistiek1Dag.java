@@ -7,6 +7,8 @@ class Statistiek1Dag {
     private DateTime datum;
     private int aantalDroog;
     private int aantalNat;
+    private int aantalTemperatuur;
+    private int somTemperatuur;
 
     DateTime getDatum() {
         return datum;
@@ -30,6 +32,22 @@ class Statistiek1Dag {
 
     void setAantalNat(int aantalNat) {
         this.aantalNat = aantalNat;
+    }
+
+    int getAantalTemperatuur() {
+        return aantalTemperatuur;
+    }
+
+    void setAantalTemperatuur(int aantalTemperatuur) {
+        this.aantalTemperatuur = aantalTemperatuur;
+    }
+
+    int getSomTemperatuur() {
+        return somTemperatuur;
+    }
+
+    void setSomTemperatuur(int somTemperatuur) {
+        this.somTemperatuur = somTemperatuur;
     }
 
 }
