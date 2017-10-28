@@ -13,12 +13,13 @@ import android.widget.TextView;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import nl.whitedove.washetdroogofniet.backend.whdonApi.model.Melding;
 
 public class Laatste25Activity extends Activity {
-    DatabaseHelper mDH;
+    static DatabaseHelper mDH;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +47,7 @@ public class Laatste25Activity extends Activity {
     }
 
     private void ToondataBackground() {
-        new AsyncGetLaatste25Task().execute();
+        new AsyncGetLaatste25Task(this).execute();
     }
 
     @SuppressLint("DefaultLocale")
@@ -97,7 +98,12 @@ public class Laatste25Activity extends Activity {
         lvLaatste25.setAdapter(new CustomListAdapterMeldingen(this, meldingen));
     }
 
-    private class AsyncGetLaatste25Task extends AsyncTask<Void, Void, ArrayList<Melding>> {
+    private static class AsyncGetLaatste25Task extends AsyncTask<Void, Void, ArrayList<Melding>> {
+        private WeakReference<Laatste25Activity> activityWeakReference;
+
+        AsyncGetLaatste25Task(Laatste25Activity context) {
+            activityWeakReference = new WeakReference<>(context);
+        }
 
         @Override
         protected ArrayList<Melding> doInBackground(Void... params) {
@@ -106,7 +112,8 @@ public class Laatste25Activity extends Activity {
 
         @Override
         protected void onPostExecute(ArrayList<Melding> meldingen) {
-            ToonLaatste25(meldingen);
+            Laatste25Activity activity = activityWeakReference.get();
+            if (activity != null) activity.ToonLaatste25(meldingen);
         }
     }
 }

@@ -1,5 +1,6 @@
 package nl.whitedove.washetdroogofniet;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -27,6 +28,7 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 public class BuienradarActivity extends Activity {
@@ -35,7 +37,7 @@ public class BuienradarActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.buienradar);
 
-        FloatingActionButton fabTerug = (FloatingActionButton) findViewById(R.id.btnTerug);
+        FloatingActionButton fabTerug = findViewById(R.id.btnTerug);
         fabTerug.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -56,14 +58,15 @@ public class BuienradarActivity extends Activity {
         if (!Helper.TestInternet(cxt)) {
             return;
         }
-        new AsyncGetWeerVoorspelling().execute(cxt);
+        new AsyncGetWeerVoorspellingTask(this).execute(cxt);
     }
 
+    @SuppressLint("DefaultLocale")
     private void ToonBuienData(BuienData weer) {
         if (weer == null || weer.getRegenData() == null || weer.getRegenData().size() == 0) {
             return;
         }
-        BarChart chart = (BarChart) findViewById(R.id.bcBuienRadar);
+        BarChart chart = findViewById(R.id.bcBuienRadar);
         chart.setHighlightPerTapEnabled(false);
         chart.setHighlightPerDragEnabled(false);
         chart.setVisibleYRangeMaximum(255, YAxis.AxisDependency.LEFT);
@@ -120,8 +123,7 @@ public class BuienradarActivity extends Activity {
             double peruur;
             if (regen == 0) {
                 peruur = 0;
-            }
-            else {
+            } else {
                 peruur = Math.pow(10, (regen - 109.0f) / 32.0f);
             }
 
@@ -152,11 +154,16 @@ public class BuienradarActivity extends Activity {
         chart.animateXY(500, 500);
         chart.invalidate();
 
-        TextView tvNeerslag = (TextView) findViewById(R.id.tvNeerslag);
+        TextView tvNeerslag = findViewById(R.id.tvNeerslag);
         tvNeerslag.setText(String.format("%.2f mm", mm));
     }
 
-    private class AsyncGetWeerVoorspelling extends AsyncTask<Context, Void, BuienData> {
+    private static class AsyncGetWeerVoorspellingTask extends AsyncTask<Context, Void, BuienData> {
+        private WeakReference<BuienradarActivity> activityWeakReference;
+
+        AsyncGetWeerVoorspellingTask(BuienradarActivity context) {
+            activityWeakReference = new WeakReference<>(context);
+        }
 
         @Override
         protected BuienData doInBackground(Context... params) {
@@ -171,7 +178,8 @@ public class BuienradarActivity extends Activity {
 
         @Override
         protected void onPostExecute(BuienData result) {
-            ToonBuienData(result);
+            BuienradarActivity activity = activityWeakReference.get();
+            if (activity != null) activity.ToonBuienData(result);
         }
 
     }

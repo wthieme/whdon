@@ -469,4 +469,33 @@ class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         return stats;
     }
+
+    ArrayList<StatistiekWeertype> GetStatistiekWeerType() {
+
+        String selectQuery = "SELECT"
+                + " " + MDG_WEERTYPE + ","
+                + " COUNT(*) AS AANTAL"
+                + " FROM " + TAB_MELDING
+                + " GROUP BY " + MDG_WEERTYPE
+                + " ORDER BY 2 DESC";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor;
+        cursor = db.rawQuery(selectQuery, null);
+
+        ArrayList<StatistiekWeertype> stats = new ArrayList<>();
+
+        if (cursor.moveToFirst()) {
+            do {
+                StatistiekWeertype stat = new StatistiekWeertype();
+                WeerHelper.WeerType weerType = WeerHelper.WeerType.valueOf(cursor.getLong(0));
+                stat.setWeerType(weerType);
+                stat.setAantal(cursor.getInt(1));
+                stat.setWeerTypeOschrijving(WeerHelper.WeerTypeToWeerOmschrijving(weerType));
+                stats.add(stat);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return stats;
+    }
 }

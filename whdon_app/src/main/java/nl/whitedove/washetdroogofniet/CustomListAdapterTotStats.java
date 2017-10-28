@@ -45,11 +45,11 @@ class CustomListAdapterTotStats extends BaseAdapter {
         if (convertView == null) {
             convertView = layoutInflater.inflate(R.layout.totstat_list_layout, parent, false);
             holder = new ViewHolder();
-            holder.tvLocatie = (TextView) convertView.findViewById(R.id.tvLocatie);
-            holder.tvLocatieAantal = (TextView) convertView.findViewById(R.id.tvLocatieAantal);
-            holder.tvDroog = (TextView) convertView.findViewById(R.id.tvDroog);
-            holder.tvNat = (TextView) convertView.findViewById(R.id.tvNat);
-            holder.pbProgress = (ProgressBar) convertView.findViewById(R.id.pbDroogNatStat);
+            holder.tvLocatie = convertView.findViewById(R.id.tvLocatie);
+            holder.tvLocatieAantal = convertView.findViewById(R.id.tvLocatieAantal);
+            holder.tvDroog = convertView.findViewById(R.id.tvDroog);
+            holder.tvNat = convertView.findViewById(R.id.tvNat);
+            holder.pbProgress = convertView.findViewById(R.id.pbDroogNatStat);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();

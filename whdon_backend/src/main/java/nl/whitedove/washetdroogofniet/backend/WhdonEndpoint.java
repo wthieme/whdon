@@ -71,7 +71,7 @@ public class WhdonEndpoint {
         meld.setProperty(WEERTTPE, melding.getWeerType());
         datastore.put(meld);
 
-        Melding response = new Melding();
+        Melding response = melding;
         response.setError("");
         return response;
     }

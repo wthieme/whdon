@@ -24,11 +24,12 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 public class Stats1PlaatsActivity extends Activity {
 
-    DatabaseHelper mDH;
+    static DatabaseHelper mDH;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +61,7 @@ public class Stats1PlaatsActivity extends Activity {
     }
 
     private void ToondataBackground(String locatie) {
-        new AsyncGetStatistiekLocatieTask().execute(locatie);
+        new AsyncGetStatistiekLocatieTask(this).execute(locatie);
     }
 
     @SuppressLint("DefaultLocale")
@@ -106,7 +107,7 @@ public class Stats1PlaatsActivity extends Activity {
             tvPsGemmTemp.setText(String.format("%.1f", tempGemm));
         }
 
-        final PieChart chart = findViewById(R.id.lcPerdag);
+        final PieChart chart = findViewById(R.id.pcPerdag);
 
         Description desc = new Description();
         desc.setText("");
@@ -158,7 +159,12 @@ public class Stats1PlaatsActivity extends Activity {
         chart.invalidate();
     }
 
-    private class AsyncGetStatistiekLocatieTask extends AsyncTask<String, Void, Statistiek1Plaats> {
+    private static class AsyncGetStatistiekLocatieTask extends AsyncTask<String, Void, Statistiek1Plaats> {
+        private WeakReference<Stats1PlaatsActivity> activityWeakReference;
+
+        AsyncGetStatistiekLocatieTask(Stats1PlaatsActivity context) {
+            activityWeakReference = new WeakReference<>(context);
+        }
 
         @Override
         protected Statistiek1Plaats doInBackground(String... params) {
@@ -168,7 +174,8 @@ public class Stats1PlaatsActivity extends Activity {
 
         @Override
         protected void onPostExecute(Statistiek1Plaats stat) {
-            ToonStatistiekLocatie(stat);
+            Stats1PlaatsActivity activity = activityWeakReference.get();
+            if (activity != null) activity.ToonStatistiekLocatie(stat);
         }
     }
 }

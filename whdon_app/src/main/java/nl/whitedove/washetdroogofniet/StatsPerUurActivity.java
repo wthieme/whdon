@@ -21,16 +21,17 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 public class StatsPerUurActivity extends Activity {
-    DatabaseHelper mDH;
+    static DatabaseHelper mDH;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.per_uur_statistieken);
 
-        FloatingActionButton fabTerug = (FloatingActionButton) findViewById(R.id.btnTerug);
+        FloatingActionButton fabTerug = findViewById(R.id.btnTerug);
         fabTerug.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -52,14 +53,14 @@ public class StatsPerUurActivity extends Activity {
     }
 
     private void ToondataBackground() {
-        new AsyncGetStatistiekenTask().execute();
+        new AsyncGetStatistiekenPerUurTask(this).execute();
     }
 
     private void ToonStatistiekenPerUur(ArrayList<Statistiek1Uur> stats) {
         if (stats == null || stats.size() == 0) {
             return;
         }
-        final BarChart chart = (BarChart) findViewById(R.id.bcPerUur);
+        final BarChart chart = findViewById(R.id.bcPerUur);
         chart.setHighlightPerTapEnabled(false);
         chart.setHighlightPerDragEnabled(false);
         chart.setAutoScaleMinMaxEnabled(true);
@@ -122,7 +123,13 @@ public class StatsPerUurActivity extends Activity {
         chart.invalidate();
     }
 
-    private class AsyncGetStatistiekenTask extends AsyncTask<Void, Void, ArrayList<Statistiek1Uur>> {
+    private static class AsyncGetStatistiekenPerUurTask extends AsyncTask<Void, Void, ArrayList<Statistiek1Uur>> {
+
+        private WeakReference<StatsPerUurActivity> activityWeakReference;
+
+        AsyncGetStatistiekenPerUurTask(StatsPerUurActivity context) {
+            activityWeakReference = new WeakReference<>(context);
+        }
 
         @Override
         protected ArrayList<Statistiek1Uur> doInBackground(Void... params) {
@@ -131,7 +138,8 @@ public class StatsPerUurActivity extends Activity {
 
         @Override
         protected void onPostExecute(ArrayList<Statistiek1Uur> stats) {
-            ToonStatistiekenPerUur(stats);
+            StatsPerUurActivity activity = activityWeakReference.get();
+            if (activity != null) activity.ToonStatistiekenPerUur(stats);
         }
     }
 }

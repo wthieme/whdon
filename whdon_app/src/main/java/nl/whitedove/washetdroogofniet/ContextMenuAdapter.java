@@ -33,11 +33,12 @@ class ContextMenuAdapter extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             viewHolder = new ViewHolder();
+            assert inflater != null;
             convertView = inflater.inflate(R.layout.context_menu_item, parent,
                     false);
-            viewHolder.imageView = (ImageView) convertView
+            viewHolder.imageView = convertView
                     .findViewById(R.id.imageView_menu);
-            viewHolder.textView = (TextView) convertView
+            viewHolder.textView = convertView
                     .findViewById(R.id.textView_menu);
             convertView.setTag(viewHolder);
         } else {

@@ -9,16 +9,17 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 public class StatsPerPlaatsActivity extends Activity {
-    DatabaseHelper mDH;
+    static DatabaseHelper mDH;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.per_plaats_statistieken);
 
-        FloatingActionButton fabTerug = (FloatingActionButton) findViewById(R.id.btnTerug);
+        FloatingActionButton fabTerug = findViewById(R.id.btnTerug);
         fabTerug.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -47,14 +48,14 @@ public class StatsPerPlaatsActivity extends Activity {
     }
 
     private void ToondataBackground() {
-        new AsyncGetStatistiekenTask().execute();
+        new AsyncGetStatistiekenPerPlaatsTask(this).execute();
     }
 
     private void ToonTotStatistieken(ArrayList<Statistiek> stats) {
         if (stats == null || stats.size() == 0) {
             return;
         }
-        final ListView lvStats = (ListView) findViewById(R.id.lvStats);
+        final ListView lvStats = findViewById(R.id.lvStats);
 
         CustomListAdapterTotStats adapter = new CustomListAdapterTotStats(this, stats);
         lvStats.setAdapter(adapter);
@@ -71,7 +72,12 @@ public class StatsPerPlaatsActivity extends Activity {
 
     }
 
-    private class AsyncGetStatistiekenTask extends AsyncTask<Void, Void, ArrayList<Statistiek>> {
+    private static class AsyncGetStatistiekenPerPlaatsTask extends AsyncTask<Void, Void, ArrayList<Statistiek>> {
+        private WeakReference<StatsPerPlaatsActivity> activityWeakReference;
+
+        AsyncGetStatistiekenPerPlaatsTask(StatsPerPlaatsActivity context) {
+            activityWeakReference = new WeakReference<>(context);
+        }
 
         @Override
         protected ArrayList<Statistiek> doInBackground(Void... params) {
@@ -80,7 +86,9 @@ public class StatsPerPlaatsActivity extends Activity {
 
         @Override
         protected void onPostExecute(ArrayList<Statistiek> stats) {
-            ToonTotStatistieken(stats);
+
+            StatsPerPlaatsActivity activity = activityWeakReference.get();
+            if (activity != null) activity.ToonTotStatistieken(stats);
         }
 
     }

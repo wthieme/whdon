@@ -51,6 +51,7 @@ import org.joda.time.DateTime;
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,7 +60,7 @@ import nl.whitedove.washetdroogofniet.backend.whdonApi.model.MeldingCollection;
 
 public class MainActivity extends Activity {
 
-    DatabaseHelper mDH;
+    static DatabaseHelper mDH;
     ProgressDialog mProgress;
     static final int MY_PERMISSIONS_REQUEST_LOCATION = 1;
 
@@ -124,6 +125,7 @@ public class MainActivity extends Activity {
         ContextMenuAdapter adapter;
 
         inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        assert inflater != null;
         child = inflater.inflate(R.layout.listview_context_menu, null);
         listView = child.findViewById(R.id.listView_context_menu);
 
@@ -136,6 +138,7 @@ public class MainActivity extends Activity {
         contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.lijn1), getString(R.string.aantal_gebruikers)));
         contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.list25), getString(R.string.laatste25)));
         contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.staafvert3), getString(R.string.AantalPerUur)));
+        contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.pie), getString(R.string.PerWeerType)));
 
         adapter = new ContextMenuAdapter(this, contextMenuItems);
         listView.setAdapter(adapter);
@@ -173,6 +176,10 @@ public class MainActivity extends Activity {
 
                     case 6:
                         GrafiekUur();
+                        return;
+
+                    case 7:
+                        GrafiekWeerType();
                 }
             }
         });
@@ -205,7 +212,7 @@ public class MainActivity extends Activity {
 
     private void ResetCache() {
         ClearCache();
-        SyncLocalDb(false, true);
+        SyncLocalDb(true);
     }
 
     private void ClearCache() {
@@ -262,6 +269,11 @@ public class MainActivity extends Activity {
 
     private void GrafiekUur() {
         Intent intent = new Intent(this, StatsPerUurActivity.class);
+        startActivity(intent);
+    }
+
+    private void GrafiekWeerType() {
+        Intent intent = new Intent(this, StatsWeerTypeActivity.class);
         startActivity(intent);
     }
 
@@ -435,13 +447,13 @@ public class MainActivity extends Activity {
     private void ToondataBackground() {
         Context cxt = getApplicationContext();
         String id = Helper.GetGuid(cxt);
-        new AsyncGetLaatsteMeldingTask().execute(id);
-        new AsyncGetPersoonlijkeStatsTask().execute(id);
+        new AsyncGetLaatsteMeldingTask(this).execute(id);
+        new AsyncGetPersoonlijkeStatsTask(this).execute(id);
         if (!Helper.TestInternet(cxt)) {
             return;
         }
-        new AsyncGetWeerVoorspelling().execute();
-        new AsyncGetBuienData().execute();
+        new AsyncGetWeerVoorspelling(this).execute();
+        new AsyncGetBuienData(this).execute();
     }
 
     private void SlaMeldingOp(Boolean droog) {
@@ -457,7 +469,7 @@ public class MainActivity extends Activity {
         melding.setWeerType(WeerHelper.getHuidigeWeertype().getValue());
 
         //noinspection unchecked
-        new AsyncSlaMeldingOpTask().execute(Pair.create(context, melding));
+        new AsyncSlaMeldingOpTask(this).execute(Pair.create(context, melding));
     }
 
     private void ToonHuidigeLocatie() {
@@ -627,6 +639,7 @@ public class MainActivity extends Activity {
 
         Location netLastLocation = null;
 
+        assert locationManager != null;
         if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, Helper.ONE_MINUTE, Helper.ONE_KM, locationListener);
             netLastLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
@@ -652,7 +665,7 @@ public class MainActivity extends Activity {
 
     private void Init() {
         mDH = new DatabaseHelper(getApplicationContext());
-        SyncLocalDb(false, true);
+        SyncLocalDb(false);
         InitViews(false);
         InitWeerViews(false);
         InitBrViews(false);
@@ -663,7 +676,7 @@ public class MainActivity extends Activity {
         Helper.mCurrentBestLocation = location;
         LocationHelper.BepaalLocatie(this);
         ToonHuidigeLocatie();
-        new AsyncGetWeerVoorspelling().execute();
+        new AsyncGetWeerVoorspelling(this).execute();
     }
 
     private void SetDbSyncDate() {
@@ -671,25 +684,16 @@ public class MainActivity extends Activity {
         Helper.SetLastSyncDate(cxt, DateTime.now());
     }
 
-    private void SyncLocalDb(Boolean force, Boolean withProgress) {
+    private void SyncLocalDb(Boolean withProgress) {
         Context cxt = getApplicationContext();
         DateTime last = Helper.GetLastSyncDate(cxt);
-
-        if (force) {
+        DateTime nu = DateTime.now();
+        if (last.plusHours(1).isBefore(nu)) {
             if (!Helper.TestInternet(cxt)) {
                 return;
             }
             if (withProgress) ShowDbProgress();
-            new AsyncSyncLocalDbTask().execute(last);
-        } else {
-            DateTime nu = DateTime.now();
-            if (last.plusHours(1).isBefore(nu)) {
-                if (!Helper.TestInternet(cxt)) {
-                    return;
-                }
-                if (withProgress) ShowDbProgress();
-                new AsyncSyncLocalDbTask().execute(last);
-            }
+            new AsyncSyncLocalDbTask(this).execute(last);
         }
     }
 
@@ -709,7 +713,13 @@ public class MainActivity extends Activity {
         mProgress.show();
     }
 
-    private class AsyncSyncLocalDbTask extends AsyncTask<DateTime, Void, Void> {
+    private static class AsyncSyncLocalDbTask extends AsyncTask<DateTime, Void, Void> {
+
+        private WeakReference<MainActivity> activityWeakReference;
+
+        AsyncSyncLocalDbTask(MainActivity context) {
+            activityWeakReference = new WeakReference<>(context);
+        }
 
         @Override
         protected Void doInBackground(DateTime... params) {
@@ -731,12 +741,20 @@ public class MainActivity extends Activity {
 
         @Override
         protected void onPostExecute(Void nothing) {
-            SetDbSyncDate();
-            mProgress.hide();
+            MainActivity activity = activityWeakReference.get();
+            if (activity == null) return;
+            activity.SetDbSyncDate();
+            if (activity.mProgress != null) activity.mProgress.hide();
         }
     }
 
-    private class AsyncGetLaatsteMeldingTask extends AsyncTask<String, Void, Melding> {
+    private static class AsyncGetLaatsteMeldingTask extends AsyncTask<String, Void, Melding> {
+
+        private WeakReference<MainActivity> activityWeakReference;
+
+        AsyncGetLaatsteMeldingTask(MainActivity context) {
+            activityWeakReference = new WeakReference<>(context);
+        }
 
         @Override
         protected Melding doInBackground(String... params) {
@@ -746,11 +764,18 @@ public class MainActivity extends Activity {
 
         @Override
         protected void onPostExecute(Melding melding) {
-            ToonLaatsteMelding(melding);
+            MainActivity activity = activityWeakReference.get();
+            if (activity != null) activity.ToonLaatsteMelding(melding);
         }
     }
 
-    private class AsyncGetWeerVoorspelling extends AsyncTask<Void, Void, Weer> {
+    private static class AsyncGetWeerVoorspelling extends AsyncTask<Void, Void, Weer> {
+
+        private WeakReference<MainActivity> activityWeakReference;
+
+        AsyncGetWeerVoorspelling(MainActivity context) {
+            activityWeakReference = new WeakReference<>(context);
+        }
 
         @Override
         protected Weer doInBackground(Void... params) {
@@ -764,11 +789,18 @@ public class MainActivity extends Activity {
 
         @Override
         protected void onPostExecute(Weer result) {
-            ToonWeerdata(result);
+            MainActivity activity = activityWeakReference.get();
+            if (activity != null) activity.ToonWeerdata(result);
         }
     }
 
-    private class AsyncGetBuienData extends AsyncTask<Void, Void, BuienData> {
+    private static class AsyncGetBuienData extends AsyncTask<Void, Void, BuienData> {
+
+        private WeakReference<MainActivity> activityWeakReference;
+
+        AsyncGetBuienData(MainActivity context) {
+            activityWeakReference = new WeakReference<>(context);
+        }
 
         @Override
         protected BuienData doInBackground(Void... params) {
@@ -783,11 +815,18 @@ public class MainActivity extends Activity {
 
         @Override
         protected void onPostExecute(BuienData result) {
-            ToonBuiendata(result);
+            MainActivity activity = activityWeakReference.get();
+            if (activity != null) activity.ToonBuiendata(result);
         }
     }
 
-    private class AsyncSlaMeldingOpTask extends AsyncTask<Pair<Context, Melding>, Void, Pair<Context, Melding>> {
+    private static class AsyncSlaMeldingOpTask extends AsyncTask<Pair<Context, Melding>, Void, Pair<Context, Melding>> {
+
+        private WeakReference<MainActivity> activityWeakReference;
+
+        AsyncSlaMeldingOpTask(MainActivity context) {
+            activityWeakReference = new WeakReference<>(context);
+        }
 
         @SafeVarargs
         @Override
@@ -806,21 +845,30 @@ public class MainActivity extends Activity {
 
         @Override
         protected void onPostExecute(Pair<Context, Melding> result) {
-            mProgress.hide();
+            MainActivity activity = activityWeakReference.get();
+            if (activity == null) return;
+            if (activity.mProgress != null) activity.mProgress.hide();
+
             Melding melding = result.second;
             if (melding == null) return;
             String err = melding.getError();
             if (err != null && !err.isEmpty()) {
                 Helper.ShowMessage(result.first, err);
             } else {
-                Helper.ShowMessage(result.first, getString(R.string.BedanktMelding));
-                SyncLocalDb(true, false);
+                ArrayList<Melding> meldingen = new ArrayList<>();
+                mDH.addMeldingen(meldingen);
+                Helper.ShowMessage(result.first, activity.getString(R.string.BedanktMelding));
             }
-            ToondataBackground();
+            activity.ToondataBackground();
         }
     }
 
-    private class AsyncGetPersoonlijkeStatsTask extends AsyncTask<String, Void, Statistiek> {
+    private static class AsyncGetPersoonlijkeStatsTask extends AsyncTask<String, Void, Statistiek> {
+        private WeakReference<MainActivity> activityWeakReference;
+
+        AsyncGetPersoonlijkeStatsTask(MainActivity context) {
+            activityWeakReference = new WeakReference<>(context);
+        }
 
         @Override
         protected Statistiek doInBackground(String... params) {
@@ -830,7 +878,8 @@ public class MainActivity extends Activity {
 
         @Override
         protected void onPostExecute(Statistiek stat) {
-            ToonPersoonlijkeStat(stat);
+            MainActivity activity = activityWeakReference.get();
+            if (activity != null) activity.ToonPersoonlijkeStat(stat);
         }
     }
 }

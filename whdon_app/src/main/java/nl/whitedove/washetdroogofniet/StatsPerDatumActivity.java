@@ -28,11 +28,12 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import org.joda.time.DateTime;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
 public class StatsPerDatumActivity extends Activity {
-    DatabaseHelper mDH;
+    static DatabaseHelper mDH;
     static DateTime datum = new DateTime(DateTime.now().getYear(), DateTime.now().getMonthOfYear(), DateTime.now().getDayOfMonth(), 0, 0).minusDays(29);
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +89,7 @@ public class StatsPerDatumActivity extends Activity {
     }
 
     private void ToondataBackground() {
-        new AsyncGetStatistiekenTask().execute();
+        new AsyncGetStatistiekenTask(this).execute();
     }
 
     @SuppressLint("DefaultLocale")
@@ -244,7 +245,12 @@ public class StatsPerDatumActivity extends Activity {
 
     }
 
-    private class AsyncGetStatistiekenTask extends AsyncTask<Void, Void, ArrayList<Statistiek1Dag>> {
+    private static class AsyncGetStatistiekenTask extends AsyncTask<Void, Void, ArrayList<Statistiek1Dag>> {
+        private WeakReference<StatsPerDatumActivity> activityWeakReference;
+
+        AsyncGetStatistiekenTask(StatsPerDatumActivity context) {
+            activityWeakReference = new WeakReference<>(context);
+        }
 
         @Override
         protected ArrayList<Statistiek1Dag> doInBackground(Void... params) {
@@ -253,7 +259,8 @@ public class StatsPerDatumActivity extends Activity {
 
         @Override
         protected void onPostExecute(ArrayList<Statistiek1Dag> stats) {
-            ToonStatistiekenPerDag(stats);
+            StatsPerDatumActivity activity = activityWeakReference.get();
+            if (activity != null) activity.ToonStatistiekenPerDag(stats);
         }
 
     }

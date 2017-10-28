@@ -15,7 +15,6 @@
             android:id="@+id/tvLocatie"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="100dp"
             android:layout_marginStart="100dp"
             android:layout_marginTop="16dp"
             android:textColor="@color/colorPrimary"
@@ -31,7 +30,6 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="100dp"
                 android:layout_marginStart="100dp"
                 android:text="@string/EersteMelding"
                 android:textColor="@color/colorTekst"
@@ -41,7 +39,6 @@
                 android:id="@+id/tvPsDatumStart"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
                 android:textColor="@color/colorTekst"
                 android:textSize="12sp"
@@ -56,7 +53,6 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="100dp"
                 android:layout_marginStart="100dp"
                 android:text="@string/LaatsteMelding"
                 android:textColor="@color/colorTekst"
@@ -66,7 +62,6 @@
                 android:id="@+id/tvPsDatumEnd"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
                 android:textColor="@color/colorTekst"
                 android:textSize="12sp"
@@ -81,7 +76,6 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="100dp"
                 android:layout_marginStart="100dp"
                 android:text="@string/aantal_droog"
                 android:textColor="@color/colorTekst"
@@ -91,7 +85,6 @@
                 android:id="@+id/tvPsAantalDroog"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
                 android:textColor="@color/colorTekst"
                 android:textSize="12sp"
@@ -106,7 +99,6 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="100dp"
                 android:layout_marginStart="100dp"
                 android:text="@string/aantal_nat"
                 android:textColor="@color/colorTekst"
@@ -116,7 +108,6 @@
                 android:id="@+id/tvPsAantalNat"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
                 android:textColor="@color/colorTekst"
                 android:textSize="12sp"
@@ -131,7 +122,6 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="100dp"
                 android:layout_marginStart="100dp"
                 android:text="@string/gemmpd"
                 android:textColor="@color/colorTekst"
@@ -141,7 +131,6 @@
                 android:id="@+id/tvPsGemm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
                 android:textColor="@color/colorTekst"
                 android:textSize="12sp"
@@ -156,7 +145,6 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="100dp"
                 android:layout_marginStart="100dp"
                 android:text="@string/GemmTemp"
                 android:textColor="@color/colorTekst"
@@ -166,7 +154,6 @@
                 android:id="@+id/tvPsGemmTemp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
                 android:textColor="@color/colorTekst"
                 android:textSize="12sp"
@@ -175,7 +162,7 @@
         </LinearLayout>
 
         <com.github.mikephil.charting.charts.PieChart
-            android:id="@+id/lcPerdag"
+            android:id="@+id/pcPerdag"
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
             android:minHeight="300dp"
@@ -190,7 +177,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="top|start"
-        android:layout_marginLeft="0dp"
         android:layout_marginStart="0dp"
         android:layout_marginTop="0dp"
         android:layout_marginBottom="0dp"

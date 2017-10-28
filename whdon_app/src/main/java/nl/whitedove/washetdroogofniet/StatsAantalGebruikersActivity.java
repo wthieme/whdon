@@ -24,17 +24,18 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import org.joda.time.DateTime;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 public class StatsAantalGebruikersActivity extends Activity {
-    DatabaseHelper mDH;
+    static DatabaseHelper mDH;
     static DateTime datum = new DateTime(DateTime.now().getYear(), DateTime.now().getMonthOfYear(), DateTime.now().getDayOfMonth(), 0, 0).minusDays(29);
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.aantal_gebruikers_statistieken);
 
-        FloatingActionButton fabTerug = (FloatingActionButton) findViewById(R.id.btnTerug);
+        FloatingActionButton fabTerug = findViewById(R.id.btnTerug);
         fabTerug.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -59,10 +60,10 @@ public class StatsAantalGebruikersActivity extends Activity {
             }
         };
 
-        final RelativeLayout rlAantalGebruikers =  findViewById(R.id.rlAantalGebruikers);
+        final RelativeLayout rlAantalGebruikers = findViewById(R.id.rlAantalGebruikers);
         rlAantalGebruikers.setOnTouchListener(sl);
 
-        final LineChart chart =  findViewById(R.id.lcAantalGebruikers);
+        final LineChart chart = findViewById(R.id.lcAantalGebruikers);
         chart.setOnTouchListener(sl);
 
         Helper.ShowMessage(StatsAantalGebruikersActivity.this, getString(R.string.SwipeLinksOfRechts));
@@ -79,7 +80,7 @@ public class StatsAantalGebruikersActivity extends Activity {
     }
 
     private void ToondataBackground() {
-        new AsyncGetAantalGebruikersStatistiekenTask().execute();
+        new AsyncGetAantalGebruikersStatistiekenTask(this).execute();
     }
 
     @SuppressLint("DefaultLocale")
@@ -135,7 +136,7 @@ public class StatsAantalGebruikersActivity extends Activity {
 
         for (int i = 0; i < 30; i++) {
             Entry e = new Entry(i, stats.get(i).getAantalGebruikers());
-            String sDatum = (i == 0 || i==10 || i==20 || i == 29) ? Helper.dmFormat.print(stats.get(i).getDatum()) : "";
+            String sDatum = (i == 0 || i == 10 || i == 20 || i == 29) ? Helper.dmFormat.print(stats.get(i).getDatum()) : "";
             labels.add(sDatum);
             dataY.add(e);
         }
@@ -165,7 +166,12 @@ public class StatsAantalGebruikersActivity extends Activity {
         lChart.invalidate();
     }
 
-    private class AsyncGetAantalGebruikersStatistiekenTask extends AsyncTask<Void, Void, ArrayList<StatistiekAantalGebruikers>> {
+    private static class AsyncGetAantalGebruikersStatistiekenTask extends AsyncTask<Void, Void, ArrayList<StatistiekAantalGebruikers>> {
+        private WeakReference<StatsAantalGebruikersActivity> activityWeakReference;
+
+        AsyncGetAantalGebruikersStatistiekenTask(StatsAantalGebruikersActivity context) {
+            activityWeakReference = new WeakReference<>(context);
+        }
 
         @Override
         protected ArrayList<StatistiekAantalGebruikers> doInBackground(Void... params) {
@@ -174,7 +180,8 @@ public class StatsAantalGebruikersActivity extends Activity {
 
         @Override
         protected void onPostExecute(ArrayList<StatistiekAantalGebruikers> stats) {
-            ToonGetAantalGebruikersStatistieken(stats);
+            StatsAantalGebruikersActivity activity = activityWeakReference.get();
+            if (activity != null) activity.ToonGetAantalGebruikersStatistieken(stats);
         }
     }
 }

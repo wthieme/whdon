@@ -14,12 +14,13 @@ import android.widget.TextView;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import nl.whitedove.washetdroogofniet.backend.whdonApi.model.Melding;
 
 public class EigenMeldingenActivity extends Activity {
-    DatabaseHelper mDH;
+    static DatabaseHelper mDH;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +49,7 @@ public class EigenMeldingenActivity extends Activity {
 
     private void ToondataBackground() {
         Context cxt = getApplicationContext();
-        new AsyncGetEigenMeldingenTask().execute(cxt);
+        new AsyncGetEigenMeldingenTask(this).execute(cxt);
     }
 
     @SuppressLint("DefaultLocale")
@@ -101,7 +102,12 @@ public class EigenMeldingenActivity extends Activity {
         lvEigenMeldingen.setAdapter(new CustomListAdapterMeldingen(this, meldingen));
     }
 
-    private class AsyncGetEigenMeldingenTask extends AsyncTask<Context, Void, ArrayList<Melding>> {
+    private static class AsyncGetEigenMeldingenTask extends AsyncTask<Context, Void, ArrayList<Melding>> {
+        private WeakReference<EigenMeldingenActivity> activityWeakReference;
+
+        AsyncGetEigenMeldingenTask(EigenMeldingenActivity context) {
+            activityWeakReference = new WeakReference<>(context);
+        }
 
         @Override
         protected ArrayList<Melding> doInBackground(Context... params) {
@@ -112,7 +118,8 @@ public class EigenMeldingenActivity extends Activity {
 
         @Override
         protected void onPostExecute(ArrayList<Melding> meldingen) {
-            ToonEigenMeldingen(meldingen);
+            EigenMeldingenActivity activity = activityWeakReference.get();
+            if (activity != null) activity.ToonEigenMeldingen(meldingen);
         }
     }
 }

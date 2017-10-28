@@ -274,4 +274,28 @@ class WeerHelper {
         }
         return WeerType.Onbekend;
     }
+
+    static String WeerTypeToWeerOmschrijving(WeerType weerType) {
+        switch (weerType) {
+            case Onbekend:
+                return null;
+            case Zonnig:
+                return "Zonnig";
+            case HalfBewolkt:
+                return "HalfBewolkt";
+            case Bewolkt:
+                return "Bewolkt";
+            case Buien:
+                return "Buien";
+            case Mist:
+                return "Mist";
+            case Onweer:
+                return "Onweer";
+            case Regen:
+                return "Regen";
+            case Sneeuw:
+                return "Sneeuw";
+        }
+        return null;
+    }
 }

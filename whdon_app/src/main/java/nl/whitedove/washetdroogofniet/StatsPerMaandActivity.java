@@ -1,5 +1,6 @@
 package nl.whitedove.washetdroogofniet;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -28,12 +29,13 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import org.joda.time.DateTime;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 public class StatsPerMaandActivity extends Activity {
-    DatabaseHelper mDH;
+    static DatabaseHelper mDH;
     static int jaar = DateTime.now().getYear();
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,9 +90,10 @@ public class StatsPerMaandActivity extends Activity {
     }
 
     private void ToondataBackground() {
-        new AsyncGetStatistiekenTask().execute();
+        new AsyncGetStatistiekenPerMaandTask(this).execute();
     }
 
+    @SuppressLint("SetTextI18n")
     private void ToonStatistiekenPerMaand(ArrayList<Statistiek1Maand> stats) {
         if (stats == null || stats.size() == 0) {
             return;
@@ -181,7 +184,7 @@ public class StatsPerMaandActivity extends Activity {
         XAxis lXAs = lChart.getXAxis();
         lXAs.setDrawGridLines(false);
         lXAs.setTextSize(10.0f);
-        lXAs.setLabelCount(12,true);
+        lXAs.setLabelCount(12, true);
 
         int maxVal = -999;
 
@@ -190,13 +193,13 @@ public class StatsPerMaandActivity extends Activity {
 
         for (int i = 0; i < 12; i++) {
             int aantalTemp = stats.get(i).getAantalTemperatuur();
-            float tempGemm =0;
+            float tempGemm = 0;
             if (aantalTemp > 0) {
                 int tempSom = stats.get(i).getSomTemperatuur();
                 tempGemm = (1.0f * tempSom) / (1.0f * aantalTemp);
                 if (tempGemm > maxVal) maxVal = Math.round(tempGemm);
             }
-            Entry e = new Entry(i,tempGemm);
+            Entry e = new Entry(i, tempGemm);
             lDataT.add(e);
 
             DateTime datum = new DateTime(2000, stats.get(i).getMaand(), 1, 0, 0);
@@ -205,8 +208,7 @@ public class StatsPerMaandActivity extends Activity {
 
         lXAs.setValueFormatter(new IndexAxisValueFormatter(lLabels));
 
-        if (maxVal == -999)
-        {
+        if (maxVal == -999) {
             maxVal = 9;
         }
 
@@ -246,7 +248,12 @@ public class StatsPerMaandActivity extends Activity {
         lChart.invalidate();
     }
 
-    private class AsyncGetStatistiekenTask extends AsyncTask<Void, Void, ArrayList<Statistiek1Maand>> {
+    private static class AsyncGetStatistiekenPerMaandTask extends AsyncTask<Void, Void, ArrayList<Statistiek1Maand>> {
+        private WeakReference<StatsPerMaandActivity> activityWeakReference;
+
+        AsyncGetStatistiekenPerMaandTask(StatsPerMaandActivity context) {
+            activityWeakReference = new WeakReference<>(context);
+        }
 
         @Override
         protected ArrayList<Statistiek1Maand> doInBackground(Void... params) {
@@ -255,7 +262,8 @@ public class StatsPerMaandActivity extends Activity {
 
         @Override
         protected void onPostExecute(ArrayList<Statistiek1Maand> stats) {
-            ToonStatistiekenPerMaand(stats);
+            StatsPerMaandActivity activity = activityWeakReference.get();
+            if (activity != null) activity.ToonStatistiekenPerMaand(stats);
         }
     }
 }
