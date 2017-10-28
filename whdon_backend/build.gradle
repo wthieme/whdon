@@ -4,7 +4,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.google.cloud.tools:endpoints-framework-gradle-plugin:1.0.0'
+        classpath 'com.google.cloud.tools:endpoints-framework-gradle-plugin:1.0.2'
         classpath 'com.google.cloud.tools:appengine-gradle-plugin:1.3.3'
     }
 }
@@ -21,9 +21,9 @@ apply plugin: 'com.google.cloud.tools.endpoints-framework-server'
 
 dependencies {
     providedCompile group: 'javax.servlet', name: 'servlet-api', version:'2.5'
-    compile 'jstl:jstl:1.2'
+    compile group: 'javax.servlet.jsp.jstl', name: 'jstl', version: '1.2'
     compile group: 'javax.inject', name: 'javax.inject', version: '1'
-    compile group: 'com.google.endpoints', name: 'endpoints-framework', version: '2.0.7'
+    compile group: 'com.google.endpoints', name: 'endpoints-framework', version: '2.0.9'
 }
 
 appengine {

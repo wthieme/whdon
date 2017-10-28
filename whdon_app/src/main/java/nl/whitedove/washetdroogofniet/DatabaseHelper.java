@@ -15,7 +15,7 @@ import nl.whitedove.washetdroogofniet.backend.whdonApi.model.Melding;
 
 class DatabaseHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
     private static final String DATABASE_NAME = "whdon";
 
     private static final String TAB_MELDING = "Melding";
@@ -26,7 +26,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
     private static final String MDG_DROOG = "Droog";
     private static final String MDG_NAT = "Nat";
     private static final String MDG_TEMPERATUUR = "Temperatuur";
-
+    private static final String MDG_WEERTYPE = "Weertype";
 
     DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -42,7 +42,8 @@ class DatabaseHelper extends SQLiteOpenHelper {
                 + MDG_DATUM + " INTEGER NOT NULL,"
                 + MDG_DROOG + " INTEGER NOT NULL,"
                 + MDG_NAT + " INTEGER NOT NULL,"
-                + MDG_TEMPERATUUR + " INTEGER NOT NULL"
+                + MDG_TEMPERATUUR + " INTEGER NOT NULL,"
+                + MDG_WEERTYPE + " INTEGER NOT NULL"
                 + ")";
         db.execSQL(sql);
 
@@ -61,6 +62,10 @@ class DatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if (oldVersion < 2) {
             String sql = "ALTER TABLE " + TAB_MELDING + " ADD COLUMN " + MDG_TEMPERATUUR + " INTEGER NOT NULL DEFAULT 999";
+            db.execSQL(sql);
+        }
+        if (oldVersion < 3) {
+            String sql = "ALTER TABLE " + TAB_MELDING + " ADD COLUMN " + MDG_WEERTYPE + " INTEGER NOT NULL DEFAULT 0";
             db.execSQL(sql);
         }
     }
@@ -90,6 +95,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
                 values.put(MDG_DROOG, melding.getDroog() ? 1 : 0);
                 values.put(MDG_NAT, melding.getNat() ? 1 : 0);
                 values.put(MDG_TEMPERATUUR, melding.getTemperatuur());
+                values.put(MDG_WEERTYPE, melding.getWeerType());
                 db.insert(TAB_MELDING, null, values);
             }
         }
@@ -135,7 +141,8 @@ class DatabaseHelper extends SQLiteOpenHelper {
                 + " " + MDG_DATUM + ","
                 + " " + MDG_DROOG + ","
                 + " " + MDG_NAT + ","
-                + " " + MDG_TEMPERATUUR
+                + " " + MDG_TEMPERATUUR + ","
+                + " " + MDG_WEERTYPE
                 + " FROM " + TAB_MELDING
                 + " WHERE " + MDG_TELID + " = ?"
                 + " ORDER BY " + MDG_DATUM + " DESC"
@@ -154,6 +161,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
             melding.setDroog(cursor.getInt(2) == 1);
             melding.setNat(cursor.getInt(3) == 1);
             melding.setTemperatuur(cursor.getLong(4));
+            melding.setWeerType(cursor.getLong(5));
         } else {
             melding.setError("Geen meldingen");
         }
@@ -209,8 +217,9 @@ class DatabaseHelper extends SQLiteOpenHelper {
                 + " " + MDG_DATUM + ","
                 + " " + MDG_DROOG + ","
                 + " " + MDG_NAT + ","
-                + " " + MDG_TEMPERATUUR
-                + " FROM " + TAB_MELDING
+                + " " + MDG_TEMPERATUUR + ","
+                + " " + MDG_WEERTYPE
+                +" FROM " + TAB_MELDING
                 + " ORDER BY " + MDG_DATUM + " DESC"
                 + " LIMIT 25";
 
@@ -228,6 +237,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
                 melding.setDroog(cursor.getInt(2) == 1);
                 melding.setNat(cursor.getInt(3) == 1);
                 melding.setTemperatuur(cursor.getLong(4));
+                melding.setWeerType(cursor.getLong(5));
                 meldingen.add(melding);
             } while (cursor.moveToNext());
         }
@@ -243,7 +253,8 @@ class DatabaseHelper extends SQLiteOpenHelper {
                 + " " + MDG_DATUM + ","
                 + " " + MDG_DROOG + ","
                 + " " + MDG_NAT + ","
-                + " " + MDG_TEMPERATUUR
+                + " " + MDG_TEMPERATUUR+ ","
+                + " " + MDG_WEERTYPE
                 + " FROM " + TAB_MELDING
                 + " WHERE " + MDG_TELID + " = ?"
                 + " ORDER BY " + MDG_DATUM + " DESC";
@@ -263,6 +274,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
                 melding.setDroog(cursor.getInt(2) == 1);
                 melding.setNat(cursor.getInt(3) == 1);
                 melding.setTemperatuur(cursor.getLong(4));
+                melding.setWeerType(cursor.getLong(5));
                 meldingen.add(melding);
             } while (cursor.moveToNext());
         }

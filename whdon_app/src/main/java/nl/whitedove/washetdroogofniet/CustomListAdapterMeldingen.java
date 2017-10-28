@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.joda.time.DateTime;
@@ -55,6 +56,7 @@ class CustomListAdapterMeldingen extends BaseAdapter {
             holder.tvPsDatum = convertView.findViewById(R.id.tvPsDatum);
             holder.tvPsDroogNat = convertView.findViewById(R.id.tvPsDroogNat);
             holder.tvPsTemperatuur = convertView.findViewById(R.id.tvPsTemperatuur);
+            holder.imWeer = convertView.findViewById(R.id.imWeer);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -80,6 +82,22 @@ class CustomListAdapterMeldingen extends BaseAdapter {
             holder.tvPsTemperatuur.setText(String.format("%d °C", temperatuur));
         }
 
+        WeerHelper.WeerType weerType = WeerHelper.WeerType.valueOf(melding.getWeerType());
+        String icon = WeerHelper.WeerTypeToWeerIcoon(weerType);
+        if (icon == null) {
+            holder.imWeer.setVisibility(View.GONE);
+        } else {
+            holder.imWeer.setVisibility(View.VISIBLE);
+            int id = context.getResources().getIdentifier(icon, "drawable", context.getPackageName());
+            holder.imWeer.setImageResource(id);
+        }
+
+        if (temperatuur == 999) {
+            holder.tvPsTemperatuur.setText("");
+        } else {
+            holder.tvPsTemperatuur.setText(String.format("%d °C", temperatuur));
+        }
+
         return convertView;
     }
 
@@ -88,5 +106,6 @@ class CustomListAdapterMeldingen extends BaseAdapter {
         TextView tvPsDatum;
         TextView tvPsDroogNat;
         TextView tvPsTemperatuur;
+        ImageView imWeer;
     }
 }

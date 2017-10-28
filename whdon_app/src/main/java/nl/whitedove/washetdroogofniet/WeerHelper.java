@@ -1,5 +1,6 @@
 package nl.whitedove.washetdroogofniet;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
 
@@ -11,7 +12,9 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Random;
 import java.util.regex.Pattern;
 
@@ -21,7 +24,36 @@ import okhttp3.Response;
 
 class WeerHelper {
 
+    public enum WeerType {
+        Onbekend(0L), Zonnig(1L), HalfBewolkt(2L), Bewolkt(3L), Regen(9L), Buien(10L), Onweer(11L), Sneeuw(13L), Mist(50L);
+
+        private long value;
+        @SuppressLint("UseSparseArrays")
+        private static Map<Long, WeerType> map = new HashMap<>();
+
+        WeerType(long value) {
+            this.value = value;
+        }
+
+        static {
+            for (WeerType weerType : WeerType.values()) {
+                map.put(weerType.value, weerType);
+            }
+        }
+
+        public static WeerType valueOf(long weerType) {
+            return map.get(weerType);
+        }
+
+        public long getValue() {
+            return value;
+        }
+    }
+
     private static int HuidigeTemperatuur = 999;
+
+    private static WeerType HuidigeWeertype = WeerType.Onbekend;
+
     static Weer BepaalWeer() throws JSONException {
 
         String weatherJson = WeerHelper.getWeatherData();
@@ -130,7 +162,8 @@ class WeerHelper {
         Response response;
         try {
             response = client.newCall(request).execute();
-            if (response.isSuccessful()) brData = response.body().string();
+            if (response.isSuccessful()) //noinspection ConstantConditions
+                brData = response.body().string();
         } catch (IOException ignored) {
         }
         return brData;
@@ -163,7 +196,8 @@ class WeerHelper {
         Response response;
         try {
             response = client.newCall(request).execute();
-            if (response.isSuccessful()) weatherData = response.body().string();
+            if (response.isSuccessful()) //noinspection ConstantConditions
+                weatherData = response.body().string();
         } catch (IOException ignored) {
         }
         return weatherData;
@@ -190,5 +224,54 @@ class WeerHelper {
 
     static void SetHuidigeTemperatuur(int temperatuur) {
         HuidigeTemperatuur = temperatuur;
+    }
+
+    static WeerType getHuidigeWeertype() {
+        return HuidigeWeertype;
+    }
+
+    static void setHuidigeWeertype(WeerType huidigeWeertype) {
+        HuidigeWeertype = huidigeWeertype;
+    }
+
+    @SuppressLint("DefaultLocale")
+    static String WeerTypeToWeerIcoon(WeerType weerType) {
+        if (weerType == WeerType.Onbekend) {
+            return null;
+        } else {
+            return String.format("i%02dd", weerType.getValue());
+        }
+    }
+
+    static WeerType WeerIcoonToWeerType(String weerIcoon) {
+        switch (weerIcoon) {
+            case "01d":
+            case "01n":
+                return WeerType.Zonnig;
+            case "02d":
+            case "02n":
+                return WeerType.HalfBewolkt;
+            case "03d":
+            case "03n":
+            case "04d":
+            case "04n":
+                return WeerType.Bewolkt;
+            case "09d":
+            case "09n":
+                return WeerType.Regen;
+            case "10d":
+            case "10n":
+                return WeerType.Buien;
+            case "11d":
+            case "11n":
+                return WeerType.Onweer;
+            case "13d":
+            case "13n":
+                return WeerType.Sneeuw;
+            case "50d":
+            case "50n":
+                return WeerType.Mist;
+        }
+        return WeerType.Onbekend;
     }
 }

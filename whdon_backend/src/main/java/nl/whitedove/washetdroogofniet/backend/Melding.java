@@ -9,6 +9,7 @@ public class Melding {
     private String id;
     private String error;
     private Long temperatuur;
+    private Long weerType;
 
     public String getLocatie() {
         return locatie;
@@ -65,4 +66,13 @@ public class Melding {
     public void setTemperatuur(Long temperatuur) {
         this.temperatuur = temperatuur;
     }
+
+    public Long getWeerType() {
+        return weerType;
+    }
+
+    public void setWeerType(Long weerType) {
+        this.weerType = weerType;
+    }
+
 }

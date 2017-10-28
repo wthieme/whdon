@@ -33,6 +33,7 @@ public class WhdonEndpoint {
     private final static String ID = "id";
     private final static String TEMPERATUUR = "temperatuur";
     private final static String LOCATIE = "locatie";
+    private final static String WEERTTPE = "weertype";
 
     // Get the Datastore Service
     private DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -67,6 +68,7 @@ public class WhdonEndpoint {
         meld.setProperty(LOCATIE, melding.getLocatie());
         meld.setProperty(NAT, melding.getNat());
         meld.setProperty(TEMPERATUUR, melding.getTemperatuur());
+        meld.setProperty(WEERTTPE, melding.getWeerType());
         datastore.put(meld);
 
         Melding response = new Melding();
@@ -108,6 +110,11 @@ public class WhdonEndpoint {
         } catch (Exception e) {
             melding.setTemperatuur(999L);
         }
+        try {
+            melding.setWeerType((long) laatste.getProperty(WEERTTPE));
+        } catch (Exception e) {
+            melding.setWeerType(0L);
+        }
         return melding;
     }
 
@@ -132,6 +139,11 @@ public class WhdonEndpoint {
                 melding.setTemperatuur((long) rMeld.getProperty(TEMPERATUUR));
             } catch (Exception e) {
                 melding.setTemperatuur(999L);
+            }
+            try {
+                melding.setWeerType((long) rMeld.getProperty(WEERTTPE));
+            } catch (Exception e) {
+                melding.setWeerType(0L);
             }
             response.add(melding);
         }

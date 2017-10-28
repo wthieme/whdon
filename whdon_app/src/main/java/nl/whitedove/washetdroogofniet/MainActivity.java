@@ -308,6 +308,7 @@ public class MainActivity extends Activity {
         ImageView imWeer = findViewById(R.id.imWeer);
         int id = context.getResources().getIdentifier("i" + weerData.getIcon(), "drawable", context.getPackageName());
         imWeer.setImageResource(id);
+        WeerHelper.setHuidigeWeertype(WeerHelper.WeerIcoonToWeerType(weerData.getIcon()));
 
         ImageView imWind = findViewById(R.id.imWind);
         int richting = weerData.getWindRichting();
@@ -453,6 +454,7 @@ public class MainActivity extends Activity {
         melding.setId(Helper.GetGuid(context));
         melding.setNat(!droog);
         melding.setTemperatuur((long) WeerHelper.GetHuidigeTemperatuur());
+        melding.setWeerType(WeerHelper.getHuidigeWeertype().getValue());
 
         //noinspection unchecked
         new AsyncSlaMeldingOpTask().execute(Pair.create(context, melding));
@@ -463,6 +465,7 @@ public class MainActivity extends Activity {
         tvHuidigeLoc.setText(Helper.mLocatie);
     }
 
+    @SuppressLint("DefaultLocale")
     private void ToonLaatsteMelding(Melding melding) {
 
         Context cxt = getApplicationContext();
