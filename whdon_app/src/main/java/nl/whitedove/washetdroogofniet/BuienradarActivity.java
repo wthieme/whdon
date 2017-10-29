@@ -12,20 +12,19 @@ import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.TextView;
 
-import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
-import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.lang.ref.WeakReference;
@@ -66,7 +65,7 @@ public class BuienradarActivity extends Activity {
         if (weer == null || weer.getRegenData() == null || weer.getRegenData().size() == 0) {
             return;
         }
-        BarChart chart = findViewById(R.id.bcBuienRadar);
+        LineChart chart = findViewById(R.id.lcBuienRadar);
         chart.setHighlightPerTapEnabled(false);
         chart.setHighlightPerDragEnabled(false);
         chart.setVisibleYRangeMaximum(255, YAxis.AxisDependency.LEFT);
@@ -114,7 +113,7 @@ public class BuienradarActivity extends Activity {
         xAs.addLimitLine(ll);
         xAs.setDrawLimitLinesBehindData(true);
 
-        ArrayList<BarEntry> dataT = new ArrayList<>();
+        ArrayList<Entry> dataT = new ArrayList<>();
         ArrayList<String> labels = new ArrayList<>();
 
         double mm = 0;
@@ -128,14 +127,19 @@ public class BuienradarActivity extends Activity {
             }
 
             mm += peruur / 12.0f;
-            dataT.add(new BarEntry(i, regen));
+            dataT.add(new Entry(i, regen));
             labels.add(weer.getRegenData().get(i).getTijd());
         }
 
         xAs.setValueFormatter(new IndexAxisValueFormatter(labels));
 
-        BarDataSet dsT = new BarDataSet(dataT, "Intensiteit: 1 (lichte regen) t/m 5 (tropische regen)");
-        dsT.setColors(ContextCompat.getColor(this, R.color.colorNatStart));
+        LineDataSet dsT = new LineDataSet(dataT, "Intensiteit: 1 (lichte regen) t/m 5 (tropische regen)");
+        dsT.setColor(ContextCompat.getColor(this, R.color.colorNatStart));
+        dsT.setDrawFilled(true);
+        dsT.setFillColor(ContextCompat.getColor(this, R.color.colorNatStart));
+        dsT.setDrawCircles(false);
+        dsT.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
+        dsT.setCubicIntensity(0.2f);
         IValueFormatter myValueFormat = new IValueFormatter() {
             @Override
             public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
@@ -146,10 +150,10 @@ public class BuienradarActivity extends Activity {
         dsT.setValueFormatter(myValueFormat);
         dsT.setAxisDependency(YAxis.AxisDependency.LEFT);
 
-        ArrayList<IBarDataSet> dataSets = new ArrayList<>();
+        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
         dataSets.add(dsT);
 
-        BarData data = new BarData(dataSets);
+        LineData data = new LineData(dataSets);
         chart.setData(data);
         chart.animateXY(500, 500);
         chart.invalidate();

@@ -1,0 +1,63 @@
+if (intens>0.0f && intens<=0.05f)
+color = colorbr1;
+else
+if (intens>0.05f && intens<=0.1f)
+color = colorbr2;
+else
+if (intens>0.1f && intens<=0.5f)
+color = colorbr2;
+else
+if (intens>0.5f && intens<=1.0f)
+color = colorbr3;
+else
+if (intens>1.0f && intens<=2.0f)
+color = colorbr4;
+else
+if (intens>2.0f && intens<=5.0f)
+color = colorbr5;
+else
+if (intens>2.0f && intens<=5.0f)
+color = colorbr6
+else
+if (intens>5.0f && intens<=6.5f)
+else
+color = colorbr7
+if (intens>6.5f && intens<=8.0f)
+else
+color = colorbr8
+else
+if (intens>8.0f && intens<=10.0f)
+color = colorbr9
+else
+if (intens>10.0f && intens<=20.0f)
+color = colorbr10
+else
+if (intens>20.0f && intens<=40.0f)
+color = colorbr11
+else
+if (intens>40.0f && intens<=60.0f)
+color = colorbr12
+else
+if (intens>60.0f && intens<=80.0f)
+color = colorbr13
+else
+if (intens>80.0f && intens<=100.0f)
+else
+color = colorbr14
+
+
+colorbr1 = "#EFF8FB"
+colorbr2 = "#E0F2F7"
+colorbr3 = "#CEECF5"
+colorbr4 = "#A9D0F5"
+colorbr5 = "#81DAF5"
+colorbr6 = "#8181F7"
+colorbr7 = "#5858FA"
+colorbr8 = "#2E2EFE"
+colorbr9 = "#0000FF"
+colorbr10 = "#FF0000"
+colorbr11 = "#DF0101"
+colorbr12 = "#B40404"
+colorbr13 = "#8A0808"
+colorbr14 = "#FE2EF7"
+

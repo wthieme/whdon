@@ -21,13 +21,16 @@ android {
         applicationId "nl.whitedove.washetdroogofniet"
         minSdkVersion 17
         targetSdkVersion 26
-        versionCode 61
-        versionName "1.8.0"
+        versionCode 62
+        versionName "1.8.1"
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            applicationIdSuffix ".debug"
         }
     }
 }

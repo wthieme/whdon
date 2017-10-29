@@ -32,18 +32,17 @@ import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IValueFormatter;
-import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
@@ -92,8 +91,8 @@ public class MainActivity extends Activity {
             }
         });
 
-        BarChart bcBuienRadar = findViewById(R.id.bcBuienRadar);
-        bcBuienRadar.setOnClickListener(new View.OnClickListener() {
+        LineChart lcBuienRadar = findViewById(R.id.lcBuienRadar);
+        lcBuienRadar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 BuienRadar();
@@ -111,6 +110,7 @@ public class MainActivity extends Activity {
         ToonSpreukVdDag();
         Init();
         ToondataBackground();
+        SyncLocalDb();
     }
 
     @SuppressLint("InflateParams")
@@ -354,7 +354,7 @@ public class MainActivity extends Activity {
 
         InitBrViews(true);
 
-        BarChart chart = findViewById(R.id.bcBuienRadar);
+        LineChart chart = findViewById(R.id.lcBuienRadar);
         chart.setHighlightPerTapEnabled(false);
         chart.setHighlightPerDragEnabled(false);
         chart.setVisibleYRangeMaximum(255, YAxis.AxisDependency.LEFT);
@@ -408,18 +408,24 @@ public class MainActivity extends Activity {
         xAs.addLimitLine(ll);
         xAs.setDrawLimitLinesBehindData(true);
 
-        ArrayList<BarEntry> dataT = new ArrayList<>();
+        ArrayList<Entry> dataT = new ArrayList<>();
 
         int som = 0;
         for (int i = 0; i < weerData.getRegenData().size(); i++) {
             int regen = weerData.getRegenData().get(i).getRegen();
             som += regen;
-            dataT.add(i, new BarEntry(i, regen));
+            dataT.add(i, new Entry(i, regen));
         }
 
-        BarDataSet dsT = new BarDataSet(dataT, "");
+        LineDataSet dsT = new LineDataSet(dataT, "");
 
-        dsT.setColors(ContextCompat.getColor(this, R.color.colorNatStart));
+        dsT.setColor(ContextCompat.getColor(this, R.color.colorNatStart));
+        dsT.setDrawFilled(true);
+        dsT.setFillColor(ContextCompat.getColor(this, R.color.colorNatStart));
+        dsT.setDrawCircles(false);
+        dsT.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
+        dsT.setCubicIntensity(0.2f);
+
         IValueFormatter myValueFormat = new IValueFormatter() {
             @Override
             public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
@@ -430,10 +436,10 @@ public class MainActivity extends Activity {
         dsT.setValueFormatter(myValueFormat);
         dsT.setAxisDependency(YAxis.AxisDependency.LEFT);
 
-        ArrayList<IBarDataSet> dataSets = new ArrayList<>();
+        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
         dataSets.add(dsT);
 
-        BarData data = new BarData(dataSets);
+        LineData data = new LineData(dataSets);
         chart.setData(data);
         chart.invalidate();
 
@@ -596,15 +602,15 @@ public class MainActivity extends Activity {
     }
 
     private void InitBrViews(Boolean visible) {
-        BarChart bcBuienRadar = findViewById(R.id.bcBuienRadar);
+        LineChart lcBuienRadar = findViewById(R.id.lcBuienRadar);
         TextView tvDroogBr = findViewById(R.id.tvDroogBr);
 
         if (visible) {
             tvDroogBr.setVisibility(View.VISIBLE);
-            bcBuienRadar.setVisibility(View.VISIBLE);
+            lcBuienRadar.setVisibility(View.VISIBLE);
         } else {
             tvDroogBr.setVisibility(View.GONE);
-            bcBuienRadar.setVisibility(View.GONE);
+            lcBuienRadar.setVisibility(View.GONE);
         }
     }
 
@@ -665,7 +671,6 @@ public class MainActivity extends Activity {
 
     private void Init() {
         mDH = new DatabaseHelper(getApplicationContext());
-        SyncLocalDb();
         InitViews(false);
         InitWeerViews(false);
         InitBrViews(false);
