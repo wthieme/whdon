@@ -51,6 +51,5 @@
     <string name="vantmdatum" formatted="false">%s t/m %s</string>
     <string name="AantalPerUur">Per uur van de dag</string>
     <string name="GemmTemp">Gemiddelde temperatuur:</string>
-    <string name="aantal_per_weertype">Aantal per weertype</string>
     <string name="PerWeerType">Per weertype</string>
 </resources>

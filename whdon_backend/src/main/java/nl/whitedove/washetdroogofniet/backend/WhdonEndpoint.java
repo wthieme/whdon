@@ -51,6 +51,8 @@ public class WhdonEndpoint {
         }
 
         DateTime dtNu = DateTime.now();
+        melding.setDatum(dtNu.getMillis());
+
         Melding laatste = GetLaatsteMelding(melding.getId());
         if (laatste.getLocatie() != null) {
             Long last = laatste.getDatum() + 900000L;
@@ -71,9 +73,8 @@ public class WhdonEndpoint {
         meld.setProperty(WEERTTPE, melding.getWeerType());
         datastore.put(meld);
 
-        Melding response = melding;
-        response.setError("");
-        return response;
+        melding.setError("");
+        return melding;
     }
 
     @ApiMethod(name = "GetVersie")

@@ -51,8 +51,8 @@ public class StatsPerPlaatsActivity extends Activity {
         new AsyncGetStatistiekenPerPlaatsTask(this).execute();
     }
 
-    private void ToonTotStatistieken(ArrayList<Statistiek> stats) {
-        if (stats == null || stats.size() == 0) {
+    private void ToonPerPlaatsStatistieken(ArrayList<Statistiek> stats) {
+        if (stats == null || stats.size() <= 1) {
             return;
         }
         final ListView lvStats = findViewById(R.id.lvStats);
@@ -88,7 +88,7 @@ public class StatsPerPlaatsActivity extends Activity {
         protected void onPostExecute(ArrayList<Statistiek> stats) {
 
             StatsPerPlaatsActivity activity = activityWeakReference.get();
-            if (activity != null) activity.ToonTotStatistieken(stats);
+            if (activity != null) activity.ToonPerPlaatsStatistieken(stats);
         }
 
     }

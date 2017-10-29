@@ -29,7 +29,7 @@ public class StatsWeerTypeActivity extends Activity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.een_plaats_statistieken);
+        setContentView(R.layout.weertype_statistieken);
 
         FloatingActionButton fabTerug = findViewById(R.id.btnTerug);
         fabTerug.setOnClickListener(new View.OnClickListener() {
@@ -38,10 +38,6 @@ public class StatsWeerTypeActivity extends Activity {
                 Terug();
             }
         });
-
-        Intent myIntent = getIntent(); // gets the previously created intent
-        String locatie = myIntent.getStringExtra("Locatie");
-
         InitDb();
         ToondataBackground();
     }
@@ -51,7 +47,7 @@ public class StatsWeerTypeActivity extends Activity {
     }
 
     private void Terug() {
-        Intent intent = new Intent(this, StatsPerPlaatsActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
@@ -66,25 +62,26 @@ public class StatsWeerTypeActivity extends Activity {
             return;
         }
 
+        int[] colors = new int[]{ContextCompat.getColor(this, R.color.colorGrafiek1),
+                ContextCompat.getColor(this, R.color.colorGrafiek2),
+                ContextCompat.getColor(this, R.color.colorGrafiek3),
+                ContextCompat.getColor(this, R.color.colorGrafiek4),
+                ContextCompat.getColor(this, R.color.colorGrafiek5),
+                ContextCompat.getColor(this, R.color.colorGrafiek6),
+                ContextCompat.getColor(this, R.color.colorGrafiek7),
+                ContextCompat.getColor(this, R.color.colorGrafiek8)};
+
         ArrayList<PieEntry> dataT = new ArrayList<>();
         ArrayList<LegendEntry> legendEntries = new ArrayList<>();
 
-        int totaal = 0;
         for (int i = 0; i < stats.size(); i++) {
-            totaal += stats.get(i).getAantal();
-        }
-
-        int totaalPercentage=0;
-        for (int i = 0; i < stats.size(); i++) {
-            int percentage = Math.round(100.0F * stats.get(i).getAantal() / totaal);
-            totaalPercentage += percentage;
-            dataT.add(new PieEntry(percentage, String.format("%d%%", percentage)));
-            LegendEntry le1 = new LegendEntry();
-            le1.formColor = ContextCompat.getColor(this, R.color.colorNatStart);
-            le1.label = stats.get(i).getWeerTypeOschrijving();
-            le1.form = Legend.LegendForm.SQUARE;
-            le1.formSize = 10;
-            legendEntries.add(le1);
+            dataT.add(new PieEntry(stats.get(i).getPercentage(), String.format("%d%%", stats.get(i).getPercentage())));
+            LegendEntry le = new LegendEntry();
+            le.formColor = colors[i];
+            le.label = stats.get(i).getWeerTypeOschrijving();
+            le.form = Legend.LegendForm.SQUARE;
+            le.formSize = 10;
+            legendEntries.add(le);
         }
 
         final PieChart chart = findViewById(R.id.pcPerWeertype);
@@ -105,7 +102,7 @@ public class StatsWeerTypeActivity extends Activity {
         legend.setWordWrapEnabled(true);
 
         PieDataSet dsT = new PieDataSet(dataT, "");
-        dsT.setColors(ContextCompat.getColor(this, R.color.colorDroogStart), ContextCompat.getColor(this, R.color.colorNatStart));
+        dsT.setColors(colors);
         IValueFormatter myValueFormat = new IValueFormatter() {
             @Override
             public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {

@@ -219,7 +219,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
                 + " " + MDG_NAT + ","
                 + " " + MDG_TEMPERATUUR + ","
                 + " " + MDG_WEERTYPE
-                +" FROM " + TAB_MELDING
+                + " FROM " + TAB_MELDING
                 + " ORDER BY " + MDG_DATUM + " DESC"
                 + " LIMIT 25";
 
@@ -253,7 +253,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
                 + " " + MDG_DATUM + ","
                 + " " + MDG_DROOG + ","
                 + " " + MDG_NAT + ","
-                + " " + MDG_TEMPERATUUR+ ","
+                + " " + MDG_TEMPERATUUR + ","
                 + " " + MDG_WEERTYPE
                 + " FROM " + TAB_MELDING
                 + " WHERE " + MDG_TELID + " = ?"
@@ -476,8 +476,9 @@ class DatabaseHelper extends SQLiteOpenHelper {
                 + " " + MDG_WEERTYPE + ","
                 + " COUNT(*) AS AANTAL"
                 + " FROM " + TAB_MELDING
+                + " WHERE " + MDG_WEERTYPE + " > 0 "
                 + " GROUP BY " + MDG_WEERTYPE
-                + " ORDER BY 2 DESC";
+                + " ORDER BY AANTAL DESC";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor;
@@ -485,6 +486,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
         ArrayList<StatistiekWeertype> stats = new ArrayList<>();
 
+        int totaal = 0;
         if (cursor.moveToFirst()) {
             do {
                 StatistiekWeertype stat = new StatistiekWeertype();
@@ -493,9 +495,22 @@ class DatabaseHelper extends SQLiteOpenHelper {
                 stat.setAantal(cursor.getInt(1));
                 stat.setWeerTypeOschrijving(WeerHelper.WeerTypeToWeerOmschrijving(weerType));
                 stats.add(stat);
+                totaal += stat.getAantal();
             } while (cursor.moveToNext());
         }
         cursor.close();
+        if (stats.size() == 0) return stats;
+
+        int totaalPercentage = 0;
+        for (int i = 0; i < stats.size(); i++) {
+            int percentage = Math.round(100.0F * stats.get(i).getAantal() / totaal);
+            stats.get(i).setPercentage(percentage);
+            totaalPercentage += percentage;
+        }
+
+        int correctie = 100 - totaalPercentage;
+        stats.get(0).setPercentage(stats.get(0).getPercentage() + correctie);
+
         return stats;
     }
 }

@@ -212,7 +212,7 @@ public class MainActivity extends Activity {
 
     private void ResetCache() {
         ClearCache();
-        SyncLocalDb(true);
+        SyncLocalDb();
     }
 
     private void ClearCache() {
@@ -665,7 +665,7 @@ public class MainActivity extends Activity {
 
     private void Init() {
         mDH = new DatabaseHelper(getApplicationContext());
-        SyncLocalDb(false);
+        SyncLocalDb();
         InitViews(false);
         InitWeerViews(false);
         InitBrViews(false);
@@ -684,15 +684,17 @@ public class MainActivity extends Activity {
         Helper.SetLastSyncDate(cxt, DateTime.now());
     }
 
-    private void SyncLocalDb(Boolean withProgress) {
+    private void SyncLocalDb() {
         Context cxt = getApplicationContext();
         DateTime last = Helper.GetLastSyncDate(cxt);
         DateTime nu = DateTime.now();
+        // We syncen max 1 keer per uur om gegevens van anderen op te halen
         if (last.plusHours(1).isBefore(nu)) {
             if (!Helper.TestInternet(cxt)) {
                 return;
             }
-            if (withProgress) ShowDbProgress();
+            // We tonen een progressbar als we veel opvragen
+            if (last.isBefore(DateTime.now().minusDays(7))) ShowDbProgress();
             new AsyncSyncLocalDbTask(this).execute(last);
         }
     }
@@ -726,8 +728,8 @@ public class MainActivity extends Activity {
 
             DateTime last = params[0];
             try {
-                // We vragen 15 minuten extra op, want als de server tijd wat afwijkt is er een kans dat je uiteindelijk meldingen mist
-                MeldingCollection meldingen = Helper.myApiService.getAlleMeldingenVanaf(last.minusMinutes(15).getMillis()).execute();
+                // We vragen 24 uur extra op, om de kans dat we gegevens missen kleiner te maken
+                MeldingCollection meldingen = Helper.myApiService.getAlleMeldingenVanaf(last.minusHours(24).getMillis()).execute();
                 if (meldingen == null || meldingen.size() == 0 || meldingen.getItems() == null || meldingen.getItems().size() == 0) {
                     return null;
                 }
@@ -856,6 +858,7 @@ public class MainActivity extends Activity {
                 Helper.ShowMessage(result.first, err);
             } else {
                 ArrayList<Melding> meldingen = new ArrayList<>();
+                meldingen.add(melding);
                 mDH.addMeldingen(meldingen);
                 Helper.ShowMessage(result.first, activity.getString(R.string.BedanktMelding));
             }

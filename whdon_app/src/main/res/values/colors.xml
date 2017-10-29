@@ -12,4 +12,12 @@
     <color name="colorNatEnd">#CEE3F6</color>
     <color name ="colorTemperatuur">#cc3300</color>
     <color name ="colorTemperatuurDark">#661a00</color>
+    <color name="colorGrafiek1">#D98880</color>
+    <color name="colorGrafiek2">#C39BD3</color>
+    <color name="colorGrafiek3">#7FB3D5</color>
+    <color name="colorGrafiek4">#93d57f</color>
+    <color name="colorGrafiek5">#F7DC6F</color>
+    <color name="colorGrafiek6">#F0B27A</color>
+    <color name="colorGrafiek7">#CACFD2</color>
+    <color name="colorGrafiek8">#F2D7D5</color>
 </resources>

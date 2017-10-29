@@ -19,7 +19,7 @@
             android:layout_marginTop="16dp"
             android:textColor="@color/colorPrimary"
             android:textSize="24sp"
-            android:text="@string/aantal_per_weertype"
+            android:text="@string/PerWeerType"
             android:textStyle="bold" />
 
         <com.github.mikephil.charting.charts.PieChart
