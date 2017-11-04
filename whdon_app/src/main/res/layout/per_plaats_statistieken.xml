@@ -15,23 +15,49 @@
             android:id="@+id/tvPerPlaats"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:layout_marginStart="100dp"
+            android:layout_marginTop="16dp"
             android:text="@string/per_plaats"
             android:textColor="@color/colorPrimary"
-            android:layout_marginTop="16dp"
             android:textSize="24sp"
             android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="100dp"
+                android:text="@string/Zoek"
+                android:labelFor="@+id/etZoek"
+                android:textColor="@color/colorTekst"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/etZoek"
+                android:inputType="text"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/colorTekst"
+                android:textSize="14sp" />
+
+        </LinearLayout>
 
         <ListView
             android:id="@+id/lvStats"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:dividerHeight="0dp"
+            android:layout_marginTop="12dp"
             android:divider="@null"
+            android:dividerHeight="0dp"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
-            android:paddingTop="24dp" >
+            android:paddingTop="0dp">
         </ListView>
 
     </LinearLayout>
@@ -41,9 +67,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="top|start"
+        android:layout_marginBottom="0dp"
         android:layout_marginStart="0dp"
         android:layout_marginTop="0dp"
-        android:layout_marginBottom="0dp"
-        app:useCompatPadding="true"
-        android:src="@drawable/back" />
+        android:src="@drawable/back"
+        app:useCompatPadding="true" />
 </RelativeLayout>

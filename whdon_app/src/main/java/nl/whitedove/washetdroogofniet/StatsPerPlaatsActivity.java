@@ -5,8 +5,11 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import java.lang.ref.WeakReference;
@@ -18,7 +21,13 @@ public class StatsPerPlaatsActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.per_plaats_statistieken);
+        InitFab();
+        InitDb();
+        ToondataBackground();
+    }
 
+    private void InitFab()
+    {
         FloatingActionButton fabTerug = findViewById(R.id.btnTerug);
         fabTerug.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -26,8 +35,6 @@ public class StatsPerPlaatsActivity extends Activity {
                 Terug();
             }
         });
-        InitDb();
-        ToondataBackground();
     }
 
     private void InitDb() {
@@ -57,8 +64,26 @@ public class StatsPerPlaatsActivity extends Activity {
         }
         final ListView lvStats = findViewById(R.id.lvStats);
 
-        CustomListAdapterTotStats adapter = new CustomListAdapterTotStats(this, stats);
+        final CustomListAdapterTotStats adapter = new CustomListAdapterTotStats(this, stats);
         lvStats.setAdapter(adapter);
+
+        EditText etZoek = findViewById(R.id.etZoek);
+        etZoek.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                adapter.getFilter().filter(s.toString());
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
 
         lvStats.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 

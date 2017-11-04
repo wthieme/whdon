@@ -6,31 +6,37 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-class CustomListAdapterTotStats extends BaseAdapter {
+class CustomListAdapterTotStats extends BaseAdapter implements Filterable {
 
     private List<Statistiek> listData;
+    private List<Statistiek>filteredData = null;
+    private ItemFilter mFilter = new ItemFilter();
+
     private LayoutInflater layoutInflater;
 
     CustomListAdapterTotStats(Context context, ArrayList<Statistiek> listData) {
 
         this.listData = listData;
+        this.filteredData = listData ;
         layoutInflater = LayoutInflater.from(context);
     }
 
     @Override
     public int getCount() {
-        return listData.size();
+        return filteredData.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return listData.get(position);
+        return filteredData.get(position);
     }
 
     @Override
@@ -55,7 +61,7 @@ class CustomListAdapterTotStats extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        Statistiek stat = listData.get(position);
+        Statistiek stat = filteredData.get(position);
         int aantalDroog = stat.getAantalDroog();
         int aantalNat = stat.getAantalNat();
         int totaal = aantalDroog + aantalNat;
@@ -78,4 +84,45 @@ class CustomListAdapterTotStats extends BaseAdapter {
         TextView tvNat;
         ProgressBar pbProgress;
     }
+
+    public Filter getFilter() {
+        return mFilter;
+    }
+
+    private class ItemFilter extends Filter {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+
+            String filterString = constraint.toString().toLowerCase();
+
+            FilterResults results = new FilterResults();
+
+            final List<Statistiek> list = listData;
+
+            int count = list.size();
+            final ArrayList<Statistiek> nlist = new ArrayList<>(count);
+
+            Statistiek filterableStat ;
+
+            for (int i = 0; i < count; i++) {
+                filterableStat = list.get(i);
+                if (filterableStat.getLocatie().toLowerCase().contains(filterString)) {
+                    nlist.add(filterableStat);
+                }
+            }
+
+            results.values = nlist;
+            results.count = nlist.size();
+
+            return results;
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            filteredData = (ArrayList<Statistiek>) results.values;
+            notifyDataSetChanged();
+        }
+    }
 }
+

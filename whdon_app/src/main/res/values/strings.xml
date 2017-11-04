@@ -52,4 +52,5 @@
     <string name="AantalPerUur">Per uur van de dag</string>
     <string name="GemmTemp">Gemiddelde temperatuur:</string>
     <string name="PerWeerType">Per weertype</string>
+    <string name="Zoek">Zoek:</string>
 </resources>
