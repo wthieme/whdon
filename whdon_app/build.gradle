@@ -16,7 +16,6 @@ android {
     signingConfigs {
     }
     compileSdkVersion 27
-    buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "nl.whitedove.washetdroogofniet"
         minSdkVersion 17
