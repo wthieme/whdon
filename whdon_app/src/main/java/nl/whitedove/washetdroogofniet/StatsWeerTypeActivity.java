@@ -13,12 +13,9 @@ import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.LegendEntry;
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.formatter.IValueFormatter;
-import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -93,6 +90,8 @@ public class StatsWeerTypeActivity extends Activity {
         chart.setTouchEnabled(false);
         chart.setNoDataText(getString(R.string.nodata));
         chart.getLegend().setEnabled(false);
+        chart.setEntryLabelColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
+        chart.setDrawEntryLabels(true);
 
         Legend legend = chart.getLegend();
         legend.setCustom(legendEntries);
@@ -103,13 +102,7 @@ public class StatsWeerTypeActivity extends Activity {
 
         PieDataSet dsT = new PieDataSet(dataT, "");
         dsT.setColors(colors);
-        IValueFormatter myValueFormat = new IValueFormatter() {
-            @Override
-            public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
-                return "";
-            }
-        };
-        dsT.setValueFormatter(myValueFormat);
+        dsT.setDrawValues(false);
 
         PieData data = new PieData(dsT);
         data.setValueTextSize(14f);

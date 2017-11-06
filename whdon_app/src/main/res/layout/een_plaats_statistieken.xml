@@ -165,7 +165,7 @@
             android:id="@+id/pcPerdag"
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
-            android:minHeight="300dp"
+            android:minHeight="325dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="20dp" />
