@@ -453,13 +453,13 @@ public class MainActivity extends Activity {
     private void ToondataBackground() {
         Context cxt = getApplicationContext();
         String id = Helper.GetGuid(cxt);
-        new AsyncGetLaatsteMeldingTask(this).execute(id);
-        new AsyncGetPersoonlijkeStatsTask(this).execute(id);
+        new AsyncGetLaatsteMeldingTask(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,id);
+        new AsyncGetPersoonlijkeStatsTask(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,id);
         if (!Helper.TestInternet(cxt)) {
             return;
         }
-        new AsyncGetWeerVoorspelling(this).execute();
-        new AsyncGetBuienData(this).execute();
+        new AsyncGetWeerVoorspelling(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        new AsyncGetBuienData(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     private void SlaMeldingOp(Boolean droog) {
@@ -681,7 +681,7 @@ public class MainActivity extends Activity {
         Helper.mCurrentBestLocation = location;
         LocationHelper.BepaalLocatie(this);
         ToonHuidigeLocatie();
-        new AsyncGetWeerVoorspelling(this).execute();
+        new AsyncGetWeerVoorspelling(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     private void SetDbSyncDate() {
@@ -698,9 +698,9 @@ public class MainActivity extends Activity {
             if (!Helper.TestInternet(cxt)) {
                 return;
             }
-            // We tonen een progressbar als we veel opvragen
+            // We tonen een progressbar als het lang geleden was sinds de laatste sync
             if (last.isBefore(DateTime.now().minusDays(7))) ShowDbProgress();
-            new AsyncSyncLocalDbTask(this).execute(last);
+            new AsyncSyncLocalDbTask(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, last);
         }
     }
 
