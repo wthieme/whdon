@@ -670,7 +670,7 @@ public class MainActivity extends Activity {
     }
 
     private void Init() {
-        mDH = new DatabaseHelper(getApplicationContext());
+        mDH = DatabaseHelper.getInstance(getApplicationContext());
         InitViews(false);
         InitWeerViews(false);
         InitBrViews(false);

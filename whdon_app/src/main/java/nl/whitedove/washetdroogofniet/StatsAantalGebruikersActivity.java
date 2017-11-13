@@ -70,7 +70,7 @@ public class StatsAantalGebruikersActivity extends Activity {
     }
 
     private void InitDb() {
-        mDH = new DatabaseHelper(getApplicationContext());
+        mDH = DatabaseHelper.getInstance(getApplicationContext());
     }
 
     private void Terug() {

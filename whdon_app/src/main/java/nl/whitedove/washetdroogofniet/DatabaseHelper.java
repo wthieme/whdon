@@ -28,7 +28,16 @@ class DatabaseHelper extends SQLiteOpenHelper {
     private static final String MDG_TEMPERATUUR = "Temperatuur";
     private static final String MDG_WEERTYPE = "Weertype";
 
-    DatabaseHelper(Context context) {
+    private static DatabaseHelper sInstance;
+
+    public static synchronized DatabaseHelper getInstance(Context context) {
+        if (sInstance == null) {
+            sInstance = new DatabaseHelper(context.getApplicationContext());
+        }
+        return sInstance;
+    }
+
+    private DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
