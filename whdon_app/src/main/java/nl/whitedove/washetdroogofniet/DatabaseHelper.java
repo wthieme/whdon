@@ -109,7 +109,6 @@ class DatabaseHelper extends SQLiteOpenHelper {
             }
         }
         db.execSQL("END TRANSACTION");
-        db.close();
     }
 
     Statistiek GetPersoonlijkeStatistiek(String id) {
@@ -140,7 +139,6 @@ class DatabaseHelper extends SQLiteOpenHelper {
     void DeleteMeldingen() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TAB_MELDING, null, null);
-        db.close();
     }
 
     Melding GetLaatsteMelding(String id) {
