@@ -2,6 +2,7 @@ package nl.whitedove.washetdroogofniet;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -35,7 +36,6 @@ import java.util.List;
 import java.util.Locale;
 
 public class StatsPerMaandActivity extends Activity {
-    static DatabaseHelper mDH;
     static int jaar = DateTime.now().getYear();
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +80,6 @@ public class StatsPerMaandActivity extends Activity {
     }
 
     private void InitDb() {
-        mDH = DatabaseHelper.getInstance(getApplicationContext());
     }
 
     private void Terug() {
@@ -90,7 +89,8 @@ public class StatsPerMaandActivity extends Activity {
     }
 
     private void ToondataBackground() {
-        new AsyncGetStatistiekenPerMaandTask(this).execute();
+        Context context = getApplicationContext();
+        new AsyncGetStatistiekenPerMaandTask(this).execute(context);
     }
 
     @SuppressLint("SetTextI18n")
@@ -248,7 +248,7 @@ public class StatsPerMaandActivity extends Activity {
         lChart.invalidate();
     }
 
-    private static class AsyncGetStatistiekenPerMaandTask extends AsyncTask<Void, Void, ArrayList<Statistiek1Maand>> {
+    private static class AsyncGetStatistiekenPerMaandTask extends AsyncTask<Context, Void, ArrayList<Statistiek1Maand>> {
         private WeakReference<StatsPerMaandActivity> activityWeakReference;
 
         AsyncGetStatistiekenPerMaandTask(StatsPerMaandActivity context) {
@@ -256,8 +256,10 @@ public class StatsPerMaandActivity extends Activity {
         }
 
         @Override
-        protected ArrayList<Statistiek1Maand> doInBackground(Void... params) {
-            return mDH.GetStatistiek12Maanden(jaar);
+        protected ArrayList<Statistiek1Maand> doInBackground(Context... params) {
+            Context context = params[0];
+            DatabaseHelper dh = DatabaseHelper.getInstance(context);
+            return dh.GetStatistiek12Maanden(jaar);
         }
 
         @Override

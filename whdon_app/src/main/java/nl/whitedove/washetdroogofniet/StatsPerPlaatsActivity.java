@@ -1,6 +1,7 @@
 package nl.whitedove.washetdroogofniet;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,7 +17,6 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 public class StatsPerPlaatsActivity extends Activity {
-    static DatabaseHelper mDH;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,8 +26,7 @@ public class StatsPerPlaatsActivity extends Activity {
         ToondataBackground();
     }
 
-    private void InitFab()
-    {
+    private void InitFab() {
         FloatingActionButton fabTerug = findViewById(R.id.btnTerug);
         fabTerug.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -38,7 +37,6 @@ public class StatsPerPlaatsActivity extends Activity {
     }
 
     private void InitDb() {
-        mDH = DatabaseHelper.getInstance(getApplicationContext());
     }
 
     private void Stat1Plaats(String locatie) {
@@ -55,7 +53,8 @@ public class StatsPerPlaatsActivity extends Activity {
     }
 
     private void ToondataBackground() {
-        new AsyncGetStatistiekenPerPlaatsTask(this).execute();
+        Context context = getApplicationContext();
+        new AsyncGetStatistiekenPerPlaatsTask(this).execute(context);
     }
 
     private void ToonPerPlaatsStatistieken(ArrayList<Statistiek> stats) {
@@ -97,7 +96,7 @@ public class StatsPerPlaatsActivity extends Activity {
 
     }
 
-    private static class AsyncGetStatistiekenPerPlaatsTask extends AsyncTask<Void, Void, ArrayList<Statistiek>> {
+    private static class AsyncGetStatistiekenPerPlaatsTask extends AsyncTask<Context, Void, ArrayList<Statistiek>> {
         private WeakReference<StatsPerPlaatsActivity> activityWeakReference;
 
         AsyncGetStatistiekenPerPlaatsTask(StatsPerPlaatsActivity context) {
@@ -105,8 +104,10 @@ public class StatsPerPlaatsActivity extends Activity {
         }
 
         @Override
-        protected ArrayList<Statistiek> doInBackground(Void... params) {
-            return mDH.GetStatistieken();
+        protected ArrayList<Statistiek> doInBackground(Context... params) {
+            Context context = params[0];
+            DatabaseHelper dh = DatabaseHelper.getInstance(context);
+            return dh.GetStatistieken();
         }
 
         @Override

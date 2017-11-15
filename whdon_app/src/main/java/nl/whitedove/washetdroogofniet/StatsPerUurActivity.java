@@ -1,6 +1,7 @@
 package nl.whitedove.washetdroogofniet;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -25,7 +26,6 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 public class StatsPerUurActivity extends Activity {
-    static DatabaseHelper mDH;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +43,6 @@ public class StatsPerUurActivity extends Activity {
     }
 
     private void InitDb() {
-        mDH = DatabaseHelper.getInstance(getApplicationContext());
     }
 
     private void Terug() {
@@ -53,7 +52,8 @@ public class StatsPerUurActivity extends Activity {
     }
 
     private void ToondataBackground() {
-        new AsyncGetStatistiekenPerUurTask(this).execute();
+        Context context = getApplicationContext();
+        new AsyncGetStatistiekenPerUurTask(this).execute(context);
     }
 
     private void ToonStatistiekenPerUur(ArrayList<Statistiek1Uur> stats) {
@@ -123,7 +123,7 @@ public class StatsPerUurActivity extends Activity {
         chart.invalidate();
     }
 
-    private static class AsyncGetStatistiekenPerUurTask extends AsyncTask<Void, Void, ArrayList<Statistiek1Uur>> {
+    private static class AsyncGetStatistiekenPerUurTask extends AsyncTask<Context, Void, ArrayList<Statistiek1Uur>> {
 
         private WeakReference<StatsPerUurActivity> activityWeakReference;
 
@@ -132,8 +132,10 @@ public class StatsPerUurActivity extends Activity {
         }
 
         @Override
-        protected ArrayList<Statistiek1Uur> doInBackground(Void... params) {
-            return mDH.GetStatistiek24Uur();
+        protected ArrayList<Statistiek1Uur> doInBackground(Context... params) {
+            Context context = params[0];
+            DatabaseHelper dh = DatabaseHelper.getInstance(context);
+            return dh.GetStatistiek24Uur();
         }
 
         @Override

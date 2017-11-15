@@ -2,6 +2,7 @@ package nl.whitedove.washetdroogofniet;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -19,7 +20,6 @@ import java.util.ArrayList;
 import nl.whitedove.washetdroogofniet.backend.whdonApi.model.Melding;
 
 public class Laatste25Activity extends Activity {
-    static DatabaseHelper mDH;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +37,6 @@ public class Laatste25Activity extends Activity {
     }
 
     private void InitDb() {
-        mDH = DatabaseHelper.getInstance(getApplicationContext());
     }
 
     private void Terug() {
@@ -47,7 +46,8 @@ public class Laatste25Activity extends Activity {
     }
 
     private void ToondataBackground() {
-        new AsyncGetLaatste25Task(this).execute();
+        Context context = getApplicationContext();
+        new AsyncGetLaatste25Task(this).execute(context);
     }
 
     @SuppressLint("DefaultLocale")
@@ -98,7 +98,7 @@ public class Laatste25Activity extends Activity {
         lvLaatste25.setAdapter(new CustomListAdapterMeldingen(this, meldingen));
     }
 
-    private static class AsyncGetLaatste25Task extends AsyncTask<Void, Void, ArrayList<Melding>> {
+    private static class AsyncGetLaatste25Task extends AsyncTask<Context, Void, ArrayList<Melding>> {
         private WeakReference<Laatste25Activity> activityWeakReference;
 
         AsyncGetLaatste25Task(Laatste25Activity context) {
@@ -106,8 +106,10 @@ public class Laatste25Activity extends Activity {
         }
 
         @Override
-        protected ArrayList<Melding> doInBackground(Void... params) {
-            return mDH.GetLaatste25Meldingen();
+        protected ArrayList<Melding> doInBackground(Context... params) {
+            Context context = params[0];
+            DatabaseHelper dh = DatabaseHelper.getInstance(context);
+            return dh.GetLaatste25Meldingen();
         }
 
         @Override

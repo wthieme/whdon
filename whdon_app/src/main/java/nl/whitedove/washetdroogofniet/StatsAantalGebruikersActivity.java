@@ -2,6 +2,7 @@ package nl.whitedove.washetdroogofniet;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -28,7 +29,6 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 public class StatsAantalGebruikersActivity extends Activity {
-    static DatabaseHelper mDH;
     static DateTime datum = new DateTime(DateTime.now().getYear(), DateTime.now().getMonthOfYear(), DateTime.now().getDayOfMonth(), 0, 0).minusDays(29);
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +70,6 @@ public class StatsAantalGebruikersActivity extends Activity {
     }
 
     private void InitDb() {
-        mDH = DatabaseHelper.getInstance(getApplicationContext());
     }
 
     private void Terug() {
@@ -80,7 +79,8 @@ public class StatsAantalGebruikersActivity extends Activity {
     }
 
     private void ToondataBackground() {
-        new AsyncGetAantalGebruikersStatistiekenTask(this).execute();
+        Context context = getApplicationContext();
+        new AsyncGetAantalGebruikersStatistiekenTask(this).execute(context);
     }
 
     @SuppressLint("DefaultLocale")
@@ -166,7 +166,7 @@ public class StatsAantalGebruikersActivity extends Activity {
         lChart.invalidate();
     }
 
-    private static class AsyncGetAantalGebruikersStatistiekenTask extends AsyncTask<Void, Void, ArrayList<StatistiekAantalGebruikers>> {
+    private static class AsyncGetAantalGebruikersStatistiekenTask extends AsyncTask<Context, Void, ArrayList<StatistiekAantalGebruikers>> {
         private WeakReference<StatsAantalGebruikersActivity> activityWeakReference;
 
         AsyncGetAantalGebruikersStatistiekenTask(StatsAantalGebruikersActivity context) {
@@ -174,8 +174,10 @@ public class StatsAantalGebruikersActivity extends Activity {
         }
 
         @Override
-        protected ArrayList<StatistiekAantalGebruikers> doInBackground(Void... params) {
-            return mDH.GetAantalGebruikers30Dagen(datum);
+        protected ArrayList<StatistiekAantalGebruikers> doInBackground(Context... params) {
+            Context context = params[0];
+            DatabaseHelper dh = DatabaseHelper.getInstance(context);
+            return dh.GetAantalGebruikers30Dagen(datum);
         }
 
         @Override

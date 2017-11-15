@@ -2,6 +2,7 @@ package nl.whitedove.washetdroogofniet;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -22,8 +23,6 @@ import java.util.ArrayList;
 
 public class StatsWeerTypeActivity extends Activity {
 
-    static DatabaseHelper mDH;
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.weertype_statistieken);
@@ -40,7 +39,6 @@ public class StatsWeerTypeActivity extends Activity {
     }
 
     private void InitDb() {
-        mDH = DatabaseHelper.getInstance(getApplicationContext());
     }
 
     private void Terug() {
@@ -50,7 +48,8 @@ public class StatsWeerTypeActivity extends Activity {
     }
 
     private void ToondataBackground() {
-        new AsyncGetStatistiekWeerTypeTask(this).execute();
+        Context context = getApplicationContext();
+        new AsyncGetStatistiekWeerTypeTask(this).execute(context);
     }
 
     @SuppressLint("DefaultLocale")
@@ -113,7 +112,7 @@ public class StatsWeerTypeActivity extends Activity {
         chart.invalidate();
     }
 
-    private static class AsyncGetStatistiekWeerTypeTask extends AsyncTask<Void, Void, ArrayList<StatistiekWeertype>> {
+    private static class AsyncGetStatistiekWeerTypeTask extends AsyncTask<Context, Void, ArrayList<StatistiekWeertype>> {
         private WeakReference<StatsWeerTypeActivity> activityWeakReference;
 
         AsyncGetStatistiekWeerTypeTask(StatsWeerTypeActivity context) {
@@ -121,8 +120,10 @@ public class StatsWeerTypeActivity extends Activity {
         }
 
         @Override
-        protected ArrayList<StatistiekWeertype> doInBackground(Void... params) {
-            return mDH.GetStatistiekWeerType();
+        protected ArrayList<StatistiekWeertype> doInBackground(Context... params) {
+            Context context = params[0];
+            DatabaseHelper dh = DatabaseHelper.getInstance(context);
+            return dh.GetStatistiekWeerType();
         }
 
         @Override

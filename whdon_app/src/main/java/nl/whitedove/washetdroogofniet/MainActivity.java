@@ -59,8 +59,8 @@ import nl.whitedove.washetdroogofniet.backend.whdonApi.model.MeldingCollection;
 
 public class MainActivity extends Activity {
 
-    static DatabaseHelper mDH;
-    ProgressDialog mProgress;
+    ProgressDialog mProgressSync;
+    ProgressDialog mProgressSave;
     static final int MY_PERMISSIONS_REQUEST_LOCATION = 1;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -216,8 +216,9 @@ public class MainActivity extends Activity {
     }
 
     private void ClearCache() {
-        mDH.DeleteMeldingen();
         Context cxt = getApplicationContext();
+        DatabaseHelper dh = DatabaseHelper.getInstance(cxt);
+        dh.DeleteMeldingen();
         Helper.SetLastSyncDate(cxt, new DateTime(2000, 1, 1, 0, 0));
     }
 
@@ -453,8 +454,10 @@ public class MainActivity extends Activity {
     private void ToondataBackground() {
         Context cxt = getApplicationContext();
         String id = Helper.GetGuid(cxt);
-        new AsyncGetLaatsteMeldingTask(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,id);
-        new AsyncGetPersoonlijkeStatsTask(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,id);
+        //noinspection unchecked
+        new AsyncGetLaatsteMeldingTask(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, Pair.create(cxt, id));
+        //noinspection unchecked
+        new AsyncGetPersoonlijkeStatsTask(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, Pair.create(cxt, id));
         if (!Helper.TestInternet(cxt)) {
             return;
         }
@@ -670,7 +673,6 @@ public class MainActivity extends Activity {
     }
 
     private void Init() {
-        mDH = DatabaseHelper.getInstance(getApplicationContext());
         InitViews(false);
         InitWeerViews(false);
         InitBrViews(false);
@@ -700,27 +702,28 @@ public class MainActivity extends Activity {
             }
             // We tonen een progressbar als het lang geleden was sinds de laatste sync
             if (last.isBefore(DateTime.now().minusDays(7))) ShowDbProgress();
-            new AsyncSyncLocalDbTask(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, last);
+            //noinspection unchecked
+            new AsyncSyncLocalDbTask(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, Pair.create(cxt, last));
         }
     }
 
     private void ShowMeldingProgress() {
-        mProgress = new ProgressDialog(this);
-        mProgress.setMessage(getString(R.string.MeldingVerwerken));
-        mProgress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        mProgress.setCancelable(false);
-        mProgress.show();
+        mProgressSave = new ProgressDialog(this);
+        mProgressSave.setMessage(getString(R.string.MeldingVerwerken));
+        mProgressSave.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mProgressSave.setCancelable(false);
+        mProgressSave.show();
     }
 
     private void ShowDbProgress() {
-        mProgress = new ProgressDialog(this);
-        mProgress.setMessage(getString(R.string.CacheBijwerken));
-        mProgress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        mProgress.setCancelable(false);
-        mProgress.show();
+        mProgressSync = new ProgressDialog(this);
+        mProgressSync.setMessage(getString(R.string.CacheBijwerken));
+        mProgressSync.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mProgressSync.setCancelable(false);
+        mProgressSync.show();
     }
 
-    private static class AsyncSyncLocalDbTask extends AsyncTask<DateTime, Void, Void> {
+    private static class AsyncSyncLocalDbTask extends AsyncTask<Pair<Context, DateTime>, Void, Void> {
 
         private WeakReference<MainActivity> activityWeakReference;
 
@@ -728,18 +731,20 @@ public class MainActivity extends Activity {
             activityWeakReference = new WeakReference<>(context);
         }
 
+        @SafeVarargs
         @Override
-        protected Void doInBackground(DateTime... params) {
+        protected final Void doInBackground(Pair<Context, DateTime>... params) {
 
-            DateTime last = params[0];
+            Context context = params[0].first;
+            DateTime last = params[0].second;
             try {
                 // We vragen 24 uur extra op, om de kans dat we gegevens missen kleiner te maken
                 MeldingCollection meldingen = Helper.myApiService.getAlleMeldingenVanaf(last.minusHours(24).getMillis()).execute();
                 if (meldingen == null || meldingen.size() == 0 || meldingen.getItems() == null || meldingen.getItems().size() == 0) {
                     return null;
                 }
-
-                mDH.addMeldingen(meldingen.getItems());
+                DatabaseHelper dh = DatabaseHelper.getInstance(context);
+                dh.addMeldingen(meldingen.getItems());
 
             } catch (IOException ignored) {
             }
@@ -751,11 +756,11 @@ public class MainActivity extends Activity {
             MainActivity activity = activityWeakReference.get();
             if (activity == null) return;
             activity.SetDbSyncDate();
-            if (activity.mProgress != null) activity.mProgress.hide();
+            if (activity.mProgressSync != null) activity.mProgressSync.hide();
         }
     }
 
-    private static class AsyncGetLaatsteMeldingTask extends AsyncTask<String, Void, Melding> {
+    private static class AsyncGetLaatsteMeldingTask extends AsyncTask<Pair<Context, String>, Void, Melding> {
 
         private WeakReference<MainActivity> activityWeakReference;
 
@@ -763,10 +768,13 @@ public class MainActivity extends Activity {
             activityWeakReference = new WeakReference<>(context);
         }
 
+        @SafeVarargs
         @Override
-        protected Melding doInBackground(String... params) {
-            String id = params[0];
-            return mDH.GetLaatsteMelding(id);
+        protected final Melding doInBackground(Pair<Context, String>... params) {
+            Context context = params[0].first;
+            String id = params[0].second;
+            DatabaseHelper dh = DatabaseHelper.getInstance(context);
+            return dh.GetLaatsteMelding(id);
         }
 
         @Override
@@ -841,7 +849,6 @@ public class MainActivity extends Activity {
 
             Context context = params[0].first;
             Melding melding = params[0].second;
-
             Melding meld = null;
             try {
                 meld = Helper.myApiService.meldingOpslaan(melding).execute();
@@ -854,34 +861,39 @@ public class MainActivity extends Activity {
         protected void onPostExecute(Pair<Context, Melding> result) {
             MainActivity activity = activityWeakReference.get();
             if (activity == null) return;
-            if (activity.mProgress != null) activity.mProgress.hide();
+            if (activity.mProgressSave != null) activity.mProgressSave.hide();
 
+            Context context = result.first;
             Melding melding = result.second;
             if (melding == null) return;
             String err = melding.getError();
             if (err != null && !err.isEmpty()) {
-                Helper.ShowMessage(result.first, err);
+                Helper.ShowMessage(context, err);
             } else {
                 ArrayList<Melding> meldingen = new ArrayList<>();
                 meldingen.add(melding);
-                mDH.addMeldingen(meldingen);
-                Helper.ShowMessage(result.first, activity.getString(R.string.BedanktMelding));
+                DatabaseHelper dh = DatabaseHelper.getInstance(context);
+                dh.addMeldingen(meldingen);
+                Helper.ShowMessage(context, activity.getString(R.string.BedanktMelding));
             }
             activity.ToondataBackground();
         }
     }
 
-    private static class AsyncGetPersoonlijkeStatsTask extends AsyncTask<String, Void, Statistiek> {
+    private static class AsyncGetPersoonlijkeStatsTask extends AsyncTask<Pair<Context, String>, Void, Statistiek> {
         private WeakReference<MainActivity> activityWeakReference;
 
         AsyncGetPersoonlijkeStatsTask(MainActivity context) {
             activityWeakReference = new WeakReference<>(context);
         }
 
+        @SafeVarargs
         @Override
-        protected Statistiek doInBackground(String... params) {
-            String id = params[0];
-            return mDH.GetPersoonlijkeStatistiek(id);
+        protected final Statistiek doInBackground(Pair<Context, String>... params) {
+            Context context = params[0].first;
+            String id = params[0].second;
+            DatabaseHelper dh = DatabaseHelper.getInstance(context);
+            return dh.GetPersoonlijkeStatistiek(id);
         }
 
         @Override

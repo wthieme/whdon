@@ -2,11 +2,13 @@ package nl.whitedove.washetdroogofniet;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
+import android.util.Pair;
 import android.view.View;
 import android.widget.TextView;
 
@@ -25,8 +27,6 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 public class Stats1PlaatsActivity extends Activity {
-
-    static DatabaseHelper mDH;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +48,6 @@ public class Stats1PlaatsActivity extends Activity {
     }
 
     private void InitDb() {
-        mDH = DatabaseHelper.getInstance(getApplicationContext());
     }
 
     private void Terug() {
@@ -58,7 +57,8 @@ public class Stats1PlaatsActivity extends Activity {
     }
 
     private void ToondataBackground(String locatie) {
-        new AsyncGetStatistiekLocatieTask(this).execute(locatie);
+        Context context = getApplicationContext();
+        new AsyncGetStatistiekLocatieTask(this).execute(Pair.create(context,locatie));
     }
 
     @SuppressLint("DefaultLocale")
@@ -152,7 +152,7 @@ public class Stats1PlaatsActivity extends Activity {
         chart.invalidate();
     }
 
-    private static class AsyncGetStatistiekLocatieTask extends AsyncTask<String, Void, Statistiek1Plaats> {
+    private static class AsyncGetStatistiekLocatieTask extends AsyncTask<Pair<Context,String>, Void, Statistiek1Plaats> {
         private WeakReference<Stats1PlaatsActivity> activityWeakReference;
 
         AsyncGetStatistiekLocatieTask(Stats1PlaatsActivity context) {
@@ -160,9 +160,11 @@ public class Stats1PlaatsActivity extends Activity {
         }
 
         @Override
-        protected Statistiek1Plaats doInBackground(String... params) {
-            String locatie = params[0];
-            return mDH.GetStatistiekLocatie(locatie);
+        protected Statistiek1Plaats doInBackground(Pair<Context,String>... params) {
+            Context context = params[0].first;
+            String locatie = params[0].second;
+            DatabaseHelper dh = DatabaseHelper.getInstance(context);
+            return dh.GetStatistiekLocatie(locatie);
         }
 
         @Override

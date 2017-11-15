@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import nl.whitedove.washetdroogofniet.backend.whdonApi.model.Melding;
 
 public class EigenMeldingenActivity extends Activity {
-    static DatabaseHelper mDH;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +37,6 @@ public class EigenMeldingenActivity extends Activity {
     }
 
     private void InitDb() {
-        mDH = DatabaseHelper.getInstance(getApplicationContext());
     }
 
     private void Terug() {
@@ -113,7 +111,8 @@ public class EigenMeldingenActivity extends Activity {
         protected ArrayList<Melding> doInBackground(Context... params) {
             Context context = params[0];
             String id = Helper.GetGuid(context);
-            return mDH.GetMeldingen(id);
+            DatabaseHelper dh = DatabaseHelper.getInstance(context);
+            return dh.GetMeldingen(id);
         }
 
         @Override

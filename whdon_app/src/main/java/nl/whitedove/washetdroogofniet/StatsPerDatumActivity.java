@@ -2,6 +2,7 @@ package nl.whitedove.washetdroogofniet;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -33,7 +34,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StatsPerDatumActivity extends Activity {
-    static DatabaseHelper mDH;
     static DateTime datum = new DateTime(DateTime.now().getYear(), DateTime.now().getMonthOfYear(), DateTime.now().getDayOfMonth(), 0, 0).minusDays(29);
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +79,6 @@ public class StatsPerDatumActivity extends Activity {
     }
 
     private void InitDb() {
-        mDH = DatabaseHelper.getInstance(getApplicationContext());
     }
 
     private void Terug() {
@@ -89,7 +88,8 @@ public class StatsPerDatumActivity extends Activity {
     }
 
     private void ToondataBackground() {
-        new AsyncGetStatistiekenTask(this).execute();
+        Context context = getApplicationContext();
+        new AsyncGetStatistiekenTask(this).execute(context);
     }
 
     @SuppressLint("DefaultLocale")
@@ -245,7 +245,7 @@ public class StatsPerDatumActivity extends Activity {
 
     }
 
-    private static class AsyncGetStatistiekenTask extends AsyncTask<Void, Void, ArrayList<Statistiek1Dag>> {
+    private static class AsyncGetStatistiekenTask extends AsyncTask<Context, Void, ArrayList<Statistiek1Dag>> {
         private WeakReference<StatsPerDatumActivity> activityWeakReference;
 
         AsyncGetStatistiekenTask(StatsPerDatumActivity context) {
@@ -253,8 +253,10 @@ public class StatsPerDatumActivity extends Activity {
         }
 
         @Override
-        protected ArrayList<Statistiek1Dag> doInBackground(Void... params) {
-            return mDH.GetStatistiek30Dagen(datum);
+        protected ArrayList<Statistiek1Dag> doInBackground(Context... params) {
+            Context context = params[0];
+            DatabaseHelper dh = DatabaseHelper.getInstance(context);
+            return dh.GetStatistiek30Dagen(datum);
         }
 
         @Override
