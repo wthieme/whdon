@@ -25,7 +25,7 @@ import okhttp3.Response;
 class WeerHelper {
 
     public enum WeerType {
-        Onbekend(0L), Onbewolkt(1L), Halfbewolkt(2L), Bewolkt(3L), Regen(9L), Buien(10L), Onweer(11L), Sneeuw(13L), Mist(50L);
+        Onbekend(0L), Zonnig(1L), Halfbewolkt(2L), Bewolkt(3L), Regen(9L), Buien(10L), Onweer(11L), Sneeuw(13L), Mist(50L);
 
         private long value;
         @SuppressLint("UseSparseArrays")
@@ -247,7 +247,7 @@ class WeerHelper {
         switch (weerIcoon) {
             case "01d":
             case "01n":
-                return WeerType.Onbewolkt;
+                return WeerType.Zonnig;
             case "02d":
             case "02n":
                 return WeerType.Halfbewolkt;
@@ -279,8 +279,8 @@ class WeerHelper {
         switch (weerType) {
             case Onbekend:
                 return null;
-            case Onbewolkt:
-                return "Onbewolkt";
+            case Zonnig:
+                return "Zonnig";
             case Halfbewolkt:
                 return "Halfbewolkt";
             case Bewolkt:
