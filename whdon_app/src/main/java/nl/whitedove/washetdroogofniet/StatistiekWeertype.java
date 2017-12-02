@@ -5,7 +5,7 @@ class StatistiekWeertype {
     private WeerHelper.WeerType weerType;
     private String weerTypeOschrijving;
     private int aantal;
-    private int percentage;
+    private float percentage;
 
     WeerHelper.WeerType getWeerType() {
         return weerType;
@@ -31,11 +31,11 @@ class StatistiekWeertype {
         this.aantal = aantal;
     }
 
-    int getPercentage() {
+    float getPercentage() {
         return percentage;
     }
 
-    void setPercentage(int percentage) {
+    void setPercentage(float percentage) {
         this.percentage = percentage;
     }
 }

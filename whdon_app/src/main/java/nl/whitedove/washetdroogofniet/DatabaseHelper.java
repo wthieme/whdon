@@ -510,7 +510,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
         int totaalPercentage = 0;
         for (int i = 0; i < stats.size(); i++) {
-            int percentage = Math.round(100.0F * stats.get(i).getAantal() / totaal);
+            float percentage = 100.0F * stats.get(i).getAantal() / totaal;
             stats.get(i).setPercentage(percentage);
             totaalPercentage += percentage;
         }
