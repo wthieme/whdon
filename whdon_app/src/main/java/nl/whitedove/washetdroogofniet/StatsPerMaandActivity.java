@@ -186,6 +186,7 @@ public class StatsPerMaandActivity extends Activity {
         lXAs.setTextSize(10.0f);
         lXAs.setLabelCount(12, true);
 
+        int minVal = 50;
         int maxVal = -999;
 
         List<Entry> lDataT = new ArrayList<>();
@@ -197,22 +198,24 @@ public class StatsPerMaandActivity extends Activity {
             if (aantalTemp > 0) {
                 int tempSom = stats.get(i).getSomTemperatuur();
                 tempGemm = (1.0f * tempSom) / (1.0f * aantalTemp);
+                if (tempGemm < minVal) minVal = Math.round(tempGemm);
                 if (tempGemm > maxVal) maxVal = Math.round(tempGemm);
             }
             Entry e = new Entry(i, tempGemm);
             lDataT.add(e);
-
             DateTime datum = new DateTime(2000, stats.get(i).getMaand(), 1, 0, 0);
             lLabels.add(datum.toString("MMM", Locale.getDefault()));
         }
 
         lXAs.setValueFormatter(new IndexAxisValueFormatter(lLabels));
 
+        minVal = minVal - 1;
+
         if (maxVal == -999) {
             maxVal = 9;
+            minVal = 0;
         }
 
-        int minVal = 0;
         int labelCount = maxVal - minVal + 2;
         while (labelCount > 10) labelCount = labelCount / 2;
 
