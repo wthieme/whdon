@@ -85,7 +85,7 @@ public class StatsWeerTypeActivity extends Activity {
         for (int i = 0; i < stats.size(); i++) {
             int perc = Math.round(stats.get(i).getPercentage());
             if (i == 0) perc += correctie;
-            dataT.add(new PieEntry(stats.get(i).getPercentage(), String.format("%d%%", perc)));
+            dataT.add(new PieEntry(stats.get(i).getPercentage(), (perc <= 2) ? "" : String.format("%d%%", perc)));
             LegendEntry le = new LegendEntry();
             le.formColor = colors[i];
             le.label = stats.get(i).getWeerTypeOschrijving();
