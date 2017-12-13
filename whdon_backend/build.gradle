@@ -21,7 +21,6 @@ dependencies {
     implementation group: 'com.google.endpoints', name: 'endpoints-framework', version: '2.0.9'
 }
 
-
 appengine {
     deploy {
         project = findProperty("appengine.deploy.project")
@@ -33,6 +32,4 @@ appengine {
     }
 }
 
-sourceCompatibility = JavaVersion.VERSION_1_7
-targetCompatibility = JavaVersion.VERSION_1_7
 
