@@ -172,6 +172,7 @@ class WeerHelper {
     private static String getWeatherData() {
 
         String locatie = LocationHelper.GetLocatieVoorWeer();
+        String country = LocationHelper.GetCountryVoorWeer();
 
         Uri.Builder builder = new Uri.Builder();
         builder.scheme("http")
@@ -179,7 +180,7 @@ class WeerHelper {
                 .appendPath("data")
                 .appendPath("2.5")
                 .appendPath("weather")
-                .appendQueryParameter("q", String.format("%s,nl", locatie))
+                .appendQueryParameter("q", String.format("%s,%s", locatie, country))
                 .appendQueryParameter("appid", "e246fa149696b433128c8e774219bbc8")
                 .appendQueryParameter("cnt", "1")
                 .appendQueryParameter("units", "metric");

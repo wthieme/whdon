@@ -483,7 +483,7 @@ public class MainActivity extends Activity {
 
     private void ToonHuidigeLocatie() {
         TextView tvHuidigeLoc = findViewById(R.id.tvHuidigeLocatie);
-        tvHuidigeLoc.setText(Helper.mLocatie);
+        tvHuidigeLoc.setText(String.format("%s,%s", Helper.mLocatie, Helper.mCountry));
     }
 
     @SuppressLint("DefaultLocale")

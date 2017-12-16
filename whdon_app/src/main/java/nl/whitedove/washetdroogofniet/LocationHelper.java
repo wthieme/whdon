@@ -37,6 +37,7 @@ class LocationHelper {
         if (list != null && list.size() > 0) {
             Address address = list.get(0);
             Helper.mLocatie = address.getLocality();
+            Helper.mCountry = address.getCountryCode();
         } else {
             Helper.ShowMessage(cxt, "Locatie kon niet bepaald worden, adres is leeg");
         }
@@ -49,4 +50,13 @@ class LocationHelper {
         }
         return locatie;
     }
+
+    static String GetCountryVoorWeer() {
+        String country = Helper.mCountry;
+        if (country == null || country.equalsIgnoreCase("Onbekend")) {
+            country = "Nederland";
+        }
+        return country;
+    }
+
 }

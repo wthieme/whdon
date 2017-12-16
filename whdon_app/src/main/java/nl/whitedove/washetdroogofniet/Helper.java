@@ -32,6 +32,7 @@ class Helper {
     static DateTimeFormatter dtFormat = DateTimeFormat.forPattern("dd-MM-yyyy HH:mm").withLocale(Locale.getDefault());
     static Location mCurrentBestLocation;
     static String mLocatie;
+    static String mCountry;
     static final int ONE_MINUTE = 1000 * 60;
     static final int ONE_KM = 1000;
     static final boolean DEBUG = false;
