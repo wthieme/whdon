@@ -4,6 +4,8 @@ import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
@@ -57,6 +59,45 @@ class LocationHelper {
             country = "Nederland";
         }
         return country;
+    }
+
+    static LatLng BepaalLatLng(Context cxt) {
+
+        if (Helper.mCurrentBestLocation == null) {
+            Helper.ShowMessage(cxt, "Locatie kan niet bepaald worden. Staan de locatie services aan?");
+            return null;
+        }
+
+        Double lat = Helper.mCurrentBestLocation.getLatitude();
+        Double lng = Helper.mCurrentBestLocation.getLongitude();
+        return new LatLng(lat, lng);
+    }
+
+    static LatLng getLocationFromAddress(Context context, String strAddress)
+    {
+        Geocoder coder= new Geocoder(context);
+        List<Address> address;
+        LatLng p1 = null;
+
+        try
+        {
+            address = coder.getFromLocationName(strAddress, 5);
+            if(address==null)
+            {
+                return null;
+            }
+            Address location = address.get(0);
+            location.getLatitude();
+            location.getLongitude();
+
+            p1 = new LatLng(location.getLatitude(), location.getLongitude());
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return p1;
+
     }
 
 }

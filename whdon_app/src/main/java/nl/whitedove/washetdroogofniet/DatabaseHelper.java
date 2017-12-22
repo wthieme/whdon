@@ -136,6 +136,34 @@ class DatabaseHelper extends SQLiteOpenHelper {
         return response;
     }
 
+    ArrayList<Statistiek> GetPersoonlijkeStatsPerPlaats(String id) {
+        String selectQuery = "SELECT"
+                + " " + MDG_LOCATIE + " AS LOCATIE,"
+                + " SUM(" + MDG_DROOG + ") AS DROOG,"
+                + " SUM(" + MDG_NAT + ") AS NAT"
+                + " FROM " + TAB_MELDING
+                + " WHERE " + MDG_TELID + " = ?"
+                + " GROUP BY " + MDG_LOCATIE;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor;
+        cursor = db.rawQuery(selectQuery, new String[]{id});
+
+        ArrayList<Statistiek> stats = new ArrayList<>();
+
+        if (cursor.moveToFirst()) {
+            do {
+                Statistiek stat = new Statistiek();
+                stat.setLocatie(cursor.getString(0));
+                stat.setAantalDroog(cursor.getInt(1));
+                stat.setAantalNat(cursor.getInt(2));
+                stats.add(stat);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return stats;
+    }
+
     void DeleteMeldingen() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TAB_MELDING, null, null);
