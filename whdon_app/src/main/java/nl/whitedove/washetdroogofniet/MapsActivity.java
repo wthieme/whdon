@@ -2,9 +2,12 @@ package nl.whitedove.washetdroogofniet;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentActivity;
+import android.view.View;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -24,12 +27,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        FloatingActionButton fabTerug = findViewById(R.id.btnTerug);
+        fabTerug.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Terug();
+            }
+        });
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
 
+    private void Terug() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+    }
 
     /**
      * Manipulates the map once available.
@@ -43,6 +58,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        LatLng latlng = LocationHelper.BepaalLatLng(this);
+        if (latlng != null) {
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, Helper.ZOOM));
+        }
         ToondataBackground();
     }
 
@@ -53,21 +72,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @SuppressLint("MissingPermission")
     private void ToonLocaties(ArrayList<Statistiek> stats) {
-
-        LatLng latlng = LocationHelper.BepaalLatLng(this);
-        if (latlng == null) {
-            return;
-        }
-
         mMap.clear();
         mMap.setTrafficEnabled(false);
         mMap.setMyLocationEnabled(false);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, Helper.ZOOM));
+        LatLng latlng;
+
         for (Statistiek stat : stats) {
-            LatLng ll = LocationHelper.getLocationFromAddress(this, "Nederland, "+stat.getLocatie());
+            LatLng ll = LocationHelper.getLocationFromAddress(this, "Nederland, " + stat.getLocatie());
             if (ll == null) continue;
             int aantal = stat.getAantalNat() + stat.getAantalDroog();
-            mMap.addMarker(new MarkerOptions().position(ll).title(stat.getLocatie() + " (" + Integer.toString(aantal) + ")"));
+            mMap.addMarker(new MarkerOptions().position(ll).title(stat.getLocatie() +
+                    " (" + Integer.toString(stat.getAantalDroog()) + " " + getString(R.string.DroogTxt) +
+                    " " + Integer.toString(stat.getAantalNat()) + " " + getString(R.string.NatTxt) + ")"));
         }
     }
 

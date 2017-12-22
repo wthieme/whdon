@@ -36,7 +36,7 @@ class Helper {
     static final int ONE_MINUTE = 1000 * 60;
     static final int ONE_KM = 1000;
     static final boolean DEBUG = false;
-    static final float ZOOM = 10.0f;
+    static final float ZOOM = 9.0f;
 
 
     static void Log(String log) {

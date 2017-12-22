@@ -137,17 +137,26 @@ class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     ArrayList<Statistiek> GetPersoonlijkeStatsPerPlaats(String id) {
+        String where = "";
+
+        if (id != null) where = " WHERE " + MDG_TELID + " = ?";
         String selectQuery = "SELECT"
                 + " " + MDG_LOCATIE + " AS LOCATIE,"
                 + " SUM(" + MDG_DROOG + ") AS DROOG,"
-                + " SUM(" + MDG_NAT + ") AS NAT"
+                + " SUM(" + MDG_NAT + ") AS NAT,"
+                + " MAX(" + MDG_DATUM + ") AS DATUM"
                 + " FROM " + TAB_MELDING
-                + " WHERE " + MDG_TELID + " = ?"
-                + " GROUP BY " + MDG_LOCATIE;
+                + where
+                + " GROUP BY " + MDG_LOCATIE
+                + " ORDER BY " + MDG_DATUM + " DESC"
+                + " LIMIT 25";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor;
-        cursor = db.rawQuery(selectQuery, new String[]{id});
+        if (id == null)
+            cursor = db.rawQuery(selectQuery, null);
+        else
+            cursor = db.rawQuery(selectQuery, new String[]{id});
 
         ArrayList<Statistiek> stats = new ArrayList<>();
 

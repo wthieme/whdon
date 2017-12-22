@@ -139,7 +139,7 @@ public class MainActivity extends Activity {
         contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.list25), getString(R.string.laatste25)));
         contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.staafvert3), getString(R.string.AantalPerUur)));
         contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.pie), getString(R.string.PerWeerType)));
-        contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.pie), getString(R.string.Kaart)));
+        contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.map), getString(R.string.Kaart)));
 
         adapter = new ContextMenuAdapter(this, contextMenuItems);
         listView.setAdapter(adapter);
@@ -181,6 +181,8 @@ public class MainActivity extends Activity {
 
                     case 7:
                         GrafiekWeerType();
+                        return;
+
                     case 8:
                         Kaart();
                 }
