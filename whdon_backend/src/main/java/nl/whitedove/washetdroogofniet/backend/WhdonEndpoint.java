@@ -10,8 +10,7 @@ import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 
-import org.joda.time.DateTime;
-
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,13 +49,13 @@ public class WhdonEndpoint {
             return response;
         }
 
-        DateTime dtNu = DateTime.now();
-        melding.setDatum(dtNu.getMillis());
+        ZonedDateTime dtNu = ZonedDateTime.now();
+        melding.setDatum(dtNu.toInstant().toEpochMilli());
 
         Melding laatste = GetLaatsteMelding(melding.getId());
         if (laatste.getLocatie() != null) {
             Long last = laatste.getDatum() + 900000L;
-            if (last > dtNu.getMillis()) {
+            if (last > dtNu.toInstant().toEpochMilli()) {
                 Melding response = new Melding();
                 response.setError("Er is maximaal 1 keer per kwartier een melding mogelijk");
                 return response;
@@ -64,7 +63,7 @@ public class WhdonEndpoint {
         }
 
         Entity meld = new Entity(MELDING);
-        meld.setProperty(DATUM, dtNu.getMillis());
+        meld.setProperty(DATUM, dtNu.toInstant().toEpochMilli());
         meld.setProperty(DROOG, melding.getDroog());
         meld.setProperty(ID, melding.getId());
         meld.setProperty(LOCATIE, melding.getLocatie());
