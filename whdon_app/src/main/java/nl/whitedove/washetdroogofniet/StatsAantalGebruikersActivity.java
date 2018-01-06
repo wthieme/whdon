@@ -42,7 +42,6 @@ public class StatsAantalGebruikersActivity extends Activity {
                 Terug();
             }
         });
-        InitDb();
         InitSwipes();
         ToondataBackground();
     }
@@ -67,9 +66,6 @@ public class StatsAantalGebruikersActivity extends Activity {
         chart.setOnTouchListener(sl);
 
         Helper.ShowMessage(StatsAantalGebruikersActivity.this, getString(R.string.SwipeLinksOfRechts));
-    }
-
-    private void InitDb() {
     }
 
     private void Terug() {

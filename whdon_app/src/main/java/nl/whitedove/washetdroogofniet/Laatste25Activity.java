@@ -32,11 +32,7 @@ public class Laatste25Activity extends Activity {
                 Terug();
             }
         });
-        InitDb();
         ToondataBackground();
-    }
-
-    private void InitDb() {
     }
 
     private void Terug() {

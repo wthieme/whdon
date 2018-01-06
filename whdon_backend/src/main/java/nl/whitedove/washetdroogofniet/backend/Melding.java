@@ -10,6 +10,8 @@ public class Melding {
     private String error;
     private Long temperatuur;
     private Long weerType;
+    private Long windSpeed;
+    private Long windDir;
 
     public String getLocatie() {
         return locatie;
@@ -75,4 +77,19 @@ public class Melding {
         this.weerType = weerType;
     }
 
+    public Long getWindSpeed() {
+        return windSpeed;
+    }
+
+    public void setWindSpeed(Long windSpeed) {
+        this.windSpeed = windSpeed;
+    }
+
+    public Long getWindDir() {
+        return windDir;
+    }
+
+    public void setWindDir(Long windDir) {
+        this.windDir = windDir;
+    }
 }

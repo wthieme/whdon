@@ -33,6 +33,8 @@ public class WhdonEndpoint {
     private final static String TEMPERATUUR = "temperatuur";
     private final static String LOCATIE = "locatie";
     private final static String WEERTTPE = "weertype";
+    private final static String WINDSPEED = "windspeed";
+    private final static String WINDDIR = "windir";
 
     // Get the Datastore Service
     private DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -70,6 +72,8 @@ public class WhdonEndpoint {
         meld.setProperty(NAT, melding.getNat());
         meld.setProperty(TEMPERATUUR, melding.getTemperatuur());
         meld.setProperty(WEERTTPE, melding.getWeerType());
+        meld.setProperty(WINDSPEED, melding.getWindSpeed());
+        meld.setProperty(WINDDIR, melding.getWindDir());
         datastore.put(meld);
 
         melding.setError("");
@@ -80,7 +84,11 @@ public class WhdonEndpoint {
     public Versie GetVersie() {
         Versie response = new Versie();
         response.setNaam("Was Het Droog Of Niet API");
-        response.setversie("9.0");
+        response.setversie("10" +
+                "" +
+                "" +
+                "" +
+                ".0");
         return response;
     }
 
@@ -105,16 +113,30 @@ public class WhdonEndpoint {
         melding.setDatum((long) laatste.getProperty(DATUM));
         melding.setDroog((Boolean) laatste.getProperty(DROOG));
         melding.setNat((Boolean) laatste.getProperty(NAT));
+
         try {
             melding.setTemperatuur((long) laatste.getProperty(TEMPERATUUR));
         } catch (Exception e) {
             melding.setTemperatuur(999L);
         }
+
         try {
             melding.setWeerType((long) laatste.getProperty(WEERTTPE));
         } catch (Exception e) {
             melding.setWeerType(0L);
         }
+
+        try {
+            melding.setWindSpeed((long) laatste.getProperty(WINDSPEED));
+        } catch (Exception e) {
+            melding.setWeerType(0L);
+        }
+        try {
+            melding.setWindDir((long) laatste.getProperty(WINDDIR));
+        } catch (Exception e) {
+            melding.setWeerType(0L);
+        }
+
         return melding;
     }
 
@@ -135,16 +157,31 @@ public class WhdonEndpoint {
             melding.setId((String) rMeld.getProperty(ID));
             melding.setDatum((long) rMeld.getProperty(DATUM));
             melding.setNat((Boolean) rMeld.getProperty(NAT));
+
             try {
                 melding.setTemperatuur((long) rMeld.getProperty(TEMPERATUUR));
             } catch (Exception e) {
                 melding.setTemperatuur(999L);
             }
+
             try {
                 melding.setWeerType((long) rMeld.getProperty(WEERTTPE));
             } catch (Exception e) {
                 melding.setWeerType(0L);
             }
+
+            try {
+                melding.setWindSpeed((long) rMeld.getProperty(WINDSPEED));
+            } catch (Exception e) {
+                melding.setWeerType(0L);
+            }
+
+            try {
+                melding.setWindDir((long) rMeld.getProperty(WINDDIR));
+            } catch (Exception e) {
+                melding.setWeerType(0L);
+            }
+
             response.add(melding);
         }
 

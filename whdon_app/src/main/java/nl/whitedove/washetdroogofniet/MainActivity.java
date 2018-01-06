@@ -87,7 +87,7 @@ public class MainActivity extends Activity {
         fabMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NewMenu();
+                NewMainMenu();
             }
         });
 
@@ -114,7 +114,7 @@ public class MainActivity extends Activity {
     }
 
     @SuppressLint("InflateParams")
-    public void NewMenu() {
+    public void NewMainMenu() {
 
         List<ContextMenuItem> contextMenuItems;
         final Dialog customDialog = new Dialog(this);
@@ -132,13 +132,10 @@ public class MainActivity extends Activity {
         contextMenuItems = new ArrayList<>();
 
         contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.user), getString(R.string.eigen_meldingen)));
-        contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.staafhor), getString(R.string.per_plaats)));
-        contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.staafvert), getString(R.string.aantal_meldingen_per_dag)));
-        contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.staafvert2), getString(R.string.per_maand)));
+        contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.staafvert), getString(R.string.per)));
         contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.lijn1), getString(R.string.aantal_gebruikers)));
         contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.list25), getString(R.string.laatste25)));
-        contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.staafvert3), getString(R.string.AantalPerUur)));
-        contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.pie), getString(R.string.PerWeerType)));
+        contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.i10d), getString(R.string.Weer)));
         contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.map), getString(R.string.Kaart)));
 
         adapter = new ContextMenuAdapter(this, contextMenuItems);
@@ -156,7 +153,70 @@ public class MainActivity extends Activity {
                         return;
 
                     case 1:
+                        NewPerMenu();
+                        return;
+
+                    case 2:
+                        GrafiekAantalGebruikers();
+                        return;
+
+                    case 3:
+                        Laatste25();
+                        return;
+
+                    case 4:
+                        NewWeerMenu();
+                        return;
+
+                    case 5:
+                        Kaart();
+                }
+            }
+        });
+
+        customDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        customDialog.setContentView(child);
+        customDialog.show();
+    }
+
+    public void NewPerMenu() {
+
+        List<ContextMenuItem> contextMenuItems;
+        final Dialog customDialog = new Dialog(this);
+
+        LayoutInflater inflater;
+        View child;
+        ListView listView;
+        ContextMenuAdapter adapter;
+
+        inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        assert inflater != null;
+        child = inflater.inflate(R.layout.listview_context_menu, null);
+        listView = child.findViewById(R.id.listView_context_menu);
+
+        contextMenuItems = new ArrayList<>();
+
+        contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.staafhor), getString(R.string.per_plaats)));
+        contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.staafvert2), getString(R.string.per_maand)));
+        contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.staafvert), getString(R.string.aantal_meldingen_per_dag)));
+        contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.staafvert3), getString(R.string.AantalPerUur)));
+
+        adapter = new ContextMenuAdapter(this, contextMenuItems);
+        listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View v,
+                                    int position, long id) {
+                customDialog.dismiss();
+                switch (position) {
+
+                    case 0:
                         GrafiekPlaats();
+                        return;
+
+                    case 1:
+                        GrafiekMaand();
                         return;
 
                     case 2:
@@ -164,27 +224,53 @@ public class MainActivity extends Activity {
                         return;
 
                     case 3:
-                        GrafiekMaand();
-                        return;
-
-                    case 4:
-                        GrafiekAantalGebruikers();
-                        return;
-
-                    case 5:
-                        Laatste25();
-                        return;
-
-                    case 6:
                         GrafiekUur();
                         return;
+                }
+            }
+        });
 
-                    case 7:
+        customDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        customDialog.setContentView(child);
+        customDialog.show();
+    }
+
+    public void NewWeerMenu() {
+
+        List<ContextMenuItem> contextMenuItems;
+        final Dialog customDialog = new Dialog(this);
+
+        LayoutInflater inflater;
+        View child;
+        ListView listView;
+        ContextMenuAdapter adapter;
+
+        inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        assert inflater != null;
+        child = inflater.inflate(R.layout.listview_context_menu, null);
+        listView = child.findViewById(R.id.listView_context_menu);
+
+        contextMenuItems = new ArrayList<>();
+
+        contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.pie), getString(R.string.PerWeerType)));
+        contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.spider), getString(R.string.Wind)));
+
+        adapter = new ContextMenuAdapter(this, contextMenuItems);
+        listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View v,
+                                    int position, long id) {
+                customDialog.dismiss();
+                switch (position) {
+
+                    case 0:
                         GrafiekWeerType();
                         return;
 
-                    case 8:
-                        Kaart();
+                    case 1:
+                        GrafiekWind();
                 }
             }
         });
@@ -283,6 +369,11 @@ public class MainActivity extends Activity {
         startActivity(intent);
     }
 
+    private void GrafiekWind() {
+        Intent intent = new Intent(this, StatsWindActivity.class);
+        startActivity(intent);
+    }
+
     private void EigenMeldingen() {
         Intent intent = new Intent(this, EigenMeldingenActivity.class);
         startActivity(intent);
@@ -327,6 +418,7 @@ public class MainActivity extends Activity {
 
         TextView tvWind = findViewById(R.id.tvWind);
         tvWind.setText(String.format("%d km/h", weerData.getWind()));
+        WeerHelper.setHuidigeWindSpeed(weerData.getWind());
 
         ImageView imWeer = findViewById(R.id.imWeer);
         int id = context.getResources().getIdentifier("i" + weerData.getIcon(), "drawable", context.getPackageName());
@@ -334,31 +426,37 @@ public class MainActivity extends Activity {
         WeerHelper.setHuidigeWeertype(WeerHelper.WeerIcoonToWeerType(weerData.getIcon()));
 
         ImageView imWind = findViewById(R.id.imWind);
-        int richting = weerData.getWindRichting();
-
-        if (richting == -1) {
-            imWind.setImageResource(R.drawable.variabel);
-        } else if (richting > 0 && richting <= 22.5) {
-            imWind.setImageResource(R.drawable.noord);
-        } else if (richting > 22.5 && richting <= 67.5) {
-            imWind.setImageResource(R.drawable.noordoost);
-        } else if (richting > 67.5 && richting <= 112.5) {
-            imWind.setImageResource(R.drawable.oost);
-        } else if (richting > 112.5 && richting <= 157.5) {
-            imWind.setImageResource(R.drawable.zuidoost);
-        } else if (richting > 157.5 && richting <= 202.5) {
-            imWind.setImageResource(R.drawable.zuid);
-        } else if (richting > 202.5 && richting <= 247.5) {
-            imWind.setImageResource(R.drawable.zuidwest);
-        } else if (richting > 247.5 && richting <= 292.5) {
-            imWind.setImageResource(R.drawable.west);
-        } else if (richting > 292.5 && richting <= 337.5) {
-            imWind.setImageResource(R.drawable.noordwest);
-        } else if (richting > 337.5 && richting <= 360)
-
-        {
-            imWind.setImageResource(R.drawable.noord);
+        WeerHelper.WindDirection richting = weerData.getWindDir();
+        switch (richting) {
+            case Onbekend:
+                imWind.setImageResource(R.drawable.variabel);
+                break;
+            case Noord:
+                imWind.setImageResource(R.drawable.noord);
+                break;
+            case NoordOost:
+                imWind.setImageResource(R.drawable.noordoost);
+                break;
+            case Oost:
+                imWind.setImageResource(R.drawable.oost);
+                break;
+            case ZuidOost:
+                imWind.setImageResource(R.drawable.zuidoost);
+                break;
+            case Zuid:
+                imWind.setImageResource(R.drawable.zuid);
+                break;
+            case ZuidWest:
+                imWind.setImageResource(R.drawable.zuidwest);
+                break;
+            case West:
+                imWind.setImageResource(R.drawable.west);
+                break;
+            case NoordWest:
+                imWind.setImageResource(R.drawable.noordwest);
+                break;
         }
+        WeerHelper.setHuidigeWindDir(richting);
     }
 
     private void ToonBuiendata(BuienData weerData) {
@@ -486,6 +584,8 @@ public class MainActivity extends Activity {
         melding.setNat(!droog);
         melding.setTemperatuur((long) WeerHelper.GetHuidigeTemperatuur());
         melding.setWeerType(WeerHelper.getHuidigeWeertype().getValue());
+        melding.setWindSpeed((long) WeerHelper.getHuidigeWindSpeed());
+        melding.setWindDir(WeerHelper.getHuidigeWindDir().getValue());
 
         //noinspection unchecked
         new AsyncSlaMeldingOpTask(this).execute(Pair.create(context, melding));
@@ -494,12 +594,11 @@ public class MainActivity extends Activity {
     private void ToonHuidigeLocatie() {
         TextView tvHuidigeLoc = findViewById(R.id.tvHuidigeLocatie);
         String loc = null;
-        if (Helper.mLocatie != null)
-        {
+        if (Helper.mLocatie != null) {
             loc = Helper.mLocatie;
 
             if (Helper.mCountry != null)
-                loc = loc + ","+Helper.mCountry;
+                loc = loc + "," + Helper.mCountry;
 
             tvHuidigeLoc.setText(loc);
         }

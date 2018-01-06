@@ -38,11 +38,7 @@ public class StatsPerUurActivity extends Activity {
                 Terug();
             }
         });
-        InitDb();
         ToondataBackground();
-    }
-
-    private void InitDb() {
     }
 
     private void Terug() {

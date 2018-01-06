@@ -43,11 +43,7 @@ public class Stats1PlaatsActivity extends Activity {
         Intent myIntent = getIntent(); // gets the previously created intent
         String locatie = myIntent.getStringExtra("Locatie");
 
-        InitDb();
         ToondataBackground(locatie);
-    }
-
-    private void InitDb() {
     }
 
     private void Terug() {

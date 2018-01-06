@@ -149,6 +149,14 @@
     "weerType": {
      "format": "int64",
      "type": "string"
+    },
+    "windDir": {
+     "format": "int64",
+     "type": "string"
+    },
+    "windSpeed": {
+     "format": "int64",
+     "type": "string"
     }
    },
    "type": "object"

@@ -32,11 +32,7 @@ public class EigenMeldingenActivity extends Activity {
                 Terug();
             }
         });
-        InitDb();
         ToondataBackground();
-    }
-
-    private void InitDb() {
     }
 
     private void Terug() {

@@ -3,7 +3,7 @@ package nl.whitedove.washetdroogofniet;
 class StatistiekWeertype {
 
     private WeerHelper.WeerType weerType;
-    private String weerTypeOschrijving;
+    private String weerTypeOmschrijving;
     private int aantal;
     private float percentage;
 
@@ -15,12 +15,12 @@ class StatistiekWeertype {
         this.weerType = weerType;
     }
 
-    String getWeerTypeOschrijving() {
-        return weerTypeOschrijving;
+    String getWeerTypeOmschrijving() {
+        return weerTypeOmschrijving;
     }
 
-    void setWeerTypeOschrijving(String weerTypeOschrijving) {
-        this.weerTypeOschrijving = weerTypeOschrijving;
+    void setWeerTypeOmschrijving(String weerTypeOmschrijving) {
+        this.weerTypeOmschrijving = weerTypeOmschrijving;
     }
 
     int getAantal() {

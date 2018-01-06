@@ -15,7 +15,7 @@ import nl.whitedove.washetdroogofniet.backend.whdonApi.model.Melding;
 
 class DatabaseHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
     private static final String DATABASE_NAME = "whdon";
 
     private static final String TAB_MELDING = "Melding";
@@ -27,6 +27,8 @@ class DatabaseHelper extends SQLiteOpenHelper {
     private static final String MDG_NAT = "Nat";
     private static final String MDG_TEMPERATUUR = "Temperatuur";
     private static final String MDG_WEERTYPE = "Weertype";
+    private static final String MDG_WINDSPEED = "Windspeed";
+    private static final String MDG_WINDDIR = "Winddir";
 
     private static DatabaseHelper sInstance;
 
@@ -52,7 +54,9 @@ class DatabaseHelper extends SQLiteOpenHelper {
                 + MDG_DROOG + " INTEGER NOT NULL,"
                 + MDG_NAT + " INTEGER NOT NULL,"
                 + MDG_TEMPERATUUR + " INTEGER NOT NULL,"
-                + MDG_WEERTYPE + " INTEGER NOT NULL"
+                + MDG_WEERTYPE + " INTEGER NOT NULL,"
+                + MDG_WINDDIR + " INTEGER NOT NULL,"
+                + MDG_WINDSPEED + " INTEGER NOT NULL"
                 + ")";
         db.execSQL(sql);
 
@@ -75,6 +79,12 @@ class DatabaseHelper extends SQLiteOpenHelper {
         }
         if (oldVersion < 3) {
             String sql = "ALTER TABLE " + TAB_MELDING + " ADD COLUMN " + MDG_WEERTYPE + " INTEGER NOT NULL DEFAULT 0";
+            db.execSQL(sql);
+        }
+        if (oldVersion < 4) {
+            String sql = "ALTER TABLE " + TAB_MELDING + " ADD COLUMN " + MDG_WINDDIR + " INTEGER NOT NULL DEFAULT 0";
+            db.execSQL(sql);
+            sql = "ALTER TABLE " + TAB_MELDING + " ADD COLUMN " + MDG_WINDSPEED + " INTEGER NOT NULL DEFAULT 0";
             db.execSQL(sql);
         }
     }
@@ -105,6 +115,8 @@ class DatabaseHelper extends SQLiteOpenHelper {
                 values.put(MDG_NAT, melding.getNat() ? 1 : 0);
                 values.put(MDG_TEMPERATUUR, melding.getTemperatuur());
                 values.put(MDG_WEERTYPE, melding.getWeerType());
+                values.put(MDG_WINDDIR, melding.getWindDir());
+                values.put(MDG_WINDSPEED, melding.getWindSpeed());
                 db.insert(TAB_MELDING, null, values);
             }
         }
@@ -186,7 +198,9 @@ class DatabaseHelper extends SQLiteOpenHelper {
                 + " " + MDG_DROOG + ","
                 + " " + MDG_NAT + ","
                 + " " + MDG_TEMPERATUUR + ","
-                + " " + MDG_WEERTYPE
+                + " " + MDG_WEERTYPE + ","
+                + " " + MDG_WINDDIR + ","
+                + " " + MDG_WINDSPEED
                 + " FROM " + TAB_MELDING
                 + " WHERE " + MDG_TELID + " = ?"
                 + " ORDER BY " + MDG_DATUM + " DESC"
@@ -206,6 +220,8 @@ class DatabaseHelper extends SQLiteOpenHelper {
             melding.setNat(cursor.getInt(3) == 1);
             melding.setTemperatuur(cursor.getLong(4));
             melding.setWeerType(cursor.getLong(5));
+            melding.setWindDir(cursor.getLong(6));
+            melding.setWindSpeed(cursor.getLong(7));
         } else {
             melding.setError("Geen meldingen");
         }
@@ -262,7 +278,9 @@ class DatabaseHelper extends SQLiteOpenHelper {
                 + " " + MDG_DROOG + ","
                 + " " + MDG_NAT + ","
                 + " " + MDG_TEMPERATUUR + ","
-                + " " + MDG_WEERTYPE
+                + " " + MDG_WEERTYPE + ","
+                + " " + MDG_WINDDIR + ","
+                + " " + MDG_WINDSPEED
                 + " FROM " + TAB_MELDING
                 + " ORDER BY " + MDG_DATUM + " DESC"
                 + " LIMIT 25";
@@ -282,6 +300,8 @@ class DatabaseHelper extends SQLiteOpenHelper {
                 melding.setNat(cursor.getInt(3) == 1);
                 melding.setTemperatuur(cursor.getLong(4));
                 melding.setWeerType(cursor.getLong(5));
+                melding.setWindDir(cursor.getLong(6));
+                melding.setWindSpeed(cursor.getLong(7));
                 meldingen.add(melding);
             } while (cursor.moveToNext());
         }
@@ -298,7 +318,9 @@ class DatabaseHelper extends SQLiteOpenHelper {
                 + " " + MDG_DROOG + ","
                 + " " + MDG_NAT + ","
                 + " " + MDG_TEMPERATUUR + ","
-                + " " + MDG_WEERTYPE
+                + " " + MDG_WEERTYPE + ","
+                + " " + MDG_WINDDIR + ","
+                + " " + MDG_WINDSPEED
                 + " FROM " + TAB_MELDING
                 + " WHERE " + MDG_TELID + " = ?"
                 + " ORDER BY " + MDG_DATUM + " DESC";
@@ -319,6 +341,8 @@ class DatabaseHelper extends SQLiteOpenHelper {
                 melding.setNat(cursor.getInt(3) == 1);
                 melding.setTemperatuur(cursor.getLong(4));
                 melding.setWeerType(cursor.getLong(5));
+                melding.setWindDir(cursor.getLong(6));
+                melding.setWindSpeed(cursor.getLong(7));
                 meldingen.add(melding);
             } while (cursor.moveToNext());
         }
@@ -444,10 +468,11 @@ class DatabaseHelper extends SQLiteOpenHelper {
         return stat;
     }
 
-    ArrayList<Statistiek1Maand> GetStatistiek12Maanden(int jaar) {
+    ArrayList<Statistiek1Maand> GetStatistiek12Maanden(int jaar, int maand) {
 
         ArrayList<Statistiek1Maand> stats = new ArrayList<>();
 
+        DateTime vanaf = new DateTime(jaar - 1, maand + 1, 1, 0, 0);
         for (int i = 0; i < 12; i++) {
 
             String selectQuery = "SELECT "
@@ -460,7 +485,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
             SQLiteDatabase db = this.getWritableDatabase();
             Cursor cursor;
-            DateTime va = new DateTime(jaar, i + 1, 1, 0, 0);
+            DateTime va = vanaf.plusMonths(i);
             DateTime tm = va.plusMonths(1);
             cursor = db.rawQuery(selectQuery, new String[]{Long.toString(va.getMillis()), Long.toString(tm.getMillis())});
 
@@ -537,7 +562,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
                 WeerHelper.WeerType weerType = WeerHelper.WeerType.valueOf(cursor.getLong(0));
                 stat.setWeerType(weerType);
                 stat.setAantal(cursor.getInt(1));
-                stat.setWeerTypeOschrijving(WeerHelper.WeerTypeToWeerOmschrijving(weerType));
+                stat.setWeerTypeOmschrijving(WeerHelper.WeerTypeToWeerOmschrijving(weerType));
                 stats.add(stat);
                 totaal += stat.getAantal();
             } while (cursor.moveToNext());
@@ -552,4 +577,45 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
         return stats;
     }
+
+    ArrayList<StatistiekWind> GetStatistiekWind() {
+
+        String selectQuery = "SELECT"
+                + " " + MDG_WINDDIR + ","
+                + " COUNT(*) AS AANTAL,"
+                + " AVG(" + MDG_WINDSPEED + ") AS WINDSPEED"
+                + " FROM " + TAB_MELDING
+                + " WHERE " + MDG_WINDDIR + " > 0 "
+                + " GROUP BY " + MDG_WINDDIR;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor;
+        cursor = db.rawQuery(selectQuery, null);
+
+        ArrayList<StatistiekWind> stats = new ArrayList<>();
+
+        int totaal = 0;
+        if (cursor.moveToFirst()) {
+            do {
+                StatistiekWind stat = new StatistiekWind();
+                WeerHelper.WindDirection windDir = WeerHelper.WindDirection.valueOf(cursor.getLong(0));
+                stat.setWindDir(windDir);
+                stat.setAantal(cursor.getInt(1));
+                stat.setWindOmschrijving(WeerHelper.WindDirectionToOmschrijving(windDir));
+                stat.setWindSpeed(cursor.getFloat(2));
+                stats.add(stat);
+                totaal += stat.getAantal();
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        if (stats.size() == 0) return stats;
+
+        for (int i = 0; i < stats.size(); i++) {
+            float percentage = 100.0F * stats.get(i).getAantal() / totaal;
+            stats.get(i).setPercentage(percentage);
+        }
+
+        return stats;
+    }
+
 }

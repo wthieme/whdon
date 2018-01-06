@@ -24,6 +24,7 @@ import okhttp3.Response;
 
 class WeerHelper {
 
+
     public enum WeerType {
         Onbekend(0L), Zonnig(1L), Halfbewolkt(2L), Bewolkt(3L), Regen(9L), Buien(10L), Onweer(11L), Sneeuw(13L), Mist(50L);
 
@@ -50,9 +51,39 @@ class WeerHelper {
         }
     }
 
+    public enum WindDirection {
+        Onbekend(0L), Noord(1L), NoordOost(2L), Oost(3L), ZuidOost(4L), Zuid(5L), ZuidWest(6L), West(7L), NoordWest(8L);
+
+        private long value;
+        @SuppressLint("UseSparseArrays")
+        private static Map<Long, WindDirection> map = new HashMap<>();
+
+        WindDirection(long value) {
+            this.value = value;
+        }
+
+        static {
+            for (WindDirection windDirection : WindDirection.values()) {
+                map.put(windDirection.value, windDirection);
+            }
+        }
+
+        public static WindDirection valueOf(long windDirection) {
+            return map.get(windDirection);
+        }
+
+        public long getValue() {
+            return value;
+        }
+    }
+
     private static int HuidigeTemperatuur = 999;
 
     private static WeerType HuidigeWeertype = WeerType.Onbekend;
+
+    private static int HuidigeWindSpeed = 999;
+
+    private static WindDirection HuidigeWindDir = WindDirection.Onbekend;
 
     static Weer BepaalWeer() throws JSONException {
 
@@ -74,7 +105,8 @@ class WeerHelper {
         if (weather.has("icon")) result.setIcon(weather.getString("icon"));
         if (main.has("temp")) result.setGraden((int) Math.round(main.getDouble("temp")));
         result.setWind(wind.has("speed") ? (int) Math.round(3.6f * wind.getDouble("speed")) : 0);
-        result.setWindRichting(wind.has("deg") ? (int) Math.round(wind.getDouble("deg")) : -1);
+        int windRichting = wind.has("deg") ? (int) Math.round(wind.getDouble("deg")) : -1;
+        result.setWindDir(windRichting);
         return result;
     }
 
@@ -235,6 +267,22 @@ class WeerHelper {
         HuidigeWeertype = huidigeWeertype;
     }
 
+    static int getHuidigeWindSpeed() {
+        return HuidigeWindSpeed;
+    }
+
+    static void setHuidigeWindSpeed(int huidigeWindSpeed) {
+        HuidigeWindSpeed = huidigeWindSpeed;
+    }
+
+    static WindDirection getHuidigeWindDir() {
+        return HuidigeWindDir;
+    }
+
+    static void setHuidigeWindDir(WindDirection huidigeWindDir) {
+        HuidigeWindDir = huidigeWindDir;
+    }
+
     @SuppressLint("DefaultLocale")
     static String WeerTypeToWeerIcoon(WeerType weerType) {
         if (weerType == WeerType.Onbekend) {
@@ -299,4 +347,29 @@ class WeerHelper {
         }
         return null;
     }
+
+    static String WindDirectionToOmschrijving(WindDirection windDir) {
+        switch (windDir) {
+            case Onbekend:
+                return null;
+            case Noord:
+                return "Noord";
+            case NoordOost:
+                return "Noordoost";
+            case Oost:
+                return "Oost";
+            case ZuidOost:
+                return "Zuidoost";
+            case Zuid:
+                return "Zuid";
+            case ZuidWest:
+                return "Zuidwest";
+            case West:
+                return "West";
+            case NoordWest:
+                return "Noordwest";
+        }
+        return null;
+    }
+
 }

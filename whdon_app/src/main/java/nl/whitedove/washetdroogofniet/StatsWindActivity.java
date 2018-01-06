@@ -10,22 +10,22 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 
-import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.LegendEntry;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.data.RadarData;
+import com.github.mikephil.charting.data.RadarDataSet;
+import com.github.mikephil.charting.data.RadarEntry;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
-public class StatsWeerTypeActivity extends Activity {
+public class StatsWindActivity extends Activity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.weertype_statistieken);
+        setContentView(R.layout.wind_statistieken);
 
         FloatingActionButton fabTerug = findViewById(R.id.btnTerug);
         fabTerug.setOnClickListener(new View.OnClickListener() {
@@ -45,11 +45,11 @@ public class StatsWeerTypeActivity extends Activity {
 
     private void ToondataBackground() {
         Context context = getApplicationContext();
-        new AsyncGetStatistiekWeerTypeTask(this).execute(context);
+        new AsyncGetStatistiekWindTask(this).execute(context);
     }
 
     @SuppressLint("DefaultLocale")
-    private void ToonStatistiekWeerType(ArrayList<StatistiekWeertype> stats) {
+    private void ToonStatistiekWind(ArrayList<StatistiekWind> stats) {
         if (stats == null || stats.size() == 0) {
             return;
         }
@@ -63,7 +63,7 @@ public class StatsWeerTypeActivity extends Activity {
                 ContextCompat.getColor(this, R.color.colorGrafiek7),
                 ContextCompat.getColor(this, R.color.colorGrafiek8)};
 
-        ArrayList<PieEntry> dataT = new ArrayList<>();
+        ArrayList<RadarEntry> dataT = new ArrayList<>();
         ArrayList<LegendEntry> legendEntries = new ArrayList<>();
 
         int totaal = 0;
@@ -81,16 +81,16 @@ public class StatsWeerTypeActivity extends Activity {
         for (int i = 0; i < stats.size(); i++) {
             int perc = Math.round(stats.get(i).getPercentage());
             if (i == 0) perc += correctie;
-            dataT.add(new PieEntry(stats.get(i).getPercentage(), (perc <= 2) ? "" : String.format("%d%%", perc)));
+            dataT.add(new RadarEntry(stats.get(i).getPercentage(), (perc <= 2) ? "" : String.format("%d%%", perc)));
             LegendEntry le = new LegendEntry();
             le.formColor = colors[i];
-            le.label = stats.get(i).getWeerTypeOmschrijving();
+            le.label = stats.get(i).getWindOmschrijving();
             le.form = Legend.LegendForm.SQUARE;
             le.formSize = 10;
             legendEntries.add(le);
         }
 
-        final PieChart chart = findViewById(R.id.pcPerWeertype);
+        final RadarChart chart = findViewById(R.id.rcPerWindrichting);
 
         Description desc = new Description();
         desc.setText("");
@@ -99,8 +99,6 @@ public class StatsWeerTypeActivity extends Activity {
         chart.setTouchEnabled(false);
         chart.setNoDataText(getString(R.string.nodata));
         chart.getLegend().setEnabled(false);
-        chart.setEntryLabelColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
-        chart.setDrawEntryLabels(true);
 
         Legend legend = chart.getLegend();
         legend.setCustom(legendEntries);
@@ -109,11 +107,11 @@ public class StatsWeerTypeActivity extends Activity {
         legend.setTextSize(12f);
         legend.setWordWrapEnabled(true);
 
-        PieDataSet dsT = new PieDataSet(dataT, "");
+        RadarDataSet dsT = new RadarDataSet(dataT, "");
         dsT.setColors(colors);
         dsT.setDrawValues(false);
 
-        PieData data = new PieData(dsT);
+        RadarData data = new RadarData(dsT);
         data.setValueTextSize(14f);
         data.setValueTextColor(ContextCompat.getColor(this, R.color.colorTekst));
 
@@ -122,24 +120,24 @@ public class StatsWeerTypeActivity extends Activity {
         chart.invalidate();
     }
 
-    private static class AsyncGetStatistiekWeerTypeTask extends AsyncTask<Context, Void, ArrayList<StatistiekWeertype>> {
-        private WeakReference<StatsWeerTypeActivity> activityWeakReference;
+    private static class AsyncGetStatistiekWindTask extends AsyncTask<Context, Void, ArrayList<StatistiekWind>> {
+        private WeakReference<StatsWindActivity> activityWeakReference;
 
-        AsyncGetStatistiekWeerTypeTask(StatsWeerTypeActivity context) {
+        AsyncGetStatistiekWindTask(StatsWindActivity context) {
             activityWeakReference = new WeakReference<>(context);
         }
 
         @Override
-        protected ArrayList<StatistiekWeertype> doInBackground(Context... params) {
+        protected ArrayList<StatistiekWind> doInBackground(Context... params) {
             Context context = params[0];
             DatabaseHelper dh = DatabaseHelper.getInstance(context);
-            return dh.GetStatistiekWeerType();
+            return dh.GetStatistiekWind();
         }
 
         @Override
-        protected void onPostExecute(ArrayList<StatistiekWeertype> stats) {
-            StatsWeerTypeActivity activity = activityWeakReference.get();
-            if (activity != null) activity.ToonStatistiekWeerType(stats);
+        protected void onPostExecute(ArrayList<StatistiekWind> stats) {
+            StatsWindActivity activity = activityWeakReference.get();
+            if (activity != null) activity.ToonStatistiekWind(stats);
         }
     }
 }

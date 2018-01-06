@@ -49,7 +49,6 @@ public class StatsPerMaandActivity extends Activity {
                 Terug();
             }
         });
-        InitDb();
         InitSwipes();
         ToondataBackground();
     }
@@ -79,9 +78,6 @@ public class StatsPerMaandActivity extends Activity {
         Helper.ShowMessage(StatsPerMaandActivity.this, getString(R.string.SwipeLinksOfRechts));
     }
 
-    private void InitDb() {
-    }
-
     private void Terug() {
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -99,7 +95,10 @@ public class StatsPerMaandActivity extends Activity {
             return;
         }
         final TextView tvMaandTitel = findViewById(R.id.tvMaandTitel);
-        tvMaandTitel.setText(getString(R.string.per_maand) + " " + Integer.toString(jaar));
+        int maand = DateTime.now().getMonthOfYear();
+        tvMaandTitel.setText(String.format(getString(R.string.per_maand_titel),
+                Integer.toString(jaar - 1) + "-" + Integer.toString(maand + 1),
+                Integer.toString(jaar) + "-" + Integer.toString(maand)));
         final BarChart bChart = findViewById(R.id.bcPerMaand);
         bChart.setHighlightPerTapEnabled(false);
         bChart.setHighlightPerDragEnabled(false);
@@ -262,7 +261,8 @@ public class StatsPerMaandActivity extends Activity {
         protected ArrayList<Statistiek1Maand> doInBackground(Context... params) {
             Context context = params[0];
             DatabaseHelper dh = DatabaseHelper.getInstance(context);
-            return dh.GetStatistiek12Maanden(jaar);
+            int maand = DateTime.now().getMonthOfYear();
+            return dh.GetStatistiek12Maanden(jaar, maand);
         }
 
         @Override

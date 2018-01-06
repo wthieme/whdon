@@ -22,7 +22,6 @@ public class StatsPerPlaatsActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.per_plaats_statistieken);
         InitFab();
-        InitDb();
         ToondataBackground();
     }
 
@@ -34,9 +33,6 @@ public class StatsPerPlaatsActivity extends Activity {
                 Terug();
             }
         });
-    }
-
-    private void InitDb() {
     }
 
     private void Stat1Plaats(String locatie) {

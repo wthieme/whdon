@@ -47,7 +47,6 @@ public class StatsPerDatumActivity extends Activity {
                 Terug();
             }
         });
-        InitDb();
         InitSwipes();
         ToondataBackground();
     }
@@ -76,9 +75,6 @@ public class StatsPerDatumActivity extends Activity {
         lChart.setOnTouchListener(sl);
 
         Helper.ShowMessage(StatsPerDatumActivity.this, getString(R.string.SwipeLinksOfRechts));
-    }
-
-    private void InitDb() {
     }
 
     private void Terug() {
