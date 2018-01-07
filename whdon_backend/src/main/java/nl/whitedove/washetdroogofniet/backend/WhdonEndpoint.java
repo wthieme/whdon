@@ -129,12 +129,12 @@ public class WhdonEndpoint {
         try {
             melding.setWindSpeed((long) laatste.getProperty(WINDSPEED));
         } catch (Exception e) {
-            melding.setWeerType(0L);
+            melding.setWindSpeed(0L);
         }
         try {
             melding.setWindDir((long) laatste.getProperty(WINDDIR));
         } catch (Exception e) {
-            melding.setWeerType(0L);
+            melding.setWindDir(0L);
         }
 
         return melding;
@@ -173,13 +173,13 @@ public class WhdonEndpoint {
             try {
                 melding.setWindSpeed((long) rMeld.getProperty(WINDSPEED));
             } catch (Exception e) {
-                melding.setWeerType(0L);
+                melding.setWindSpeed(0L);
             }
 
             try {
                 melding.setWindDir((long) rMeld.getProperty(WINDDIR));
             } catch (Exception e) {
-                melding.setWeerType(0L);
+                melding.setWindDir(0L);
             }
 
             response.add(melding);

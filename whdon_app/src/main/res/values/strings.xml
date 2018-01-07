@@ -57,6 +57,6 @@
     <string name="per">Per ...</string>
     <string name="Weer">Weer ...</string>
     <string name="Wind">Wind</string>
-    <string name="per_maand_titel">%s t/m %s</string>
-    <string name="PerWindRichting">Windrichting</string>
+    <string name="per_maand_titel">%s-%s t/m %s-%s</string>
+    <string name="PerWindRichting">% per windrichting</string>
 </resources>

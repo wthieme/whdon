@@ -96,9 +96,21 @@ public class StatsPerMaandActivity extends Activity {
         }
         final TextView tvMaandTitel = findViewById(R.id.tvMaandTitel);
         int maand = DateTime.now().getMonthOfYear();
+        DateTime vanaf;
+
+        if (maand == 12)
+            vanaf = new DateTime(jaar, 1, 1, 0, 0);
+        else
+            vanaf = new DateTime(jaar - 1, maand + 1, 1, 0, 0);
+
+        String maandva = vanaf.toString("MMM", Locale.getDefault()).replace(".","");
+        String maandtm = vanaf.plusMonths(11).toString("MMM", Locale.getDefault()).replace(".","");
+
         tvMaandTitel.setText(String.format(getString(R.string.per_maand_titel),
-                Integer.toString(jaar - 1) + "-" + Integer.toString(maand + 1),
-                Integer.toString(jaar) + "-" + Integer.toString(maand)));
+                maandva,
+                Integer.toString(jaar - 1),
+                maandtm,
+                Integer.toString(jaar)));
         final BarChart bChart = findViewById(R.id.bcPerMaand);
         bChart.setHighlightPerTapEnabled(false);
         bChart.setHighlightPerDragEnabled(false);

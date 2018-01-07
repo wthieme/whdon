@@ -471,8 +471,13 @@ class DatabaseHelper extends SQLiteOpenHelper {
     ArrayList<Statistiek1Maand> GetStatistiek12Maanden(int jaar, int maand) {
 
         ArrayList<Statistiek1Maand> stats = new ArrayList<>();
+        DateTime vanaf;
 
-        DateTime vanaf = new DateTime(jaar - 1, maand + 1, 1, 0, 0);
+        if (maand == 12)
+            vanaf = new DateTime(jaar, 1, 1, 0, 0);
+        else
+            vanaf = new DateTime(jaar - 1, maand + 1, 1, 0, 0);
+
         for (int i = 0; i < 12; i++) {
 
             String selectQuery = "SELECT "
@@ -608,13 +613,31 @@ class DatabaseHelper extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         cursor.close();
-        if (stats.size() == 0) return stats;
 
         for (int i = 0; i < stats.size(); i++) {
             float percentage = 100.0F * stats.get(i).getAantal() / totaal;
             stats.get(i).setPercentage(percentage);
         }
 
+        for (WeerHelper.WindDirection windDir : WeerHelper.WindDirection.values()) {
+            boolean gevonden = false;
+            for (int i = 0; i < stats.size(); i++) {
+                if (windDir == stats.get(i).getWindDir()) {
+                    gevonden = true;
+                    break;
+                }
+            }
+
+            if (gevonden == false && windDir != WeerHelper.WindDirection.Onbekend) {
+                StatistiekWind stat = new StatistiekWind();
+                stat.setWindDir(windDir);
+                stat.setWindOmschrijving(WeerHelper.WindDirectionToOmschrijving(windDir));
+                stat.setAantal(0);
+                stat.setWindSpeed(0);
+                stat.setPercentage(0F);
+                stats.add(stat);
+            }
+        }
         return stats;
     }
 

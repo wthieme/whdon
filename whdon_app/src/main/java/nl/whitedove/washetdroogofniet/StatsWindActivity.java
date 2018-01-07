@@ -12,11 +12,12 @@ import android.view.View;
 
 import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.components.Description;
-import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.LegendEntry;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.RadarData;
 import com.github.mikephil.charting.data.RadarDataSet;
 import com.github.mikephil.charting.data.RadarEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -54,15 +55,6 @@ public class StatsWindActivity extends Activity {
             return;
         }
 
-        int[] colors = new int[]{ContextCompat.getColor(this, R.color.colorGrafiek1),
-                ContextCompat.getColor(this, R.color.colorGrafiek2),
-                ContextCompat.getColor(this, R.color.colorGrafiek3),
-                ContextCompat.getColor(this, R.color.colorGrafiek4),
-                ContextCompat.getColor(this, R.color.colorGrafiek5),
-                ContextCompat.getColor(this, R.color.colorGrafiek6),
-                ContextCompat.getColor(this, R.color.colorGrafiek7),
-                ContextCompat.getColor(this, R.color.colorGrafiek8)};
-
         ArrayList<RadarEntry> dataT = new ArrayList<>();
         ArrayList<LegendEntry> legendEntries = new ArrayList<>();
 
@@ -78,16 +70,12 @@ public class StatsWindActivity extends Activity {
 
         int correctie = 100 - totaalPercentage;
 
+        ArrayList<String> labels = new ArrayList<String>();
         for (int i = 0; i < stats.size(); i++) {
             int perc = Math.round(stats.get(i).getPercentage());
             if (i == 0) perc += correctie;
-            dataT.add(new RadarEntry(stats.get(i).getPercentage(), (perc <= 2) ? "" : String.format("%d%%", perc)));
-            LegendEntry le = new LegendEntry();
-            le.formColor = colors[i];
-            le.label = stats.get(i).getWindOmschrijving();
-            le.form = Legend.LegendForm.SQUARE;
-            le.formSize = 10;
-            legendEntries.add(le);
+            dataT.add(new RadarEntry(stats.get(i).getPercentage()));
+            labels.add(stats.get(i).getWindOmschrijving());
         }
 
         final RadarChart chart = findViewById(R.id.rcPerWindrichting);
@@ -99,17 +87,14 @@ public class StatsWindActivity extends Activity {
         chart.setTouchEnabled(false);
         chart.setNoDataText(getString(R.string.nodata));
         chart.getLegend().setEnabled(false);
+        chart.getYAxis().setDrawLabels(false);
+        XAxis rXAs = chart.getXAxis();
+        rXAs.setDrawLabels(true);
+        rXAs.setValueFormatter(new IndexAxisValueFormatter(labels));
 
-        Legend legend = chart.getLegend();
-        legend.setCustom(legendEntries);
-        legend.setEnabled(true);
-        legend.setXEntrySpace(20f);
-        legend.setTextSize(12f);
-        legend.setWordWrapEnabled(true);
-
-        RadarDataSet dsT = new RadarDataSet(dataT, "");
-        dsT.setColors(colors);
-        dsT.setDrawValues(false);
+        RadarDataSet dsT = new RadarDataSet(dataT,"");
+        dsT.setColor(ContextCompat.getColor(this, R.color.colorPrimary));
+        dsT.setDrawFilled(true);
 
         RadarData data = new RadarData(dsT);
         data.setValueTextSize(14f);

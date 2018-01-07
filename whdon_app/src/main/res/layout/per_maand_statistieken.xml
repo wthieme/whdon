@@ -22,7 +22,7 @@
             android:gravity="end"
             android:text="@string/per_maand"
             android:textColor="@color/colorPrimary"
-            android:textSize="24sp"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <com.github.mikephil.charting.charts.BarChart
