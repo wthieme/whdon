@@ -14,13 +14,17 @@ import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.LegendEntry;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.RadarData;
 import com.github.mikephil.charting.data.RadarDataSet;
 import com.github.mikephil.charting.data.RadarEntry;
+import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class StatsWindActivity extends Activity {
 
@@ -72,8 +76,6 @@ public class StatsWindActivity extends Activity {
 
         ArrayList<String> labels = new ArrayList<String>();
         for (int i = 0; i < stats.size(); i++) {
-            int perc = Math.round(stats.get(i).getPercentage());
-            if (i == 0) perc += correctie;
             dataT.add(new RadarEntry(stats.get(i).getPercentage()));
             labels.add(stats.get(i).getWindOmschrijving());
         }
@@ -92,17 +94,27 @@ public class StatsWindActivity extends Activity {
         rXAs.setDrawLabels(true);
         rXAs.setValueFormatter(new IndexAxisValueFormatter(labels));
 
-        RadarDataSet dsT = new RadarDataSet(dataT,"");
-        dsT.setColor(ContextCompat.getColor(this, R.color.colorPrimary));
+        RadarDataSet dsT = new RadarDataSet(dataT, "");
+        dsT.setColor(ContextCompat.getColor(this, R.color.colorTekst));
         dsT.setDrawFilled(true);
 
         RadarData data = new RadarData(dsT);
         data.setValueTextSize(14f);
-        data.setValueTextColor(ContextCompat.getColor(this, R.color.colorTekst));
+        data.setValueTextColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
+        data.setValueFormatter(new MyValueFormatter());
 
         chart.setData(data);
         chart.animateXY(500, 500);
         chart.invalidate();
+    }
+
+    public class MyValueFormatter implements IValueFormatter {
+
+        @Override
+        public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+            if (value == 0f) return "";
+            return String.format(Locale.getDefault(), "%.1f", value);
+        }
     }
 
     private static class AsyncGetStatistiekWindTask extends AsyncTask<Context, Void, ArrayList<StatistiekWind>> {
