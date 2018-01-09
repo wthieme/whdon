@@ -12,19 +12,15 @@ import android.view.View;
 
 import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.components.Description;
-import com.github.mikephil.charting.components.LegendEntry;
 import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.RadarData;
 import com.github.mikephil.charting.data.RadarDataSet;
 import com.github.mikephil.charting.data.RadarEntry;
-import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
-import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Locale;
 
 public class StatsWindActivity extends Activity {
 
@@ -60,19 +56,6 @@ public class StatsWindActivity extends Activity {
         }
 
         ArrayList<RadarEntry> dataT = new ArrayList<>();
-        ArrayList<LegendEntry> legendEntries = new ArrayList<>();
-
-        int totaal = 0;
-        for (int i = 0; i < stats.size(); i++) {
-            totaal += stats.get(i).getAantal();
-        }
-
-        int totaalPercentage = 0;
-        for (int i = 0; i < stats.size(); i++) {
-            totaalPercentage += Math.round(100.0F * stats.get(i).getAantal() / totaal);
-        }
-
-        int correctie = 100 - totaalPercentage;
 
         ArrayList<String> labels = new ArrayList<String>();
         for (int i = 0; i < stats.size(); i++) {
@@ -89,7 +72,9 @@ public class StatsWindActivity extends Activity {
         chart.setTouchEnabled(false);
         chart.setNoDataText(getString(R.string.nodata));
         chart.getLegend().setEnabled(false);
-        chart.getYAxis().setDrawLabels(false);
+        YAxis rYAs = chart.getYAxis();
+        rYAs.setDrawLabels(true);
+
         XAxis rXAs = chart.getXAxis();
         rXAs.setDrawLabels(true);
         rXAs.setValueFormatter(new IndexAxisValueFormatter(labels));
@@ -101,20 +86,11 @@ public class StatsWindActivity extends Activity {
         RadarData data = new RadarData(dsT);
         data.setValueTextSize(14f);
         data.setValueTextColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
-        data.setValueFormatter(new MyValueFormatter());
+        data.setDrawValues(false);
 
         chart.setData(data);
         chart.animateXY(500, 500);
         chart.invalidate();
-    }
-
-    public class MyValueFormatter implements IValueFormatter {
-
-        @Override
-        public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
-            if (value == 0f) return "";
-            return String.format(Locale.getDefault(), "%.1f", value);
-        }
     }
 
     private static class AsyncGetStatistiekWindTask extends AsyncTask<Context, Void, ArrayList<StatistiekWind>> {

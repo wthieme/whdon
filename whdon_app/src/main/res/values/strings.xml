@@ -16,8 +16,10 @@
         Druk op de knop Droog of op de knop Regen.</string>
     <string name="sinds">Sinds:</string>
     <string name="gemmpd">Gemiddeld/dag:</string>
-    <string name="per_plaats">Plaats</string>
-    <string name="per_datum">Dag</string>
+    <string name="plaats">Plaats</string>
+    <string name="per_plaats">Per plaats</string>
+    <string name="dag">Dag</string>
+    <string name="per_dag">Per dag</string>
     <string name="aantal_gebruikers">Aantal gebruikers</string>
     <string name="aantal_meldingen_per_dag">Dag</string>
     <string name="EersteMelding">Eerste melding:</string>
@@ -34,7 +36,8 @@
     <string name="VerwachteNeerslag">Verwachte neerslag komende 2 uur:</string>
     <string name="verwacht2uur">Verwachte regen voor de komende 2 uur in</string>
     <string name="percent100">100%</string>
-    <string name="per_maand">Maand</string>
+    <string name="maand">Maand</string>
+    <string name="per_maand">Per maand</string>
     <string name="NoBrData">No Data</string>
     <string name="DroogTxt">Droog</string>
     <string name="NatTxt">Nat</string>
@@ -49,8 +52,10 @@
     <string name="BedanktMelding">Bedankt voor je melding</string>
     <string name="SwipeLinksOfRechts">Swipe rechts of links om terug en vooruit in de tijd gaan</string>
     <string name="vantmdatum" formatted="false">%s t/m %s</string>
-    <string name="AantalPerUur">Uur van de dag</string>
+    <string name="UurVdDag">Uur van de dag</string>
+    <string name="AantalPerUur">Per uur van de dag</string>
     <string name="GemmTemp">Gemiddelde temperatuur:</string>
+    <string name="WeerType">Weertype</string>
     <string name="PerWeerType">Per weertype</string>
     <string name="Zoek">Zoek:</string>
     <string name="Kaart">Kaart</string>

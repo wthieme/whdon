@@ -196,10 +196,10 @@ public class MainActivity extends Activity {
 
         contextMenuItems = new ArrayList<>();
 
-        contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.staafhor), getString(R.string.per_plaats)));
-        contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.staafvert2), getString(R.string.per_maand)));
+        contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.staafhor), getString(R.string.plaats)));
+        contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.staafvert2), getString(R.string.maand)));
         contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.staafvert), getString(R.string.aantal_meldingen_per_dag)));
-        contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.staafvert3), getString(R.string.AantalPerUur)));
+        contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.staafvert3), getString(R.string.UurVdDag)));
 
         adapter = new ContextMenuAdapter(this, contextMenuItems);
         listView.setAdapter(adapter);
@@ -252,7 +252,7 @@ public class MainActivity extends Activity {
 
         contextMenuItems = new ArrayList<>();
 
-        contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.pie), getString(R.string.PerWeerType)));
+        contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.pie), getString(R.string.WeerType)));
         contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.spider), getString(R.string.Wind)));
 
         adapter = new ContextMenuAdapter(this, contextMenuItems);
