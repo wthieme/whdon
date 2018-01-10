@@ -4,50 +4,49 @@ import org.joda.time.DateTime;
 
 class Statistiek1Dag {
 
-    private DateTime datum;
-    private int aantalDroog;
-    private int aantalNat;
-    private int aantalTemperatuur;
-    private int somTemperatuur;
+    private DateTime Datum;
+    private int AantalDroog;
+    private int AantalNat;
+    private float MinTemperatuur;
+    private float MaxTemperatuur;
 
     DateTime getDatum() {
-        return datum;
+        return Datum;
     }
 
     void setDatum(DateTime datum) {
-        this.datum = datum;
+        this.Datum = datum;
     }
 
     int getAantalDroog() {
-        return aantalDroog;
+        return AantalDroog;
     }
 
     void setAantalDroog(int aantalDroog) {
-        this.aantalDroog = aantalDroog;
+        this.AantalDroog = aantalDroog;
     }
 
     int getAantalNat() {
-        return aantalNat;
+        return AantalNat;
     }
 
     void setAantalNat(int aantalNat) {
-        this.aantalNat = aantalNat;
+        this.AantalNat = aantalNat;
     }
 
-    int getAantalTemperatuur() {
-        return aantalTemperatuur;
+    float getMinTemperatuur() {
+        return MinTemperatuur;
     }
 
-    void setAantalTemperatuur(int aantalTemperatuur) {
-        this.aantalTemperatuur = aantalTemperatuur;
+    void setMinTemperatuur(float minTemperatuur) {
+        MinTemperatuur = minTemperatuur;
     }
 
-    int getSomTemperatuur() {
-        return somTemperatuur;
+    float getMaxTemperatuur() {
+        return MaxTemperatuur;
     }
 
-    void setSomTemperatuur(int somTemperatuur) {
-        this.somTemperatuur = somTemperatuur;
+    void setMaxTemperatuur(float maxTemperatuur) {
+        MaxTemperatuur = maxTemperatuur;
     }
-
 }

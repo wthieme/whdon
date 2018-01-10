@@ -2,49 +2,49 @@ package nl.whitedove.washetdroogofniet;
 
 class Statistiek1Maand {
 
-    private int maand;
-    private int aantalDroog;
-    private int aantalNat;
-    private int aantalTemperatuur;
-    private int somTemperatuur;
+    private int Maand;
+    private int AantalDroog;
+    private int AantalNat;
+    private float MinTemperatuur;
+    private float MaxTemperatuur;
 
     int getMaand() {
-        return maand;
+        return Maand;
     }
 
     void setMaand(int maand) {
-        this.maand = maand;
+        this.Maand = maand;
     }
 
     int getAantalDroog() {
-        return aantalDroog;
+        return AantalDroog;
     }
 
     void setAantalDroog(int aantalDroog) {
-        this.aantalDroog = aantalDroog;
+        this.AantalDroog = aantalDroog;
     }
 
     int getAantalNat() {
-        return aantalNat;
+        return AantalNat;
     }
 
     void setAantalNat(int aantalNat) {
-        this.aantalNat = aantalNat;
+        this.AantalNat = aantalNat;
     }
 
-    int getAantalTemperatuur() {
-        return aantalTemperatuur;
+    float getMinTemperatuur() {
+        return MinTemperatuur;
     }
 
-    void setAantalTemperatuur(int aantalTemperatuur) {
-        this.aantalTemperatuur = aantalTemperatuur;
+    void setMinTemperatuur(float minTemperatuur) {
+        this.MinTemperatuur = minTemperatuur;
     }
 
-    int getSomTemperatuur() {
-        return somTemperatuur;
+    float getMaxTemperatuur() {
+        return MaxTemperatuur;
     }
 
-    void setSomTemperatuur(int somTemperatuur) {
-        this.somTemperatuur = somTemperatuur;
+    void setMaxTemperatuur(float maxTemperatuur) {
+        this.MaxTemperatuur = maxTemperatuur;
     }
 }

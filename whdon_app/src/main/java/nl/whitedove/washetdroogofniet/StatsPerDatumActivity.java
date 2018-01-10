@@ -118,11 +118,13 @@ public class StatsPerDatumActivity extends Activity {
         bLAs.setAxisMinimum(0);
         bLAs.setAxisMaximum(max + 1);
         if (max < 8) bLAs.setLabelCount(max + 1);
+        else bLAs.setLabelCount(6);
 
         YAxis bRAs = bChart.getAxisRight();
         bRAs.setAxisMinimum(0);
         bRAs.setAxisMaximum(max + 1);
         if (max < 8) bRAs.setLabelCount(max + 1);
+        else bRAs.setLabelCount(6);
 
         XAxis bXAs = bChart.getXAxis();
         bXAs.setDrawGridLines(false);
@@ -178,20 +180,17 @@ public class StatsPerDatumActivity extends Activity {
         int minVal = 50;
         int maxVal = -999;
 
-        List<Entry> lDataT = new ArrayList<>();
+        List<Entry> lDataTMin = new ArrayList<>();
+        List<Entry> lDataTMax = new ArrayList<>();
         List<String> lLabels = new ArrayList<>();
 
         for (int i = 0; i < 30; i++) {
-            int aantalTemp = stats.get(i).getAantalTemperatuur();
-            float tempGemm = 0;
-            if (aantalTemp > 0) {
-                int tempSom = stats.get(i).getSomTemperatuur();
-                tempGemm = (1.0f * tempSom) / (1.0f * aantalTemp);
-                if (tempGemm < minVal) minVal = Math.round(tempGemm);
-                if (tempGemm > maxVal) maxVal = Math.round(tempGemm);
-            }
-            Entry e = new Entry(i, tempGemm);
-            lDataT.add(e);
+            float tempMin = stats.get(i).getMinTemperatuur();
+            float tempMax = stats.get(i).getMaxTemperatuur();
+            if (tempMin != 999 && tempMin < minVal) minVal = Math.round(tempMin);
+            if (tempMax != -999 && tempMax > maxVal) maxVal = Math.round(tempMax);
+            lDataTMin.add(new Entry(i, tempMin == 999 ? 0 : tempMin));
+            lDataTMax.add(new Entry(i, tempMax == -999 ? 0 : tempMax));
             String sDatum = (i == 0 || i == 10 || i == 20 || i == 29) ? Helper.dmFormat.print(stats.get(i).getDatum()) : "";
             lLabels.add(sDatum);
         }
@@ -217,14 +216,6 @@ public class StatsPerDatumActivity extends Activity {
         yAsR.setAxisMaximum(maxVal + 1);
         yAsR.setLabelCount(labelCount, true);
 
-        LineDataSet lDs = new LineDataSet(lDataT, "Gemiddelde temperatuur");
-        lDs.setColor(ContextCompat.getColor(this, R.color.colorTemperatuurDark));
-        lDs.setCircleColor(ContextCompat.getColor(this, R.color.colorTemperatuur));
-        lDs.setCircleColorHole(ContextCompat.getColor(this, R.color.colorTemperatuur));
-        lDs.setCircleRadius(2.5f);
-        lDs.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
-        lDs.setCubicIntensity(0.2f);
-
         IValueFormatter lValueFormat = new IValueFormatter() {
             @Override
             public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
@@ -232,13 +223,30 @@ public class StatsPerDatumActivity extends Activity {
             }
         };
 
-        lDs.setValueFormatter(lValueFormat);
-        lDs.setAxisDependency(YAxis.AxisDependency.LEFT);
-        LineData lData = new LineData(lDs);
+        LineDataSet lDsMin = new LineDataSet(lDataTMin, "Minimum temperatuur");
+        lDsMin.setColor(ContextCompat.getColor(this, R.color.colorPrimary));
+        lDsMin.setCircleColor(ContextCompat.getColor(this, R.color.colorTekst));
+        lDsMin.setCircleColorHole(ContextCompat.getColor(this, R.color.colorTekst));
+        lDsMin.setCircleRadius(2.5f);
+        lDsMin.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
+        lDsMin.setCubicIntensity(0.2f);
+        lDsMin.setValueFormatter(lValueFormat);
+        lDsMin.setAxisDependency(YAxis.AxisDependency.LEFT);
+
+        LineDataSet lDsMax = new LineDataSet(lDataTMax, "Maximum temperatuur");
+        lDsMax.setColor(ContextCompat.getColor(this, R.color.colorTemperatuurDark));
+        lDsMax.setCircleColor(ContextCompat.getColor(this, R.color.colorTemperatuur));
+        lDsMax.setCircleColorHole(ContextCompat.getColor(this, R.color.colorTemperatuur));
+        lDsMax.setCircleRadius(2.5f);
+        lDsMax.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
+        lDsMax.setCubicIntensity(0.2f);
+        lDsMax.setValueFormatter(lValueFormat);
+        lDsMax.setAxisDependency(YAxis.AxisDependency.LEFT);
+
+        LineData lData = new LineData(lDsMin, lDsMax);
         lChart.setData(lData);
         lChart.animateXY(500, 500);
         lChart.invalidate();
-
     }
 
     private static class AsyncGetStatistiekenTask extends AsyncTask<Context, Void, ArrayList<Statistiek1Dag>> {

@@ -360,8 +360,8 @@ class DatabaseHelper extends SQLiteOpenHelper {
             String selectQuery = "SELECT"
                     + " SUM(" + MDG_DROOG + ") AS DROOG,"
                     + " SUM(" + MDG_NAT + ") AS NAT,"
-                    + " SUM(CASE WHEN " + MDG_TEMPERATUUR + " = 999 THEN 0 ELSE 1 END) AS AANTALTEMPERATUUR,"
-                    + " SUM(CASE WHEN " + MDG_TEMPERATUUR + " = 999 THEN 0 ELSE " + MDG_TEMPERATUUR + " END) AS SOMTEMPERATUUR"
+                    + " MIN(CASE WHEN " + MDG_TEMPERATUUR + " = 999 THEN 999 ELSE " + MDG_TEMPERATUUR + " END) AS MINTEMPERATUUR,"
+                    + " MAX(CASE WHEN " + MDG_TEMPERATUUR + " = 999 THEN -999 ELSE " + MDG_TEMPERATUUR + " END) AS MAXTEMPERATUUR"
                     + " FROM " + TAB_MELDING
                     + " WHERE " + MDG_DATUM + " BETWEEN ? AND ?";
 
@@ -377,13 +377,13 @@ class DatabaseHelper extends SQLiteOpenHelper {
             if (cursor.moveToFirst()) {
                 stat.setAantalDroog(cursor.getInt(0));
                 stat.setAantalNat(cursor.getInt(1));
-                stat.setAantalTemperatuur(cursor.getInt(2));
-                stat.setSomTemperatuur(cursor.getInt(3));
+                stat.setMinTemperatuur(cursor.getInt(2));
+                stat.setMaxTemperatuur(cursor.getInt(3));
             } else {
                 stat.setAantalDroog(0);
                 stat.setAantalNat(0);
-                stat.setAantalTemperatuur(0);
-                stat.setSomTemperatuur(0);
+                stat.setMinTemperatuur(0);
+                stat.setMaxTemperatuur(0);
             }
 
             cursor.close();
@@ -483,8 +483,8 @@ class DatabaseHelper extends SQLiteOpenHelper {
             String selectQuery = "SELECT "
                     + " SUM(" + MDG_DROOG + ") AS DROOG,"
                     + " SUM(" + MDG_NAT + ") AS NAT,"
-                    + " SUM(CASE WHEN " + MDG_TEMPERATUUR + " = 999 THEN 0 ELSE 1 END) AS AANTALTEMPERATUUR,"
-                    + " SUM(CASE WHEN " + MDG_TEMPERATUUR + " = 999 THEN 0 ELSE " + MDG_TEMPERATUUR + " END) AS SOMTEMPERATUUR"
+                    + " MIN(CASE WHEN " + MDG_TEMPERATUUR + " = 999 THEN 999 ELSE " + MDG_TEMPERATUUR + " END) AS MINTEMPERATUUR,"
+                    + " MAX(CASE WHEN " + MDG_TEMPERATUUR + " = 999 THEN -999 ELSE " + MDG_TEMPERATUUR + " END) AS MAXTEMPERATUUR"
                     + " FROM " + TAB_MELDING
                     + " WHERE " + MDG_DATUM + " BETWEEN ? AND ?";
 
@@ -500,13 +500,13 @@ class DatabaseHelper extends SQLiteOpenHelper {
             if (cursor.moveToFirst()) {
                 stat.setAantalDroog(cursor.getInt(0));
                 stat.setAantalNat(cursor.getInt(1));
-                stat.setAantalTemperatuur(cursor.getInt(2));
-                stat.setSomTemperatuur(cursor.getInt(3));
+                stat.setMinTemperatuur(cursor.getFloat(2));
+                stat.setMaxTemperatuur(cursor.getFloat(3));
             } else {
                 stat.setAantalDroog(0);
                 stat.setAantalNat(0);
-                stat.setAantalTemperatuur(0);
-                stat.setSomTemperatuur(0);
+                stat.setMinTemperatuur(0);
+                stat.setMaxTemperatuur(0);
             }
 
             cursor.close();
@@ -628,13 +628,13 @@ class DatabaseHelper extends SQLiteOpenHelper {
                 }
             }
 
-            if (gevonden == false && windDir != WeerHelper.WindDirection.Onbekend) {
+            if (!gevonden && windDir != WeerHelper.WindDirection.Onbekend) {
                 StatistiekWind stat = new StatistiekWind();
                 stat.setWindDir(windDir);
                 stat.setWindOmschrijving(WeerHelper.WindDirectionToOmschrijving(windDir));
                 stat.setAantal(0);
                 stat.setWindSpeed(0);
-                stat.setPercentage(0F);
+                stat.setPercentage(0);
                 stats.add(stat);
             }
         }
