@@ -21,6 +21,7 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class StatsWindActivity extends Activity {
 
@@ -54,6 +55,8 @@ public class StatsWindActivity extends Activity {
         if (stats == null || stats.size() == 0) {
             return;
         }
+
+        Collections.sort(stats, StatsWindComparator.instance);
 
         ArrayList<RadarEntry> dataT = new ArrayList<>();
 
