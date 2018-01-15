@@ -61,8 +61,8 @@ public class BuienradarActivity extends Activity {
     }
 
     @SuppressLint("DefaultLocale")
-    private void ToonBuienData(BuienData weer) {
-        if (weer == null || weer.getRegenData() == null || weer.getRegenData().size() == 0) {
+    private void ToonBuienData(BuienData weerData) {
+        if (weerData == null || weerData.getRegenData() == null || weerData.getRegenData().size() == 0) {
             return;
         }
         LineChart chart = findViewById(R.id.lcBuienRadar);
@@ -103,8 +103,12 @@ public class BuienradarActivity extends Activity {
         XAxis xAs = chart.getXAxis();
         xAs.setDrawGridLines(false);
 
+        TextView tvDroogBr = findViewById(R.id.tvDroogBr);
+        String sBr = WeerHelper.BepaalBrDataTxt(this, weerData);
+        tvDroogBr.setText(sBr);
+
         // De markeerlijn voor nu
-        float xPos = WeerHelper.BerekenNuXPositie(weer);
+        float xPos = WeerHelper.BerekenNuXPositie(weerData);
         LimitLine ll = new LimitLine(xPos, "Nu");
         ll.setLineColor(Color.RED);
         ll.setLineWidth(1f);
@@ -117,8 +121,10 @@ public class BuienradarActivity extends Activity {
         ArrayList<String> labels = new ArrayList<>();
 
         double mm = 0;
-        for (int i = 0; i < weer.getRegenData().size(); i++) {
-            int regen = weer.getRegenData().get(i).getRegen();
+        int som = 0;
+        for (int i = 0; i < weerData.getRegenData().size(); i++) {
+            int regen = weerData.getRegenData().get(i).getRegen();
+            som += regen;
             double peruur;
             if (regen == 0) {
                 peruur = 0;
@@ -128,7 +134,15 @@ public class BuienradarActivity extends Activity {
 
             mm += peruur / 12.0f;
             dataT.add(new Entry(i, regen));
-            labels.add(weer.getRegenData().get(i).getTijd());
+            labels.add(weerData.getRegenData().get(i).getTijd());
+        }
+
+        if (som == 0) {
+            tvDroogBr.setVisibility(View.VISIBLE);
+            yAs1.setDrawGridLines(false);
+            yAs2.setDrawGridLines(false);
+        } else {
+            tvDroogBr.setVisibility(View.GONE);
         }
 
         xAs.setValueFormatter(new IndexAxisValueFormatter(labels));

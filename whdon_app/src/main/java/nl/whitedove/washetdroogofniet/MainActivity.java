@@ -526,6 +526,12 @@ public class MainActivity extends Activity {
             dataT.add(i, new Entry(i, regen));
         }
 
+        if (som == 0) {
+            tvDroogBr.setVisibility(View.VISIBLE);
+        } else {
+            tvDroogBr.setVisibility(View.GONE);
+        }
+
         LineDataSet dsT = new LineDataSet(dataT, "");
 
         dsT.setColor(ContextCompat.getColor(this, R.color.colorNatStart));
@@ -551,12 +557,6 @@ public class MainActivity extends Activity {
         LineData data = new LineData(dataSets);
         chart.setData(data);
         chart.invalidate();
-
-        if (som == 0) {
-            tvDroogBr.setVisibility(View.VISIBLE);
-        } else {
-            tvDroogBr.setVisibility(View.GONE);
-        }
     }
 
     private void ToondataBackground() {
