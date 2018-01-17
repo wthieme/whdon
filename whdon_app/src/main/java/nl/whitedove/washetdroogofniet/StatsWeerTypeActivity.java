@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
@@ -18,10 +20,13 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 
+import org.joda.time.DateTime;
+
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 public class StatsWeerTypeActivity extends Activity {
+    static int mJaar = DateTime.now().getYear();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +39,31 @@ public class StatsWeerTypeActivity extends Activity {
                 Terug();
             }
         });
+        InitSwipes();
         ToondataBackground();
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private void InitSwipes() {
+        OnSwipeTouchListener sl = new OnSwipeTouchListener(StatsWeerTypeActivity.this) {
+            public void onSwipeLeft() {
+                mJaar++;
+                ToondataBackground();
+            }
+
+            public void onSwipeRight() {
+                mJaar--;
+                ToondataBackground();
+            }
+        };
+
+        final RelativeLayout rlPerMaand = findViewById(R.id.rlPerWeertype);
+        rlPerMaand.setOnTouchListener(sl);
+
+        final PieChart pChart = findViewById(R.id.pcPerWeertype);
+        pChart.setOnTouchListener(sl);
+
+        Helper.ShowMessage(StatsWeerTypeActivity.this, getString(R.string.SwipeLinksOfRechts));
     }
 
     private void Terug() {
@@ -50,9 +79,9 @@ public class StatsWeerTypeActivity extends Activity {
 
     @SuppressLint("DefaultLocale")
     private void ToonStatistiekWeerType(ArrayList<StatistiekWeertype> stats) {
-        if (stats == null || stats.size() == 0) {
-            return;
-        }
+
+        final TextView tvWeertype = findViewById(R.id.tvWeertype);
+        tvWeertype.setText(String.format("%s %s", getString(R.string.PerWeerType), String.format(getString(R.string.Jaartal), Integer.toString(mJaar))));
 
         int[] colors = new int[]{ContextCompat.getColor(this, R.color.colorGrafiek1),
                 ContextCompat.getColor(this, R.color.colorGrafiek2),
@@ -68,7 +97,8 @@ public class StatsWeerTypeActivity extends Activity {
 
         for (int i = 0; i < stats.size(); i++) {
             float perc = stats.get(i).getPercentage();
-            dataT.add(new PieEntry(perc, (perc <= 2) ? "" : String.format("%d%%", Math.round(perc))));
+            int rPerc = Math.round(perc);
+            dataT.add(new PieEntry(perc, (rPerc <= 2) ? "" : String.format("%d%%", rPerc)));
             LegendEntry le = new LegendEntry();
             le.formColor = colors[i];
             le.label = stats.get(i).getWeerTypeOmschrijving();
@@ -106,6 +136,11 @@ public class StatsWeerTypeActivity extends Activity {
 
         chart.setData(data);
         chart.animateXY(500, 500);
+        if (stats.size() == 0) {
+            chart.setVisibility(View.GONE);
+        } else {
+            chart.setVisibility(View.VISIBLE);
+        }
         chart.invalidate();
     }
 
@@ -120,7 +155,7 @@ public class StatsWeerTypeActivity extends Activity {
         protected ArrayList<StatistiekWeertype> doInBackground(Context... params) {
             Context context = params[0];
             DatabaseHelper dh = DatabaseHelper.getInstance(context);
-            return dh.GetStatistiekWeerType();
+            return dh.GetStatistiekWeerType(mJaar);
         }
 
         @Override

@@ -36,7 +36,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class StatsPerMaandActivity extends Activity {
-    static int jaar = DateTime.now().getYear();
+    static int mJaar = DateTime.now().getYear();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,15 +53,16 @@ public class StatsPerMaandActivity extends Activity {
         ToondataBackground();
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void InitSwipes() {
         OnSwipeTouchListener sl = new OnSwipeTouchListener(StatsPerMaandActivity.this) {
             public void onSwipeLeft() {
-                jaar++;
+                mJaar++;
                 ToondataBackground();
             }
 
             public void onSwipeRight() {
-                jaar--;
+                mJaar--;
                 ToondataBackground();
             }
         };
@@ -99,18 +100,18 @@ public class StatsPerMaandActivity extends Activity {
         DateTime vanaf;
 
         if (maand == 12)
-            vanaf = new DateTime(jaar, 1, 1, 0, 0);
+            vanaf = new DateTime(mJaar, 1, 1, 0, 0);
         else
-            vanaf = new DateTime(jaar - 1, maand + 1, 1, 0, 0);
+            vanaf = new DateTime(mJaar - 1, maand + 1, 1, 0, 0);
 
         String maandva = vanaf.toString("MMM", Locale.getDefault()).replace(".","");
         String maandtm = vanaf.plusMonths(11).toString("MMM", Locale.getDefault()).replace(".","");
 
         tvMaandTitel.setText(String.format(getString(R.string.per_maand_titel),
                 maandva,
-                Integer.toString(jaar - 1),
+                Integer.toString(mJaar - 1),
                 maandtm,
-                Integer.toString(jaar)));
+                Integer.toString(mJaar)));
         final BarChart bChart = findViewById(R.id.bcPerMaand);
         bChart.setHighlightPerTapEnabled(false);
         bChart.setHighlightPerDragEnabled(false);
@@ -281,7 +282,7 @@ public class StatsPerMaandActivity extends Activity {
             Context context = params[0];
             DatabaseHelper dh = DatabaseHelper.getInstance(context);
             int maand = DateTime.now().getMonthOfYear();
-            return dh.GetStatistiek12Maanden(jaar, maand);
+            return dh.GetStatistiek12Maanden(mJaar, maand);
         }
 
         @Override

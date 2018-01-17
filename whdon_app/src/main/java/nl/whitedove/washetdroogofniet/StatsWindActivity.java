@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.components.Description;
@@ -19,11 +21,14 @@ import com.github.mikephil.charting.data.RadarDataSet;
 import com.github.mikephil.charting.data.RadarEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 
+import org.joda.time.DateTime;
+
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class StatsWindActivity extends Activity {
+    static int mJaar = DateTime.now().getYear();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +41,31 @@ public class StatsWindActivity extends Activity {
                 Terug();
             }
         });
+        InitSwipes();
         ToondataBackground();
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private void InitSwipes() {
+        OnSwipeTouchListener sl = new OnSwipeTouchListener(StatsWindActivity.this) {
+            public void onSwipeLeft() {
+                mJaar++;
+                ToondataBackground();
+            }
+
+            public void onSwipeRight() {
+                mJaar--;
+                ToondataBackground();
+            }
+        };
+
+        final RelativeLayout rlPerMaand = findViewById(R.id.rlWindrichting);
+        rlPerMaand.setOnTouchListener(sl);
+
+        final RadarChart rChart = findViewById(R.id.rcPerWindrichting);
+        rChart.setOnTouchListener(sl);
+
+        Helper.ShowMessage(StatsWindActivity.this, getString(R.string.SwipeLinksOfRechts));
     }
 
     private void Terug() {
@@ -50,17 +79,15 @@ public class StatsWindActivity extends Activity {
         new AsyncGetStatistiekWindTask(this).execute(context);
     }
 
-    @SuppressLint("DefaultLocale")
     private void ToonStatistiekWind(ArrayList<StatistiekWind> stats) {
-        if (stats == null || stats.size() == 0) {
-            return;
-        }
+        final TextView tvWind = findViewById(R.id.tvWind);
+        tvWind.setText(String.format("%s %s", getString(R.string.PerWindRichting), String.format(getString(R.string.Jaartal), Integer.toString(mJaar))));
 
         Collections.sort(stats, StatsWindComparator.instance);
 
         ArrayList<RadarEntry> dataT = new ArrayList<>();
 
-        ArrayList<String> labels = new ArrayList<String>();
+        ArrayList<String> labels = new ArrayList<>();
         for (int i = 0; i < stats.size(); i++) {
             dataT.add(new RadarEntry(stats.get(i).getPercentage()));
             labels.add(stats.get(i).getWindOmschrijving());
@@ -77,6 +104,7 @@ public class StatsWindActivity extends Activity {
         chart.getLegend().setEnabled(false);
         YAxis rYAs = chart.getYAxis();
         rYAs.setDrawLabels(true);
+        rYAs.setAxisMinimum(0f);
 
         XAxis rXAs = chart.getXAxis();
         rXAs.setDrawLabels(true);
@@ -107,7 +135,7 @@ public class StatsWindActivity extends Activity {
         protected ArrayList<StatistiekWind> doInBackground(Context... params) {
             Context context = params[0];
             DatabaseHelper dh = DatabaseHelper.getInstance(context);
-            return dh.GetStatistiekWind();
+            return dh.GetStatistiekWind(mJaar);
         }
 
         @Override

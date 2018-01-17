@@ -179,6 +179,7 @@ public class MainActivity extends Activity {
         customDialog.show();
     }
 
+    @SuppressLint("InflateParams")
     public void NewPerMenu() {
 
         List<ContextMenuItem> contextMenuItems;
@@ -225,7 +226,6 @@ public class MainActivity extends Activity {
 
                     case 3:
                         GrafiekUur();
-                        return;
                 }
             }
         });
@@ -235,6 +235,7 @@ public class MainActivity extends Activity {
         customDialog.show();
     }
 
+    @SuppressLint("InflateParams")
     public void NewWeerMenu() {
 
         List<ContextMenuItem> contextMenuItems;
@@ -253,7 +254,7 @@ public class MainActivity extends Activity {
         contextMenuItems = new ArrayList<>();
 
         contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.pie), getString(R.string.WeerType)));
-        contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.spider), getString(R.string.Wind)));
+        contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.spider), getString(R.string.Windrichting)));
 
         adapter = new ContextMenuAdapter(this, contextMenuItems);
         listView.setAdapter(adapter);
@@ -593,7 +594,7 @@ public class MainActivity extends Activity {
 
     private void ToonHuidigeLocatie() {
         TextView tvHuidigeLoc = findViewById(R.id.tvHuidigeLocatie);
-        String loc = null;
+        String loc;
         if (Helper.mLocatie != null) {
             loc = Helper.mLocatie;
 

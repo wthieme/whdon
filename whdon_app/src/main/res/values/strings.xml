@@ -2,7 +2,7 @@
     <string name="app_name">Was het droog of niet?</string>
     <string name="action_settings">Settings</string>
     <string name="laatste">Laatste melding</string>
-    <string name="datumtijd">06-01-2016 13:10</string>
+    <string name="datumtijd">06–01–2016 13:10</string>
     <string name="waar">Wageningen</string>
     <string name="droognat">Droog</string>
     <string name="persstats">Droog/Nat</string>
@@ -59,9 +59,10 @@
     <string name="PerWeerType">Per weertype</string>
     <string name="Zoek">Zoek:</string>
     <string name="Kaart">Kaart</string>
-    <string name="per">Per ...</string>
-    <string name="Weer">Weer ...</string>
-    <string name="Wind">Wind</string>
+    <string name="per">Per …</string>
+    <string name="Weer">Weer …</string>
+    <string name="Windrichting">Windrichting</string>
     <string name="per_maand_titel">%s-%s t/m %s-%s</string>
-    <string name="PerWindRichting">% per windrichting</string>
+    <string name="PerWindRichting">% windrichting</string>
+    <string name="Jaartal">(%s)</string>
 </resources>

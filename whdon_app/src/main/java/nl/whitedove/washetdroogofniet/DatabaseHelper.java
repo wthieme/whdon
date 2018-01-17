@@ -544,19 +544,22 @@ class DatabaseHelper extends SQLiteOpenHelper {
         return stats;
     }
 
-    ArrayList<StatistiekWeertype> GetStatistiekWeerType() {
+    ArrayList<StatistiekWeertype> GetStatistiekWeerType(int jaar) {
 
         String selectQuery = "SELECT"
                 + " " + MDG_WEERTYPE + ","
                 + " COUNT(*) AS AANTAL"
                 + " FROM " + TAB_MELDING
                 + " WHERE " + MDG_WEERTYPE + " > 0 "
+                + " AND " + MDG_DATUM + " BETWEEN ? AND ?"
                 + " GROUP BY " + MDG_WEERTYPE
                 + " ORDER BY AANTAL DESC";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor;
-        cursor = db.rawQuery(selectQuery, null);
+        DateTime va = new DateTime(jaar, 1, 1, 0, 0);
+        DateTime tm = va.plusYears(1);
+        cursor = db.rawQuery(selectQuery, new String[]{Long.toString(va.getMillis()), Long.toString(tm.getMillis())});
 
         ArrayList<StatistiekWeertype> stats = new ArrayList<>();
 
@@ -583,7 +586,8 @@ class DatabaseHelper extends SQLiteOpenHelper {
         return stats;
     }
 
-    ArrayList<StatistiekWind> GetStatistiekWind() {
+
+    ArrayList<StatistiekWind> GetStatistiekWind(int jaar) {
 
         String selectQuery = "SELECT"
                 + " " + MDG_WINDDIR + ","
@@ -591,11 +595,14 @@ class DatabaseHelper extends SQLiteOpenHelper {
                 + " AVG(" + MDG_WINDSPEED + ") AS WINDSPEED"
                 + " FROM " + TAB_MELDING
                 + " WHERE " + MDG_WINDDIR + " > 0 "
+                + " AND " + MDG_DATUM + " BETWEEN ? AND ?"
                 + " GROUP BY " + MDG_WINDDIR;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor;
-        cursor = db.rawQuery(selectQuery, null);
+        DateTime va = new DateTime(jaar, 1, 1, 0, 0);
+        DateTime tm = va.plusYears(1);
+        cursor = db.rawQuery(selectQuery, new String[]{Long.toString(va.getMillis()), Long.toString(tm.getMillis())});
 
         ArrayList<StatistiekWind> stats = new ArrayList<>();
 
