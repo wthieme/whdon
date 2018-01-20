@@ -5,46 +5,55 @@ class StatistiekWind {
     private WeerHelper.WindDirection WindDir;
     private String windOmschrijving;
     private int aantal;
-    private float windSpeed;
+    private float avgWindSpeed;
+    private float maxWindSpeed;
     private float percentage;
 
-    public String getWindOmschrijving() {
+    String getWindOmschrijving() {
         return windOmschrijving;
     }
 
-    public void setWindOmschrijving(String windOmschrijving) {
+    void setWindOmschrijving(String windOmschrijving) {
         this.windOmschrijving = windOmschrijving;
     }
 
-    public int getAantal() {
+    int getAantal() {
         return aantal;
     }
 
-    public void setAantal(int aantal) {
+    void setAantal(int aantal) {
         this.aantal = aantal;
     }
 
-    public float getWindSpeed() {
-        return windSpeed;
-    }
-
-    public void setWindSpeed(float windSpeed) {
-        this.windSpeed = windSpeed;
-    }
-
-    public WeerHelper.WindDirection getWindDir() {
+    WeerHelper.WindDirection getWindDir() {
         return WindDir;
     }
 
-    public void setWindDir(WeerHelper.WindDirection windDir) {
+    void setWindDir(WeerHelper.WindDirection windDir) {
         WindDir = windDir;
     }
 
-    public float getPercentage() {
+    float getPercentage() {
         return percentage;
     }
 
-    public void setPercentage(float percentage) {
+    void setPercentage(float percentage) {
         this.percentage = percentage;
+    }
+
+    float getMaxWindSpeed() {
+        return maxWindSpeed;
+    }
+
+    void setMaxWindSpeed(float maxWindSpeed) {
+        this.maxWindSpeed = maxWindSpeed;
+    }
+
+    float getAvgWindSpeed() {
+        return avgWindSpeed;
+    }
+
+    void setAvgWindSpeed(float avgWindSpeed) {
+        this.avgWindSpeed = avgWindSpeed;
     }
 }

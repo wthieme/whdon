@@ -587,12 +587,38 @@ class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
+    private ArrayList<StatistiekWind> WindStatAddZeros(ArrayList<StatistiekWind> windstat) {
+        for (WeerHelper.WindDirection windDir : WeerHelper.WindDirection.values()) {
+            boolean gevonden = false;
+            for (int i = 0; i < windstat.size(); i++) {
+                if (windDir == windstat.get(i).getWindDir()) {
+                    gevonden = true;
+                    break;
+                }
+            }
+
+            if (!gevonden && windDir != WeerHelper.WindDirection.Onbekend) {
+                StatistiekWind stat = new StatistiekWind();
+                stat.setWindDir(windDir);
+                stat.setWindOmschrijving(WeerHelper.WindDirectionToOmschrijving(windDir));
+                stat.setAantal(0);
+                stat.setAvgWindSpeed(0);
+                stat.setMaxWindSpeed(0);
+                stat.setPercentage(0);
+                windstat.add(stat);
+            }
+        }
+
+        return windstat;
+    }
+
     ArrayList<StatistiekWind> GetStatistiekWind(int jaar) {
 
         String selectQuery = "SELECT"
                 + " " + MDG_WINDDIR + ","
                 + " COUNT(*) AS AANTAL,"
-                + " AVG(" + MDG_WINDSPEED + ") AS WINDSPEED"
+                + " AVG(" + MDG_WINDSPEED + ") AS AVGWINDSPEED,"
+                + " MAX(" + MDG_WINDSPEED + ") AS MAXWINDSPEED "
                 + " FROM " + TAB_MELDING
                 + " WHERE " + MDG_WINDDIR + " > 0 "
                 + " AND " + MDG_DATUM + " BETWEEN ? AND ?"
@@ -614,7 +640,8 @@ class DatabaseHelper extends SQLiteOpenHelper {
                 stat.setWindDir(windDir);
                 stat.setAantal(cursor.getInt(1));
                 stat.setWindOmschrijving(WeerHelper.WindDirectionToOmschrijving(windDir));
-                stat.setWindSpeed(cursor.getFloat(2));
+                stat.setAvgWindSpeed(cursor.getFloat(2));
+                stat.setMaxWindSpeed(cursor.getFloat(3));
                 stats.add(stat);
                 totaal += stat.getAantal();
             } while (cursor.moveToNext());
@@ -626,26 +653,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
             stats.get(i).setPercentage(percentage);
         }
 
-        for (WeerHelper.WindDirection windDir : WeerHelper.WindDirection.values()) {
-            boolean gevonden = false;
-            for (int i = 0; i < stats.size(); i++) {
-                if (windDir == stats.get(i).getWindDir()) {
-                    gevonden = true;
-                    break;
-                }
-            }
-
-            if (!gevonden && windDir != WeerHelper.WindDirection.Onbekend) {
-                StatistiekWind stat = new StatistiekWind();
-                stat.setWindDir(windDir);
-                stat.setWindOmschrijving(WeerHelper.WindDirectionToOmschrijving(windDir));
-                stat.setAantal(0);
-                stat.setWindSpeed(0);
-                stat.setPercentage(0);
-                stats.add(stat);
-            }
-        }
+        stats = WindStatAddZeros(stats);
         return stats;
     }
-
 }
