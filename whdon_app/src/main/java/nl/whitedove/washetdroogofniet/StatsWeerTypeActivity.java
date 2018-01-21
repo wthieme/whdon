@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -24,14 +26,22 @@ import org.joda.time.DateTime;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class StatsWeerTypeActivity extends Activity {
     static int mJaar = DateTime.now().getYear();
+    static int mMaand = DateTime.now().getMonthOfYear();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.weertype_statistieken);
+        InitFab();
+        InitRadio();
+        InitSwipes();
+        ToondataBackground();
+    }
 
+    private void InitFab() {
         FloatingActionButton fabTerug = findViewById(R.id.btnTerug);
         fabTerug.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,20 +49,53 @@ public class StatsWeerTypeActivity extends Activity {
                 Terug();
             }
         });
-        InitSwipes();
-        ToondataBackground();
     }
+
+    private void InitRadio() {
+        final RadioButton rbJaar = findViewById(R.id.rbJaar);
+        final RadioButton rbJaarMaand = findViewById(R.id.rbJaarMaand);
+        final RadioGroup rgJaarMaand = findViewById(R.id.rgJaarMaand);
+        rbJaar.setChecked(mMaand == 0);
+        rbJaarMaand.setChecked(mMaand != 0);
+        RadioGroup.OnCheckedChangeListener cl = new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
+                RadioButton rb = radioGroup.findViewById(checkedId);
+                if (rb.getId() == R.id.rbJaar) mMaand = 0;
+                else mMaand = DateTime.now().getMonthOfYear();
+                ToondataBackground();
+            }
+        };
+        rgJaarMaand.setOnCheckedChangeListener(cl);
+    }
+
 
     @SuppressLint("ClickableViewAccessibility")
     private void InitSwipes() {
         OnSwipeTouchListener sl = new OnSwipeTouchListener(StatsWeerTypeActivity.this) {
             public void onSwipeLeft() {
-                mJaar++;
+                if (mMaand == 0) {
+                    mJaar++;
+                } else {
+                    mMaand++;
+                    if (mMaand == 13) {
+                        mJaar++;
+                        mMaand = 1;
+                    }
+                }
                 ToondataBackground();
             }
 
             public void onSwipeRight() {
-                mJaar--;
+                if (mMaand == 0) {
+                    mJaar--;
+                } else {
+                    mMaand--;
+                    if (mMaand == 0) {
+                        mJaar--;
+                        mMaand = 12;
+                    }
+                }
                 ToondataBackground();
             }
         };
@@ -81,17 +124,17 @@ public class StatsWeerTypeActivity extends Activity {
     private void ToonStatistiekWeerType(ArrayList<StatistiekWeertype> stats) {
 
         final TextView tvWeertype = findViewById(R.id.tvWeertype);
-        tvWeertype.setText(String.format("%s %s", getString(R.string.PerWeerType), String.format(getString(R.string.Jaartal), Integer.toString(mJaar))));
+        final TextView tvGeenGegevens = findViewById(R.id.tvGeenGegevens);
 
-        int[] colors = new int[]{ContextCompat.getColor(this, R.color.colorGrafiek1),
-                ContextCompat.getColor(this, R.color.colorGrafiek2),
-                ContextCompat.getColor(this, R.color.colorGrafiek3),
-                ContextCompat.getColor(this, R.color.colorGrafiek4),
-                ContextCompat.getColor(this, R.color.colorGrafiek5),
-                ContextCompat.getColor(this, R.color.colorGrafiek6),
-                ContextCompat.getColor(this, R.color.colorGrafiek7),
-                ContextCompat.getColor(this, R.color.colorGrafiek8)};
+        if (mMaand == 0)
+            tvWeertype.setText(String.format("%s %s", getString(R.string.PerWeerType), String.format(getString(R.string.Jaartal), Integer.toString(mJaar))));
+        else {
+            DateTime dat = new DateTime(mJaar, mMaand, 1, 0, 0);
+            String mnd = dat.toString("MMM", Locale.getDefault()).replace(".", "");
+            tvWeertype.setText(String.format("%s %s", getString(R.string.PerWeerType), String.format(getString(R.string.JaartalEnMaand), mnd, Integer.toString(mJaar))));
+        }
 
+        ArrayList<Integer> colors = new ArrayList<>();
         ArrayList<PieEntry> dataT = new ArrayList<>();
         ArrayList<LegendEntry> legendEntries = new ArrayList<>();
 
@@ -100,7 +143,10 @@ public class StatsWeerTypeActivity extends Activity {
             int rPerc = Math.round(perc);
             dataT.add(new PieEntry(perc, (rPerc <= 2) ? "" : String.format("%d%%", rPerc)));
             LegendEntry le = new LegendEntry();
-            le.formColor = colors[i];
+            Integer col = WeerHelper.WeerTypeToWeerKleur(this, stats.get(i).getWeerType());
+            colors.add(col);
+            //noinspection ConstantConditions
+            le.formColor = col;
             le.label = stats.get(i).getWeerTypeOmschrijving();
             le.form = Legend.LegendForm.SQUARE;
             le.formSize = 10;
@@ -138,10 +184,13 @@ public class StatsWeerTypeActivity extends Activity {
         chart.animateXY(500, 500);
         if (stats.size() == 0) {
             chart.setVisibility(View.GONE);
+            tvGeenGegevens.setVisibility(View.VISIBLE);
         } else {
+            tvGeenGegevens.setVisibility(View.GONE);
             chart.setVisibility(View.VISIBLE);
         }
         chart.invalidate();
+
     }
 
     private static class AsyncGetStatistiekWeerTypeTask extends AsyncTask<Context, Void, ArrayList<StatistiekWeertype>> {
@@ -155,7 +204,7 @@ public class StatsWeerTypeActivity extends Activity {
         protected ArrayList<StatistiekWeertype> doInBackground(Context... params) {
             Context context = params[0];
             DatabaseHelper dh = DatabaseHelper.getInstance(context);
-            return dh.GetStatistiekWeerType(mJaar);
+            return dh.GetStatistiekWeerType(mJaar, mMaand);
         }
 
         @Override

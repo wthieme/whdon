@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorBackground">
 
-    <LinearLayout
+    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="top|center"
@@ -20,8 +20,37 @@
             android:layout_marginTop="16dp"
             android:text="@string/PerWeerType"
             android:textColor="@color/colorPrimary"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textStyle="bold" />
+
+        <RadioGroup
+            android:id="@+id/rgJaarMaand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="100dp"
+            android:layout_marginTop="10dp"
+            android:checkedButton="@+id/rbJaarMaand"
+            android:orientation="horizontal">
+
+            <android.support.v7.widget.AppCompatRadioButton
+                android:id="@+id/rbJaar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:buttonTint="@color/colorPrimary"
+                android:text="@string/Jaar"
+                android:textColor="@color/colorPrimary"
+                android:textSize="18sp" />
+
+            <android.support.v7.widget.AppCompatRadioButton
+                android:id="@+id/rbJaarMaand"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                app:buttonTint="@color/colorPrimary"
+                android:text="@string/Maand"
+                android:textColor="@color/colorPrimary"
+                android:textSize="18sp" />
+        </RadioGroup>
 
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/pcPerWeertype"
@@ -44,4 +73,16 @@
         android:layout_marginTop="0dp"
         android:src="@drawable/back"
         app:useCompatPadding="true" />
+
+    <TextView
+        android:id="@+id/tvGeenGegevens"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:text="@string/GeenGegevens"
+        android:textColor="@color/colorTemperatuur"
+        android:textSize="18sp"
+        android:visibility="gone"/>
+
 </RelativeLayout>

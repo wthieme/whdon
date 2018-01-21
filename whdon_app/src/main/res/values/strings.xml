@@ -65,4 +65,13 @@
     <string name="per_maand_titel">%s-%s t/m %s-%s</string>
     <string name="PerWindRichting">% windrichting</string>
     <string name="Jaartal">(%s)</string>
+    <string name="JaartalEnMaand">(%s-%s)</string>
+    <string name="Jaar">Jaar</string>
+    <string name="Maand">Maand</string>
+    <string name="GeenGegevens">Geen gegevens</string>
+    <string name="Windsnelheid">Windsnelheid</string>
+    <string name="MaxTemp">Maximum temperatuur</string>
+    <string name="MinTemp">Minimum temperatuur</string>
+    <string name="MaxWindSnelheid">Maximum windsnelheid</string>
+    <string name="GemmWindSnelheid">Gemiddelde windsnelheid</string>
 </resources>

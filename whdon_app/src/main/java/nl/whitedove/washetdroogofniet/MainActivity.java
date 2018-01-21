@@ -254,7 +254,8 @@ public class MainActivity extends Activity {
         contextMenuItems = new ArrayList<>();
 
         contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.pie), getString(R.string.WeerType)));
-        contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.spider), getString(R.string.Windrichting)));
+        contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.winddir), getString(R.string.Windrichting)));
+        contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.windspeed), getString(R.string.Windsnelheid)));
 
         adapter = new ContextMenuAdapter(this, contextMenuItems);
         listView.setAdapter(adapter);
@@ -271,7 +272,11 @@ public class MainActivity extends Activity {
                         return;
 
                     case 1:
-                        GrafiekWind();
+                        GrafiekWindRichting();
+                        return;
+
+                    case 2:
+                        GrafiekWindSnelheid();
                 }
             }
         });
@@ -370,8 +375,13 @@ public class MainActivity extends Activity {
         startActivity(intent);
     }
 
-    private void GrafiekWind() {
-        Intent intent = new Intent(this, StatsWindActivity.class);
+    private void GrafiekWindRichting() {
+        Intent intent = new Intent(this, StatsWindRichtingActivity.class);
+        startActivity(intent);
+    }
+
+    private void GrafiekWindSnelheid() {
+        Intent intent = new Intent(this, StatsWindSnelheidActivity.class);
         startActivity(intent);
     }
 

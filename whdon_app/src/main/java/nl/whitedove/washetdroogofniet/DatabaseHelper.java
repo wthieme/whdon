@@ -544,7 +544,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
         return stats;
     }
 
-    ArrayList<StatistiekWeertype> GetStatistiekWeerType(int jaar) {
+    ArrayList<StatistiekWeertype> GetStatistiekWeerType(int jaar,  int maand) {
 
         String selectQuery = "SELECT"
                 + " " + MDG_WEERTYPE + ","
@@ -557,8 +557,15 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor;
-        DateTime va = new DateTime(jaar, 1, 1, 0, 0);
-        DateTime tm = va.plusYears(1);
+        DateTime va;
+        DateTime tm;
+        if (maand == 0) {
+            va = new DateTime(jaar, 1, 1, 0, 0);
+            tm = va.plusYears(1);
+        } else {
+            va = new DateTime(jaar, maand, 1, 0, 0);
+            tm = va.plusMonths(1);
+        }
         cursor = db.rawQuery(selectQuery, new String[]{Long.toString(va.getMillis()), Long.toString(tm.getMillis())});
 
         ArrayList<StatistiekWeertype> stats = new ArrayList<>();
@@ -612,7 +619,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
         return windstat;
     }
 
-    ArrayList<StatistiekWind> GetStatistiekWind(int jaar) {
+    ArrayList<StatistiekWind> GetStatistiekWind(int jaar, int maand) {
 
         String selectQuery = "SELECT"
                 + " " + MDG_WINDDIR + ","
@@ -626,8 +633,16 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor;
-        DateTime va = new DateTime(jaar, 1, 1, 0, 0);
-        DateTime tm = va.plusYears(1);
+        DateTime va;
+        DateTime tm;
+        if (maand == 0) {
+            va = new DateTime(jaar, 1, 1, 0, 0);
+            tm = va.plusYears(1);
+        } else {
+            va = new DateTime(jaar, maand, 1, 0, 0);
+            tm = va.plusMonths(1);
+        }
+
         cursor = db.rawQuery(selectQuery, new String[]{Long.toString(va.getMillis()), Long.toString(tm.getMillis())});
 
         ArrayList<StatistiekWind> stats = new ArrayList<>();

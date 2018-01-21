@@ -87,7 +87,12 @@
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
         <activity
-            android:name=".StatsWindActivity"
+            android:name=".StatsWindRichtingActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".StatsWindSnelheidActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>

@@ -20,4 +20,6 @@
     <color name="colorGrafiek6">#F0B27A</color>
     <color name="colorGrafiek7">#CACFD2</color>
     <color name="colorGrafiek8">#F2D7D5</color>
+    <color name="colorFillMaxSpeed">#D98880</color>
+    <color name="colorFillAvgSpeed">#CEE3F6</color>
 </resources>

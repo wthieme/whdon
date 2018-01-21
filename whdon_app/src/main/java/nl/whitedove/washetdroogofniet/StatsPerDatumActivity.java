@@ -223,7 +223,7 @@ public class StatsPerDatumActivity extends Activity {
             }
         };
 
-        LineDataSet lDsMin = new LineDataSet(lDataTMin, "Minimum temperatuur");
+        LineDataSet lDsMin = new LineDataSet(lDataTMin, getString(R.string.MinTemp));
         lDsMin.setColor(ContextCompat.getColor(this, R.color.colorPrimary));
         lDsMin.setCircleColor(ContextCompat.getColor(this, R.color.colorTekst));
         lDsMin.setCircleColorHole(ContextCompat.getColor(this, R.color.colorTekst));
@@ -233,7 +233,7 @@ public class StatsPerDatumActivity extends Activity {
         lDsMin.setValueFormatter(lValueFormat);
         lDsMin.setAxisDependency(YAxis.AxisDependency.LEFT);
 
-        LineDataSet lDsMax = new LineDataSet(lDataTMax, "Maximum temperatuur");
+        LineDataSet lDsMax = new LineDataSet(lDataTMax, getString(R.string.MaxTemp));
         lDsMax.setColor(ContextCompat.getColor(this, R.color.colorTemperatuurDark));
         lDsMax.setCircleColor(ContextCompat.getColor(this, R.color.colorTemperatuur));
         lDsMax.setCircleColorHole(ContextCompat.getColor(this, R.color.colorTemperatuur));
