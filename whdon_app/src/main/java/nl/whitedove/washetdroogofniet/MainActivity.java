@@ -588,9 +588,11 @@ public class MainActivity extends Activity {
         ShowMeldingProgress();
         Context context = getApplicationContext();
         String locatie = LocationHelper.GetLocatieVoorWeer();
+        String land = LocationHelper.GetCountryVoorWeer();
         Melding melding = new Melding();
         melding.setDroog(droog);
         melding.setLocatie(locatie);
+        melding.setLand(land);
         melding.setId(Helper.GetGuid(context));
         melding.setNat(!droog);
         melding.setTemperatuur((long) WeerHelper.GetHuidigeTemperatuur());

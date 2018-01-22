@@ -3,6 +3,7 @@ package nl.whitedove.washetdroogofniet;
 class Statistiek {
 
     private String locatie;
+    private String land;
     private int aantalNat;
     private int aantalDroog;
     private String id;
@@ -31,12 +32,20 @@ class Statistiek {
         this.aantalDroog = aantalDroog;
     }
 
-    public String getId() {
+    String getId() {
         return id;
     }
 
-    public void setId(String id) {
+    void setId(String id) {
         this.id = id;
+    }
+
+    String getLand() {
+        return land;
+    }
+
+    void setLand(String land) {
+        this.land = land;
     }
 }
 

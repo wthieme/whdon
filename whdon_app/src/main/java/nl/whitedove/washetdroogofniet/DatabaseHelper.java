@@ -15,13 +15,14 @@ import nl.whitedove.washetdroogofniet.backend.whdonApi.model.Melding;
 
 class DatabaseHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
     private static final String DATABASE_NAME = "whdon";
 
     private static final String TAB_MELDING = "Melding";
     private static final String MDG_ID = "Id";
     private static final String MDG_TELID = "TelId";
     private static final String MDG_LOCATIE = "Locatie";
+    private static final String MDG_LAND = "Land";
     private static final String MDG_DATUM = "Datum";
     private static final String MDG_DROOG = "Droog";
     private static final String MDG_NAT = "Nat";
@@ -56,7 +57,8 @@ class DatabaseHelper extends SQLiteOpenHelper {
                 + MDG_TEMPERATUUR + " INTEGER NOT NULL,"
                 + MDG_WEERTYPE + " INTEGER NOT NULL,"
                 + MDG_WINDDIR + " INTEGER NOT NULL,"
-                + MDG_WINDSPEED + " INTEGER NOT NULL"
+                + MDG_WINDSPEED + " INTEGER NOT NULL,"
+                + MDG_LAND + " TEXT NOT NULL"
                 + ")";
         db.execSQL(sql);
 
@@ -85,6 +87,10 @@ class DatabaseHelper extends SQLiteOpenHelper {
             String sql = "ALTER TABLE " + TAB_MELDING + " ADD COLUMN " + MDG_WINDDIR + " INTEGER NOT NULL DEFAULT 0";
             db.execSQL(sql);
             sql = "ALTER TABLE " + TAB_MELDING + " ADD COLUMN " + MDG_WINDSPEED + " INTEGER NOT NULL DEFAULT 0";
+            db.execSQL(sql);
+        }
+        if (oldVersion < 5) {
+            String sql = "ALTER TABLE " + TAB_MELDING + " ADD COLUMN " + MDG_LAND + " TEXT NOT NULL DEFAULT 'NL'";
             db.execSQL(sql);
         }
     }
@@ -117,6 +123,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
                 values.put(MDG_WEERTYPE, melding.getWeerType());
                 values.put(MDG_WINDDIR, melding.getWindDir());
                 values.put(MDG_WINDSPEED, melding.getWindSpeed());
+                values.put(MDG_LAND, melding.getLand());
                 db.insert(TAB_MELDING, null, values);
             }
         }
@@ -154,14 +161,15 @@ class DatabaseHelper extends SQLiteOpenHelper {
         if (id != null) where = " WHERE " + MDG_TELID + " = ?";
         String selectQuery = "SELECT"
                 + " " + MDG_LOCATIE + " AS LOCATIE,"
+                + " " + MDG_LAND + " AS LAND,"
                 + " SUM(" + MDG_DROOG + ") AS DROOG,"
                 + " SUM(" + MDG_NAT + ") AS NAT,"
                 + " MAX(" + MDG_DATUM + ") AS DATUM"
                 + " FROM " + TAB_MELDING
                 + where
-                + " GROUP BY " + MDG_LOCATIE
+                + " GROUP BY " + MDG_LOCATIE + "," + MDG_LAND
                 + " ORDER BY " + MDG_DATUM + " DESC"
-                + " LIMIT 25";
+                + " LIMIT 5";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor;
@@ -176,8 +184,9 @@ class DatabaseHelper extends SQLiteOpenHelper {
             do {
                 Statistiek stat = new Statistiek();
                 stat.setLocatie(cursor.getString(0));
-                stat.setAantalDroog(cursor.getInt(1));
-                stat.setAantalNat(cursor.getInt(2));
+                stat.setLand(cursor.getString(1));
+                stat.setAantalDroog(cursor.getInt(2));
+                stat.setAantalNat(cursor.getInt(3));
                 stats.add(stat);
             } while (cursor.moveToNext());
         }
@@ -200,7 +209,8 @@ class DatabaseHelper extends SQLiteOpenHelper {
                 + " " + MDG_TEMPERATUUR + ","
                 + " " + MDG_WEERTYPE + ","
                 + " " + MDG_WINDDIR + ","
-                + " " + MDG_WINDSPEED
+                + " " + MDG_WINDSPEED + ","
+                + " " + MDG_LAND
                 + " FROM " + TAB_MELDING
                 + " WHERE " + MDG_TELID + " = ?"
                 + " ORDER BY " + MDG_DATUM + " DESC"
@@ -222,6 +232,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
             melding.setWeerType(cursor.getLong(5));
             melding.setWindDir(cursor.getLong(6));
             melding.setWindSpeed(cursor.getLong(7));
+            melding.setLand(cursor.getString(8));
         } else {
             melding.setError("Geen meldingen");
         }
@@ -280,7 +291,8 @@ class DatabaseHelper extends SQLiteOpenHelper {
                 + " " + MDG_TEMPERATUUR + ","
                 + " " + MDG_WEERTYPE + ","
                 + " " + MDG_WINDDIR + ","
-                + " " + MDG_WINDSPEED
+                + " " + MDG_WINDSPEED + ","
+                + " " + MDG_LAND
                 + " FROM " + TAB_MELDING
                 + " ORDER BY " + MDG_DATUM + " DESC"
                 + " LIMIT 25";
@@ -302,6 +314,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
                 melding.setWeerType(cursor.getLong(5));
                 melding.setWindDir(cursor.getLong(6));
                 melding.setWindSpeed(cursor.getLong(7));
+                melding.setLand(cursor.getString(8));
                 meldingen.add(melding);
             } while (cursor.moveToNext());
         }
@@ -320,7 +333,8 @@ class DatabaseHelper extends SQLiteOpenHelper {
                 + " " + MDG_TEMPERATUUR + ","
                 + " " + MDG_WEERTYPE + ","
                 + " " + MDG_WINDDIR + ","
-                + " " + MDG_WINDSPEED
+                + " " + MDG_WINDSPEED + ","
+                + " " + MDG_LAND
                 + " FROM " + TAB_MELDING
                 + " WHERE " + MDG_TELID + " = ?"
                 + " ORDER BY " + MDG_DATUM + " DESC";
@@ -343,6 +357,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
                 melding.setWeerType(cursor.getLong(5));
                 melding.setWindDir(cursor.getLong(6));
                 melding.setWindSpeed(cursor.getLong(7));
+                melding.setLand(cursor.getString(8));
                 meldingen.add(melding);
             } while (cursor.moveToNext());
         }
@@ -544,7 +559,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
         return stats;
     }
 
-    ArrayList<StatistiekWeertype> GetStatistiekWeerType(int jaar,  int maand) {
+    ArrayList<StatistiekWeertype> GetStatistiekWeerType(int jaar, int maand) {
 
         String selectQuery = "SELECT"
                 + " " + MDG_WEERTYPE + ","

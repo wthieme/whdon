@@ -78,7 +78,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng latlng;
 
         for (Statistiek stat : stats) {
-            LatLng ll = LocationHelper.getLocationFromAddress(this, "Nederland, " + stat.getLocatie());
+            LatLng ll = LocationHelper.getLocationFromAddress(this, stat.getLand()+", " + stat.getLocatie());
             if (ll == null) continue;
             int aantal = stat.getAantalNat() + stat.getAantalDroog();
             mMap.addMarker(new MarkerOptions().position(ll).title(stat.getLocatie() +

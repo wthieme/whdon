@@ -22,7 +22,7 @@ import nl.whitedove.washetdroogofniet.backend.whdonApi.WhdonApi;
 
 class Helper {
 
-    private static final String ApiUrl = "https://10-dot-washetdroogofnietbackend.appspot.com/_ah/api/";
+    private static final String ApiUrl = "https://11-dot-washetdroogofnietbackend.appspot.com/_ah/api/";
     static WhdonApi myApiService = new WhdonApi.Builder(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), null)
             .setRootUrl(Helper.ApiUrl)
             .build();

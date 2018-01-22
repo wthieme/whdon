@@ -12,6 +12,7 @@ public class Melding {
     private Long weerType;
     private Long windSpeed;
     private Long windDir;
+    private String land;
 
     public String getLocatie() {
         return locatie;
@@ -91,5 +92,13 @@ public class Melding {
 
     public void setWindDir(Long windDir) {
         this.windDir = windDir;
+    }
+
+    public String getLand() {
+        return land;
+    }
+
+    public void setLand(String land) {
+        this.land = land;
     }
 }

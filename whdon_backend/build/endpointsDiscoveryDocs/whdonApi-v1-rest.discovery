@@ -136,6 +136,9 @@
     "id": {
      "type": "string"
     },
+    "land": {
+     "type": "string"
+    },
     "locatie": {
      "type": "string"
     },

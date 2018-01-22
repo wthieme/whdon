@@ -35,6 +35,7 @@ public class WhdonEndpoint {
     private final static String WEERTTPE = "weertype";
     private final static String WINDSPEED = "windspeed";
     private final static String WINDDIR = "windir";
+    private final static String LAND = "land";
 
     // Get the Datastore Service
     private DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -74,6 +75,7 @@ public class WhdonEndpoint {
         meld.setProperty(WEERTTPE, melding.getWeerType());
         meld.setProperty(WINDSPEED, melding.getWindSpeed());
         meld.setProperty(WINDDIR, melding.getWindDir());
+        meld.setProperty(LAND, melding.getLand());
         datastore.put(meld);
 
         melding.setError("");
@@ -84,11 +86,7 @@ public class WhdonEndpoint {
     public Versie GetVersie() {
         Versie response = new Versie();
         response.setNaam("Was Het Droog Of Niet API");
-        response.setversie("10" +
-                "" +
-                "" +
-                "" +
-                ".0");
+        response.setversie("11.0");
         return response;
     }
 
@@ -137,6 +135,12 @@ public class WhdonEndpoint {
             melding.setWindDir(0L);
         }
 
+        try {
+            melding.setLand((String) laatste.getProperty(LAND));
+        } catch (Exception e) {
+            melding.setLand("NL");
+        }
+
         return melding;
     }
 
@@ -181,6 +185,10 @@ public class WhdonEndpoint {
             } catch (Exception e) {
                 melding.setWindDir(0L);
             }
+
+            String land = (String) rMeld.getProperty(LAND);
+            if (land == null || land.trim().equals("")) land = "NL";
+            melding.setLand(land);
 
             response.add(melding);
         }

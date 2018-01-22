@@ -56,7 +56,7 @@ class LocationHelper {
     static String GetCountryVoorWeer() {
         String country = Helper.mCountry;
         if (country == null || country.equalsIgnoreCase("Onbekend")) {
-            country = "Nederland";
+            country = "NL";
         }
         return country;
     }
