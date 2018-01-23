@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentActivity;
+import android.util.Pair;
 import android.view.View;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -70,21 +71,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         new MapsActivity.AsyncGetPersoonlijkeStatsTask(this).execute(context);
     }
 
+    @SuppressWarnings("unchecked")
     @SuppressLint("MissingPermission")
     private void ToonLocaties(ArrayList<Statistiek> stats) {
         mMap.clear();
         mMap.setTrafficEnabled(false);
         mMap.setMyLocationEnabled(false);
-        LatLng latlng;
 
         for (Statistiek stat : stats) {
-            LatLng ll = LocationHelper.getLocationFromAddress(this, stat.getLand()+", " + stat.getLocatie());
-            if (ll == null) continue;
-            int aantal = stat.getAantalNat() + stat.getAantalDroog();
-            mMap.addMarker(new MarkerOptions().position(ll).title(stat.getLocatie() +
-                    " (" + Integer.toString(stat.getAantalDroog()) + " " + getString(R.string.DroogTxt) +
-                    " " + Integer.toString(stat.getAantalNat()) + " " + getString(R.string.NatTxt) + ")"));
+            Context context = getApplicationContext();
+            new AsyncDoeEenLocatie(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, Pair.create(context, stat));
         }
+    }
+
+    private void Toon1Locatie(Statistiek stat, LatLng ll) {
+        if (ll == null) return;
+        mMap.addMarker(new MarkerOptions().position(ll).title(stat.getLocatie() +
+                " (" + Integer.toString(stat.getAantalDroog()) + " " + getString(R.string.DroogTxt) +
+                " " + Integer.toString(stat.getAantalNat()) + " " + getString(R.string.NatTxt) + ")"));
     }
 
     private static class AsyncGetPersoonlijkeStatsTask extends AsyncTask<Context, Void, ArrayList<Statistiek>> {
@@ -108,4 +112,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             if (activity != null) activity.ToonLocaties(stats);
         }
     }
+
+    private static class AsyncDoeEenLocatie extends AsyncTask<Pair<Context, Statistiek>, Void, Pair<Statistiek, LatLng>> {
+        private WeakReference<MapsActivity> activityWeakReference;
+
+        AsyncDoeEenLocatie(MapsActivity context) {
+            activityWeakReference = new WeakReference<>(context);
+        }
+
+        @SafeVarargs
+        @Override
+        protected final Pair<Statistiek, LatLng> doInBackground(Pair<Context, Statistiek>... params) {
+            Context context = params[0].first;
+            Statistiek stat = params[0].second;
+            LatLng ll = LocationHelper.getLocationFromAddress(context, stat.getLand() + ", " + stat.getLocatie());
+            return Pair.create(stat, ll);
+        }
+
+        @Override
+        protected void onPostExecute(Pair<Statistiek, LatLng> stat_ll) {
+            MapsActivity activity = activityWeakReference.get();
+            if (activity != null) activity.Toon1Locatie(stat_ll.first, stat_ll.second);
+        }
+    }
+
 }

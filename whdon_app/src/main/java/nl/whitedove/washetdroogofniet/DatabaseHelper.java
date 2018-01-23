@@ -169,7 +169,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
                 + where
                 + " GROUP BY " + MDG_LOCATIE + "," + MDG_LAND
                 + " ORDER BY " + MDG_DATUM + " DESC"
-                + " LIMIT 5";
+                + " LIMIT 100";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor;
