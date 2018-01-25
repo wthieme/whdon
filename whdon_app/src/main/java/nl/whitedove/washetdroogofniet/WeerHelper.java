@@ -359,11 +359,11 @@ class WeerHelper {
             case Bewolkt:
                 return ContextCompat.getColor(context, R.color.colorGrafiek3);
             case Buien:
-                return ContextCompat.getColor(context, R.color.colorGrafiek2);
+                return ContextCompat.getColor(context, R.color.colorGrafiek6);
             case Mist:
                 return ContextCompat.getColor(context, R.color.colorGrafiek7);
             case Onweer:
-                return ContextCompat.getColor(context, R.color.colorGrafiek6);
+                return ContextCompat.getColor(context, R.color.colorGrafiek2);
             case Regen:
                 return ContextCompat.getColor(context, R.color.colorGrafiek1);
             case Sneeuw:
