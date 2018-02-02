@@ -640,6 +640,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
                 + " " + MDG_WINDDIR + ","
                 + " COUNT(*) AS AANTAL,"
                 + " AVG(" + MDG_WINDSPEED + ") AS AVGWINDSPEED,"
+                + " MIN(" + MDG_WINDSPEED + ") AS MINWINDSPEED,"
                 + " MAX(" + MDG_WINDSPEED + ") AS MAXWINDSPEED "
                 + " FROM " + TAB_MELDING
                 + " WHERE " + MDG_WINDDIR + " > 0 "
@@ -671,7 +672,8 @@ class DatabaseHelper extends SQLiteOpenHelper {
                 stat.setAantal(cursor.getInt(1));
                 stat.setWindOmschrijving(WeerHelper.WindDirectionToOmschrijving(windDir));
                 stat.setAvgWindSpeed(cursor.getFloat(2));
-                stat.setMaxWindSpeed(cursor.getFloat(3));
+                stat.setMinWindSpeed(cursor.getFloat(3));
+                stat.setMaxWindSpeed(cursor.getFloat(4));
                 stats.add(stat);
                 totaal += stat.getAantal();
             } while (cursor.moveToNext());

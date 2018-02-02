@@ -20,6 +20,10 @@
     <color name="colorGrafiek6">#ffab91</color>
     <color name="colorGrafiek7">#cfd8dc</color>
     <color name="colorGrafiek8">#ffcdd2</color>
+    <color name="colorMinWindSpeed">#33691e</color>
+    <color name="colorFillMinSpeed">#81c784</color>
+    <color name="colorMaxWindSpeed">#bf360c</color>
     <color name="colorFillMaxSpeed">#e57373</color>
+    <color name="colorAvgWindSpeed">#0489b1</color>
     <color name="colorFillAvgSpeed">#bbdefb</color>
 </resources>

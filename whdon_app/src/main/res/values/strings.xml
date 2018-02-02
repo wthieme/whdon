@@ -74,4 +74,5 @@
     <string name="MinTemp">Minimum temperatuur</string>
     <string name="MaxWindSnelheid">Maximum</string>
     <string name="GemmWindSnelheid">Gemiddeld</string>
+    <string name="MinWindSnelheid">Minimum</string>
 </resources>

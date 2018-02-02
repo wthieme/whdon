@@ -6,6 +6,7 @@ class StatistiekWind {
     private String windOmschrijving;
     private int aantal;
     private float avgWindSpeed;
+    private float minWindSpeed;
     private float maxWindSpeed;
     private float percentage;
 
@@ -55,5 +56,13 @@ class StatistiekWind {
 
     void setAvgWindSpeed(float avgWindSpeed) {
         this.avgWindSpeed = avgWindSpeed;
+    }
+
+    public float getMinWindSpeed() {
+        return minWindSpeed;
+    }
+
+    public void setMinWindSpeed(float minWindSpeed) {
+        this.minWindSpeed = minWindSpeed;
     }
 }

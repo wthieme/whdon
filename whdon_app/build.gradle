@@ -23,8 +23,8 @@ android {
         applicationId "nl.whitedove.washetdroogofniet"
         minSdkVersion 17
         targetSdkVersion 27
-        versionCode 84
-        versionName "1.8.23"
+        versionCode 85
+        versionName "1.9.0"
     }
     buildTypes {
         release {
@@ -55,8 +55,8 @@ dependencies {
     implementation 'joda-time:joda-time:2.9.9'
     implementation 'com.google.android.gms:play-services-location:11.8.0'
     implementation 'com.google.android.gms:play-services-maps:11.8.0'
-    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.2'
-    implementation 'com.squareup.okhttp3:okhttp:3.9.0'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
+    implementation 'com.squareup.okhttp3:okhttp:3.9.1'
     implementation 'com.google.api-client:google-api-client-android:+' exclude module: 'httpclient'
     endpointsServer project(path: ':whdon_backend', configuration: 'endpoints')
     testImplementation 'junit:junit:4.12'
