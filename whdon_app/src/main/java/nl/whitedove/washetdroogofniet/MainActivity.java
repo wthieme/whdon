@@ -296,6 +296,12 @@ public class MainActivity extends Activity {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
 
+                    case R.id.action_settings:
+                        Intent intent1 = new Intent();
+                        intent1.setClass(MainActivity.this, SetPreferenceActivity.class);
+                        startActivityForResult(intent1, 0);
+                        return true;
+
                     case R.id.clear_cache:
                         ResetCache();
                         return true;
@@ -749,9 +755,9 @@ public class MainActivity extends Activity {
     }
 
     private void InitLocation() {
-
         // Acquire a reference to the system Location Manager
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        if (locationManager == null) return;
 
         // Define a listener that responds to location updates
         LocationListener locationListener = new LocationListener() {
@@ -770,16 +776,25 @@ public class MainActivity extends Activity {
             }
         };
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     MY_PERMISSIONS_REQUEST_LOCATION);
             return;
         }
 
-        Location netLastLocation = null;
+        Location gpsLastLocation = null;
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, Helper.ONE_MINUTE, Helper.ONE_KM, locationListener);
+            gpsLastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        }
 
-        assert locationManager != null;
+        if (gpsLastLocation != null) {
+            makeUseOfNewLocation(gpsLastLocation);
+            return;
+        }
+
+        Location netLastLocation = null;
         if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, Helper.ONE_MINUTE, Helper.ONE_KM, locationListener);
             netLastLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);

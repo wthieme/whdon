@@ -75,4 +75,5 @@
     <string name="MaxWindSnelheid">Maximum</string>
     <string name="GemmWindSnelheid">Gemiddeld</string>
     <string name="MinWindSnelheid">Minimum</string>
+    <string name="instellingen">Instellingen</string>
 </resources>
