@@ -76,4 +76,6 @@
     <string name="GemmWindSnelheid">Gemiddeld</string>
     <string name="MinWindSnelheid">Minimum</string>
     <string name="instellingen">Instellingen</string>
+    <string name="fa_map_marker">&#xf3c5;</string>
+    <string name="fa_signal">&#xf012;</string>
 </resources>

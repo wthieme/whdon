@@ -610,19 +610,6 @@ public class MainActivity extends Activity {
         new AsyncSlaMeldingOpTask(this).execute(Pair.create(context, melding));
     }
 
-    private void ToonHuidigeLocatie() {
-        TextView tvHuidigeLoc = findViewById(R.id.tvHuidigeLocatie);
-        String loc;
-        if (Helper.mLocatie != null) {
-            loc = Helper.mLocatie;
-
-            if (Helper.mCountry != null)
-                loc = loc + "," + Helper.mCountry;
-
-            tvHuidigeLoc.setText(loc);
-        }
-    }
-
     @SuppressLint("DefaultLocale")
     private void ToonLaatsteMelding(Melding melding) {
 
@@ -699,7 +686,8 @@ public class MainActivity extends Activity {
     }
 
     private void InitViews(Boolean visible) {
-        ToonHuidigeLocatie();
+        TextView tvHuidigeLocatie = findViewById(R.id.tvHuidigeLocatie);
+        LocationHelper.ToonHuidigeLocatie(this, tvHuidigeLocatie, LocationHelper.LocationType.Unknown);
         TextView tvPersStats = findViewById(R.id.tvPersStats);
         TextView tvDroog = findViewById(R.id.tvDroog);
         TextView tvNat = findViewById(R.id.tvNat);
@@ -759,11 +747,18 @@ public class MainActivity extends Activity {
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         if (locationManager == null) return;
 
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    MY_PERMISSIONS_REQUEST_LOCATION);
+            return;
+        }
+
         // Define a listener that responds to location updates
-        LocationListener locationListener = new LocationListener() {
+        LocationListener locationListenerGps = new LocationListener() {
             public void onLocationChanged(Location location) {
                 // Called when a new location is found by the network location provider.
-                makeUseOfNewLocation(location);
+                makeUseOfNewLocation(location, LocationHelper.LocationType.Gps);
             }
 
             public void onStatusChanged(String provider, int status, Bundle extras) {
@@ -776,31 +771,42 @@ public class MainActivity extends Activity {
             }
         };
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    MY_PERMISSIONS_REQUEST_LOCATION);
-            return;
-        }
-
         Location gpsLastLocation = null;
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, Helper.ONE_MINUTE, Helper.ONE_KM, locationListener);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, Helper.ONE_MINUTE, Helper.ONE_KM, locationListenerGps);
             gpsLastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         }
 
         if (gpsLastLocation != null) {
-            makeUseOfNewLocation(gpsLastLocation);
+            makeUseOfNewLocation(gpsLastLocation, LocationHelper.LocationType.Gps);
             return;
         }
 
+        // Define a listener that responds to location updates
+        LocationListener locationListenerNet = new LocationListener() {
+            public void onLocationChanged(Location location) {
+                // Called when a new location is found by the network location provider.
+                makeUseOfNewLocation(location, LocationHelper.LocationType.Net);
+            }
+
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+            }
+
+            public void onProviderEnabled(String provider) {
+            }
+
+            public void onProviderDisabled(String provider) {
+            }
+        };
+
         Location netLastLocation = null;
         if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, Helper.ONE_MINUTE, Helper.ONE_KM, locationListener);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, Helper.ONE_MINUTE, Helper.ONE_KM, locationListenerNet);
             netLastLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
         }
 
-        if (netLastLocation != null) makeUseOfNewLocation(netLastLocation);
+        if (netLastLocation != null)
+            makeUseOfNewLocation(netLastLocation, LocationHelper.LocationType.Net);
     }
 
     @Override
@@ -825,10 +831,11 @@ public class MainActivity extends Activity {
         InitLocation();
     }
 
-    private void makeUseOfNewLocation(Location location) {
+    private void makeUseOfNewLocation(Location location, LocationHelper.LocationType loctype) {
         Helper.mCurrentBestLocation = location;
         LocationHelper.BepaalLocatie(this);
-        ToonHuidigeLocatie();
+        TextView tvHuidigeLocatie = findViewById(R.id.tvHuidigeLocatie);
+        LocationHelper.ToonHuidigeLocatie(this, tvHuidigeLocatie, loctype);
         new AsyncGetWeerVoorspelling(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 

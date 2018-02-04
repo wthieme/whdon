@@ -348,8 +348,7 @@
                     android:gravity="center"
                     android:text="@string/onbekend"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="10sp"
-                    android:textStyle="italic" />
+                    android:textSize="10sp" />
 
             </LinearLayout>
 

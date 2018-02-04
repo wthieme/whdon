@@ -25,7 +25,6 @@ import okhttp3.Response;
 
 class WeerHelper {
 
-
     public enum WeerType {
         Onbekend(0L), Zonnig(1L), Halfbewolkt(2L), Bewolkt(3L), Regen(9L), Buien(10L), Onweer(11L), Sneeuw(13L), Mist(50L);
 

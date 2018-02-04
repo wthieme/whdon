@@ -1,8 +1,11 @@
 package nl.whitedove.washetdroogofniet;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.location.Address;
 import android.location.Geocoder;
+import android.support.v4.content.ContextCompat;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -11,6 +14,8 @@ import java.util.List;
 import java.util.Locale;
 
 class LocationHelper {
+
+    public enum LocationType {Unknown, Gps, Net}
 
     static void BepaalLocatie(Context cxt) {
 
@@ -73,17 +78,14 @@ class LocationHelper {
         return new LatLng(lat, lng);
     }
 
-    static LatLng getLocationFromAddress(Context context, String strAddress)
-    {
-        Geocoder coder= new Geocoder(context);
+    static LatLng getLocationFromAddress(Context context, String strAddress) {
+        Geocoder coder = new Geocoder(context);
         List<Address> address;
         LatLng p1 = null;
 
-        try
-        {
+        try {
             address = coder.getFromLocationName(strAddress, 1);
-            if(address==null)
-            {
+            if (address == null) {
                 return null;
             }
             Address location = address.get(0);
@@ -91,13 +93,39 @@ class LocationHelper {
             location.getLongitude();
 
             p1 = new LatLng(location.getLatitude(), location.getLongitude());
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return p1;
 
     }
+
+    static void ToonHuidigeLocatie(Context context, TextView tvlocatie, LocationHelper.LocationType srt) {
+        String loc;
+        if (Helper.mLocatie != null) {
+            loc = Helper.mLocatie;
+
+            if (Helper.mCountry != null)
+                loc = loc + "," + Helper.mCountry;
+
+            Typeface iconFont = FontManager.GetTypeface(context, FontManager.FONTAWESOME_SOLID);
+
+            String icon = "";
+            if (srt == LocationHelper.LocationType.Gps)
+                icon = context.getString(R.string.fa_map_marker);
+
+            if (srt == LocationHelper.LocationType.Net)
+                icon = context.getString(R.string.fa_signal);
+
+            FontManager.SetIconAndText(tvlocatie,
+                    iconFont,
+                    icon,
+                    ContextCompat.getColor(context, R.color.colorPrimary),
+                    Typeface.DEFAULT,
+                    loc,
+                    ContextCompat.getColor(context, R.color.colorPrimary));
+        }
+    }
+
 
 }
