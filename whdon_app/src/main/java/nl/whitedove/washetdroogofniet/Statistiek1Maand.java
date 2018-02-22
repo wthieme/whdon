@@ -5,6 +5,7 @@ class Statistiek1Maand {
     private int Maand;
     private int AantalDroog;
     private int AantalNat;
+    private float AvgTemperatuur;
     private float MinTemperatuur;
     private float MaxTemperatuur;
 
@@ -46,5 +47,13 @@ class Statistiek1Maand {
 
     void setMaxTemperatuur(float maxTemperatuur) {
         this.MaxTemperatuur = maxTemperatuur;
+    }
+
+    float getAvgTemperatuur() {
+        return AvgTemperatuur;
+    }
+
+    void setAvgTemperatuur(float avgTemperatuur) {
+        AvgTemperatuur = avgTemperatuur;
     }
 }

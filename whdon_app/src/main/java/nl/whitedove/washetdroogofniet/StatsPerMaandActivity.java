@@ -202,15 +202,19 @@ public class StatsPerMaandActivity extends Activity {
         int maxVal = -999;
 
         List<Entry> lDataTMin = new ArrayList<>();
+        List<Entry> lDataTAvg = new ArrayList<>();
         List<Entry> lDataTMax = new ArrayList<>();
         List<String> lLabels = new ArrayList<>();
 
         for (int i = 0; i < 12; i++) {
             float tempMin = stats.get(i).getMinTemperatuur();
+            float tempAvg = stats.get(i).getAvgTemperatuur();
             float tempMax = stats.get(i).getMaxTemperatuur();
             if (tempMin != 999 && tempMin < minVal) minVal = Math.round(tempMin);
+            if (tempAvg != 999 && tempAvg < minVal) minVal = Math.round(tempAvg);
             if (tempMax != -999 && tempMax > maxVal) maxVal = Math.round(tempMax);
             lDataTMin.add(new Entry(i, tempMin == 999 ? 0 : tempMin));
+            lDataTAvg.add(new Entry(i, tempAvg == 999 ? 0 : tempAvg));
             lDataTMax.add(new Entry(i, tempMax == -999 ? 0 : tempMax));
             DateTime datum = new DateTime(2000, stats.get(i).getMaand(), 1, 0, 0);
             lLabels.add(datum.toString("MMM", Locale.getDefault()));
@@ -244,8 +248,8 @@ public class StatsPerMaandActivity extends Activity {
             }
         };
 
-        LineDataSet lDsMin = new LineDataSet(lDataTMin, "Minimum temperatuur");
-        lDsMin.setColor(ContextCompat.getColor(this, R.color.colorPrimary));
+        LineDataSet lDsMin = new LineDataSet(lDataTMin, "Minimum");
+        lDsMin.setColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
         lDsMin.setCircleColor(ContextCompat.getColor(this, R.color.colorTekst));
         lDsMin.setCircleColorHole(ContextCompat.getColor(this, R.color.colorTekst));
         lDsMin.setCircleRadius(2.5f);
@@ -253,6 +257,16 @@ public class StatsPerMaandActivity extends Activity {
         lDsMin.setCubicIntensity(0.2f);
         lDsMin.setValueFormatter(lValueFormat);
         lDsMin.setAxisDependency(YAxis.AxisDependency.LEFT);
+
+        LineDataSet lDsAvg = new LineDataSet(lDataTAvg, "Gemiddeld");
+        lDsAvg.setColor(ContextCompat.getColor(this, R.color.colorAvgDark));
+        lDsAvg.setCircleColor(ContextCompat.getColor(this, R.color.colorAvg));
+        lDsAvg.setCircleColorHole(ContextCompat.getColor(this, R.color.colorAvg));
+        lDsAvg.setCircleRadius(2.5f);
+        lDsAvg.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
+        lDsAvg.setCubicIntensity(0.2f);
+        lDsAvg.setValueFormatter(lValueFormat);
+        lDsAvg.setAxisDependency(YAxis.AxisDependency.LEFT);
 
         LineDataSet lDsMax = new LineDataSet(lDataTMax, "Maximum temperatuur");
         lDsMax.setColor(ContextCompat.getColor(this, R.color.colorTemperatuurDark));
@@ -264,7 +278,7 @@ public class StatsPerMaandActivity extends Activity {
         lDsMax.setValueFormatter(lValueFormat);
         lDsMax.setAxisDependency(YAxis.AxisDependency.LEFT);
 
-        LineData lData = new LineData(lDsMin,lDsMax);
+        LineData lData = new LineData(lDsMin,lDsAvg, lDsMax);
         lChart.setData(lData);
         lChart.animateXY(500, 500);
         lChart.invalidate();

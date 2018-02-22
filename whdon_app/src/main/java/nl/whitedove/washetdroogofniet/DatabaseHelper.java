@@ -498,6 +498,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
             String selectQuery = "SELECT "
                     + " SUM(" + MDG_DROOG + ") AS DROOG,"
                     + " SUM(" + MDG_NAT + ") AS NAT,"
+                    + " AVG(CASE WHEN " + MDG_TEMPERATUUR + " = 999 THEN NULL ELSE " + MDG_TEMPERATUUR + " END) AS AVGTEMPERATUUR,"
                     + " MIN(CASE WHEN " + MDG_TEMPERATUUR + " = 999 THEN 999 ELSE " + MDG_TEMPERATUUR + " END) AS MINTEMPERATUUR,"
                     + " MAX(CASE WHEN " + MDG_TEMPERATUUR + " = 999 THEN -999 ELSE " + MDG_TEMPERATUUR + " END) AS MAXTEMPERATUUR"
                     + " FROM " + TAB_MELDING
@@ -515,11 +516,13 @@ class DatabaseHelper extends SQLiteOpenHelper {
             if (cursor.moveToFirst()) {
                 stat.setAantalDroog(cursor.getInt(0));
                 stat.setAantalNat(cursor.getInt(1));
-                stat.setMinTemperatuur(cursor.getFloat(2));
-                stat.setMaxTemperatuur(cursor.getFloat(3));
+                stat.setAvgTemperatuur(cursor.getFloat(2));
+                stat.setMinTemperatuur(cursor.getFloat(3));
+                stat.setMaxTemperatuur(cursor.getFloat(4));
             } else {
                 stat.setAantalDroog(0);
                 stat.setAantalNat(0);
+                stat.setAvgTemperatuur(0);
                 stat.setMinTemperatuur(0);
                 stat.setMaxTemperatuur(0);
             }

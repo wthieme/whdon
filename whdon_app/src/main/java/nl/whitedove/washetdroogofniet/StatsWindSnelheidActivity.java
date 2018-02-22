@@ -164,20 +164,20 @@ public class StatsWindSnelheidActivity extends Activity {
         rXAs.setValueFormatter(new IndexAxisValueFormatter(labels));
 
         RadarDataSet dsMn = new RadarDataSet(dataMn, getString(R.string.MinWindSnelheid));
-        dsMn.setColor(ContextCompat.getColor(this, R.color.colorMinWindSpeed));
-        dsMn.setFillColor(ContextCompat.getColor(this,R.color.colorFillMinSpeed));
+        dsMn.setColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
+        dsMn.setFillColor(ContextCompat.getColor(this,R.color.colorFillMin));
         dsMn.setDrawFilled(true);
         dsMn.setLineWidth(2);
 
         RadarDataSet dsA = new RadarDataSet(dataA, getString(R.string.GemmWindSnelheid));
-        dsA.setColor(ContextCompat.getColor(this, R.color.colorAvgWindSpeed));
-        dsA.setFillColor(ContextCompat.getColor(this,R.color.colorFillAvgSpeed));
+        dsA.setColor(ContextCompat.getColor(this, R.color.colorAvg));
+        dsA.setFillColor(ContextCompat.getColor(this,R.color.colorFillAvg));
         dsA.setDrawFilled(true);
         dsA.setLineWidth(2);
 
         RadarDataSet dsMx = new RadarDataSet(dataMx, getString(R.string.MaxWindSnelheid) );
-        dsMx.setColor(ContextCompat.getColor(this, R.color.colorMaxWindSpeed));
-        dsMx.setFillColor(ContextCompat.getColor(this,R.color.colorFillMaxSpeed));
+        dsMx.setColor(ContextCompat.getColor(this, R.color.colorMax));
+        dsMx.setFillColor(ContextCompat.getColor(this,R.color.colorFillMax));
         dsMx.setDrawFilled(true);
         dsMx.setLineWidth(2);
 
