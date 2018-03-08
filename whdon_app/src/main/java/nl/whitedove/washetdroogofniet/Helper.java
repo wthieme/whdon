@@ -21,6 +21,7 @@ import java.util.UUID;
 import nl.whitedove.washetdroogofniet.backend.whdonApi.WhdonApi;
 
 class Helper {
+    enum Periode {Alles, Jaar, Maand};
 
     private static final String ApiUrl = "https://11-dot-washetdroogofnietbackend.appspot.com/_ah/api/";
     static WhdonApi myApiService = new WhdonApi.Builder(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), null)

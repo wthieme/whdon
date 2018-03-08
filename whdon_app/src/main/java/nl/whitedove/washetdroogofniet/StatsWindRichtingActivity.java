@@ -33,6 +33,7 @@ import java.util.Locale;
 public class StatsWindRichtingActivity extends Activity {
     static int mJaar = DateTime.now().getYear();
     static int mMaand = DateTime.now().getMonthOfYear();
+    static Helper.Periode mAllesJaarMaand = Helper.Periode.Maand;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,30 +55,45 @@ public class StatsWindRichtingActivity extends Activity {
     }
 
     private void InitRadio() {
+        final RadioButton rbAlles = findViewById(R.id.rbAlles);
         final RadioButton rbJaar = findViewById(R.id.rbJaar);
-        final RadioButton rbJaarMaand = findViewById(R.id.rbJaarMaand);
-        final RadioGroup rgJaarMaand = findViewById(R.id.rgJaarMaand);
-        rbJaar.setChecked(mMaand == 0);
-        rbJaarMaand.setChecked(mMaand != 0);
+        final RadioButton rbMaand = findViewById(R.id.rbMaand);
+        final RadioGroup rgAllesJaarMaand = findViewById(R.id.rgAllesJaarMaand);
+        rbAlles.setChecked(mAllesJaarMaand == Helper.Periode.Alles);
+        rbJaar.setChecked(mAllesJaarMaand == Helper.Periode.Jaar);
+        rbMaand.setChecked(mAllesJaarMaand == Helper.Periode.Maand);
         RadioGroup.OnCheckedChangeListener cl = new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
                 RadioButton rb = radioGroup.findViewById(checkedId);
-                if (rb.getId() == R.id.rbJaar) mMaand = 0;
-                else mMaand = DateTime.now().getMonthOfYear();
+                if (rb.getId() == R.id.rbAlles) {
+                    mAllesJaarMaand = Helper.Periode.Alles;
+                }
+
+                if (rb.getId() == R.id.rbJaar) {
+                    mAllesJaarMaand = Helper.Periode.Jaar;
+                    mJaar = DateTime.now().getYear();
+                }
+
+                if (rb.getId() == R.id.rbMaand) {
+                    mAllesJaarMaand = Helper.Periode.Maand;
+                    mMaand = DateTime.now().getMonthOfYear();
+                }
                 ToondataBackground();
             }
         };
-        rgJaarMaand.setOnCheckedChangeListener(cl);
+        rgAllesJaarMaand.setOnCheckedChangeListener(cl);
     }
 
     @SuppressLint("ClickableViewAccessibility")
     private void InitSwipes() {
         OnSwipeTouchListener sl = new OnSwipeTouchListener(StatsWindRichtingActivity.this) {
             public void onSwipeLeft() {
-                if (mMaand == 0) {
+                if (mAllesJaarMaand == Helper.Periode.Jaar) {
                     mJaar++;
-                } else {
+                }
+
+                if (mAllesJaarMaand == Helper.Periode.Maand) {
                     mMaand++;
                     if (mMaand == 13) {
                         mJaar++;
@@ -88,9 +104,11 @@ public class StatsWindRichtingActivity extends Activity {
             }
 
             public void onSwipeRight() {
-                if (mMaand == 0) {
+                if (mAllesJaarMaand == Helper.Periode.Jaar) {
                     mJaar--;
-                } else {
+                }
+
+                if (mAllesJaarMaand == Helper.Periode.Maand) {
                     mMaand--;
                     if (mMaand == 0) {
                         mJaar--;
@@ -125,9 +143,16 @@ public class StatsWindRichtingActivity extends Activity {
 
     private void ToonStatistiekWind(ArrayList<StatistiekWind> stats) {
         final TextView tvWind = findViewById(R.id.tvWind);
-        if (mMaand == 0)
+
+        if (mAllesJaarMaand == Helper.Periode.Alles) {
+            tvWind.setText(String.format("%s", getString(R.string.PerWindRichting)));
+        }
+
+        if (mAllesJaarMaand == Helper.Periode.Jaar) {
             tvWind.setText(String.format("%s %s", getString(R.string.PerWindRichting), String.format(getString(R.string.Jaartal), Integer.toString(mJaar))));
-        else {
+        }
+
+        if (mAllesJaarMaand == Helper.Periode.Maand) {
             DateTime dat = new DateTime(mJaar, mMaand, 1, 0, 0);
             String mnd = dat.toString("MMM", Locale.getDefault()).replace(".", "");
             tvWind.setText(String.format("%s %s", getString(R.string.PerWindRichting), String.format(getString(R.string.JaartalEnMaand), mnd, Integer.toString(mJaar))));
@@ -186,7 +211,7 @@ public class StatsWindRichtingActivity extends Activity {
         protected ArrayList<StatistiekWind> doInBackground(Context... params) {
             Context context = params[0];
             DatabaseHelper dh = DatabaseHelper.getInstance(context);
-            return dh.GetStatistiekWind(mJaar, mMaand);
+            return dh.GetStatistiekWind(mAllesJaarMaand, mJaar, mMaand);
         }
 
         @Override

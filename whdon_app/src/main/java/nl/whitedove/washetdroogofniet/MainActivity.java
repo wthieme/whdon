@@ -200,7 +200,8 @@ public class MainActivity extends Activity {
         contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.staafhor), getString(R.string.plaats)));
         contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.staafvert2), getString(R.string.maand)));
         contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.staafvert), getString(R.string.aantal_meldingen_per_dag)));
-        contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.staafvert3), getString(R.string.UurVdDag)));
+        contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.staafvert3), getString(R.string.AantalPerDagVdWeek)));
+        contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.staafvert4), getString(R.string.UurVdDag)));
 
         adapter = new ContextMenuAdapter(this, contextMenuItems);
         listView.setAdapter(adapter);
@@ -225,6 +226,10 @@ public class MainActivity extends Activity {
                         return;
 
                     case 3:
+                        GrafiekDagVdWeek();
+                        return;
+
+                    case 4:
                         GrafiekUur();
                 }
             }
@@ -368,6 +373,11 @@ public class MainActivity extends Activity {
 
     private void GrafiekMaand() {
         Intent intent = new Intent(this, StatsPerMaandActivity.class);
+        startActivity(intent);
+    }
+
+    private void GrafiekDagVdWeek() {
+        Intent intent = new Intent(this, StatsPerDagVdWeekActivity.class);
         startActivity(intent);
     }
 

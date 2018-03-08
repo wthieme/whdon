@@ -533,19 +533,36 @@ class DatabaseHelper extends SQLiteOpenHelper {
         return stats;
     }
 
-    ArrayList<Statistiek1Uur> GetStatistiek24Uur() {
+    ArrayList<Statistiek1Uur> GetStatistiek24Uur(Helper.Periode ajm, int jaar, int maand) {
 
         String selectQuery = "SELECT"
                 + " ((3600000 + " + MDG_DATUM + ") / 3600000) % 24 AS UUR,"
                 + " SUM(" + MDG_DROOG + ") AS DROOG,"
                 + " SUM(" + MDG_NAT + ") AS NAT"
                 + " FROM " + TAB_MELDING
+                + " WHERE " + MDG_DATUM + " BETWEEN ? AND ?"
                 + " GROUP BY ((3600000 + " + MDG_DATUM + ") / 3600000) % 24"
                 + " ORDER BY UUR";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor;
-        cursor = db.rawQuery(selectQuery, null);
+        DateTime va;
+        DateTime tm;
+
+        va = new DateTime(2015, 12, 1, 0, 0);
+        tm = DateTime.now().plusDays(1);
+
+        if (ajm == Helper.Periode.Jaar) {
+            va = new DateTime(jaar, 1, 1, 0, 0);
+            tm = va.plusYears(1);
+        }
+
+        if (ajm == Helper.Periode.Maand) {
+            va = new DateTime(jaar, maand, 1, 0, 0);
+            tm = va.plusMonths(1);
+        }
+
+        cursor = db.rawQuery(selectQuery, new String[]{Long.toString(va.getMillis()), Long.toString(tm.getMillis())});
 
         ArrayList<Statistiek1Uur> stats = new ArrayList<>();
 
@@ -562,7 +579,55 @@ class DatabaseHelper extends SQLiteOpenHelper {
         return stats;
     }
 
-    ArrayList<StatistiekWeertype> GetStatistiekWeerType(int jaar, int maand) {
+    ArrayList<StatistiekDagVdWeek> GetStatistiekDagVdWeek(Helper.Periode ajm, int jaar, int maand) {
+
+        // 1 jan 1970 is een donderdag (ma=0, di=1, wo=2, do=3 etc), daarom 3 x 86400000 erbij
+
+        String selectQuery = "SELECT"
+                + " ((259200000 + " + MDG_DATUM + ") / 86400000) % 7 AS DAG,"
+                + " SUM(" + MDG_DROOG + ") AS DROOG,"
+                + " SUM(" + MDG_NAT + ") AS NAT"
+                + " FROM " + TAB_MELDING
+                + " WHERE " + MDG_DATUM + " BETWEEN ? AND ?"
+                + " GROUP BY ((259200000 + " + MDG_DATUM + ") / 86400000) % 7"
+                + " ORDER BY DAG";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor;
+        DateTime va;
+        DateTime tm;
+
+        va = new DateTime(2015, 12, 1, 0, 0);
+        tm = DateTime.now().plusDays(1);
+
+        if (ajm == Helper.Periode.Jaar) {
+            va = new DateTime(jaar, 1, 1, 0, 0);
+            tm = va.plusYears(1);
+        }
+
+        if (ajm == Helper.Periode.Maand) {
+            va = new DateTime(jaar, maand, 1, 0, 0);
+            tm = va.plusMonths(1);
+        }
+
+        cursor = db.rawQuery(selectQuery, new String[]{Long.toString(va.getMillis()), Long.toString(tm.getMillis())});
+
+        ArrayList<StatistiekDagVdWeek> stats = new ArrayList<>();
+
+        if (cursor.moveToFirst()) {
+            do {
+                StatistiekDagVdWeek stat = new StatistiekDagVdWeek();
+                stat.setDag(cursor.getInt(0));
+                stat.setAantalDroog(cursor.getInt(1));
+                stat.setAantalNat(cursor.getInt(2));
+                stats.add(stat);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return stats;
+    }
+
+    ArrayList<StatistiekWeertype> GetStatistiekWeerType(Helper.Periode ajm, int jaar, int maand) {
 
         String selectQuery = "SELECT"
                 + " " + MDG_WEERTYPE + ","
@@ -577,13 +642,20 @@ class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor;
         DateTime va;
         DateTime tm;
-        if (maand == 0) {
+
+        va = new DateTime(2015, 12, 1, 0, 0);
+        tm = DateTime.now().plusDays(1);
+
+        if (ajm == Helper.Periode.Jaar) {
             va = new DateTime(jaar, 1, 1, 0, 0);
             tm = va.plusYears(1);
-        } else {
+        }
+
+        if (ajm == Helper.Periode.Maand) {
             va = new DateTime(jaar, maand, 1, 0, 0);
             tm = va.plusMonths(1);
         }
+
         cursor = db.rawQuery(selectQuery, new String[]{Long.toString(va.getMillis()), Long.toString(tm.getMillis())});
 
         ArrayList<StatistiekWeertype> stats = new ArrayList<>();
@@ -637,7 +709,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
         return windstat;
     }
 
-    ArrayList<StatistiekWind> GetStatistiekWind(int jaar, int maand) {
+    ArrayList<StatistiekWind> GetStatistiekWind(Helper.Periode ajm, int jaar, int maand) {
 
         String selectQuery = "SELECT"
                 + " " + MDG_WINDDIR + ","
@@ -654,10 +726,16 @@ class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor;
         DateTime va;
         DateTime tm;
-        if (maand == 0) {
+
+        va = new DateTime(2015, 12, 1, 0, 0);
+        tm = DateTime.now().plusDays(1);
+
+        if (ajm == Helper.Periode.Jaar) {
             va = new DateTime(jaar, 1, 1, 0, 0);
             tm = va.plusYears(1);
-        } else {
+        }
+
+        if (ajm == Helper.Periode.Maand) {
             va = new DateTime(jaar, maand, 1, 0, 0);
             tm = va.plusMonths(1);
         }

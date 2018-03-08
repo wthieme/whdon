@@ -15,7 +15,7 @@ import java.util.Locale;
 
 class LocationHelper {
 
-    public enum LocationType {Unknown, Gps, Net}
+    enum LocationType {Unknown, Gps, Net}
 
     static void BepaalLocatie(Context cxt) {
 
