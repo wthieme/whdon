@@ -144,7 +144,7 @@ class WeerHelper {
 
         result.setNoData(false);
 
-        int i = 0;
+        int i;
         ArrayList<RegenEntry> regenData = new ArrayList<>();
         String[] parts = brString.split("\r\n");
         for (String entry : parts) {
