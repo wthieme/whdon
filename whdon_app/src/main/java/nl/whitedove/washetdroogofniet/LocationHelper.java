@@ -85,16 +85,18 @@ class LocationHelper {
 
         try {
             address = coder.getFromLocationName(strAddress, 1);
-            if (address == null) {
-                return null;
+            if (address == null || address.size() == 0) {
+                address = coder.getFromLocationName("Centrum " + strAddress, 1);
+                if (address == null || address.size() == 0) {
+                    return null;
+                }
             }
             Address location = address.get(0);
             location.getLatitude();
             location.getLongitude();
 
             p1 = new LatLng(location.getLatitude(), location.getLongitude());
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception ignored) {
         }
         return p1;
 

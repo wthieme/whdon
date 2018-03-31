@@ -125,7 +125,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         protected final Pair<Statistiek, LatLng> doInBackground(Pair<Context, Statistiek>... params) {
             Context context = params[0].first;
             Statistiek stat = params[0].second;
-            LatLng ll = LocationHelper.getLocationFromAddress(context, stat.getLand() + ", " + stat.getLocatie());
+            LatLng ll = LocationHelper.getLocationFromAddress(context, stat.getLocatie() + ", " + stat.getLand());
             return Pair.create(stat, ll);
         }
 
