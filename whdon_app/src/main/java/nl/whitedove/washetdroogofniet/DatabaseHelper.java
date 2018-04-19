@@ -33,15 +33,15 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
     private static DatabaseHelper sInstance;
 
+    private DatabaseHelper(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
     public static synchronized DatabaseHelper getInstance(Context context) {
         if (sInstance == null) {
             sInstance = new DatabaseHelper(context.getApplicationContext());
         }
         return sInstance;
-    }
-
-    private DatabaseHelper(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
@@ -769,4 +769,47 @@ class DatabaseHelper extends SQLiteOpenHelper {
         stats = WindStatAddZeros(stats);
         return stats;
     }
+
+    StatistiekRecords GetStatistiekRecords() {
+
+        String selectQuery = "SELECT"
+                + " MIN(" + MDG_TEMPERATUUR + ") AS MINTEMPERATUUR,"
+                + " MAX(" + MDG_TEMPERATUUR + ") AS MAXTEMPERATUUR "
+                + " FROM " + TAB_MELDING;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor;
+        cursor = db.rawQuery(selectQuery, null);
+
+        StatistiekRecords stat = new StatistiekRecords();
+
+        if (cursor.moveToFirst()) {
+            stat.setMinTemp(cursor.getFloat(1));
+            stat.setMaxTemp(cursor.getFloat(2));
+        }
+        cursor.close();
+
+        selectQuery = "SELECT"
+                + " MAX(" + MDG_DATUM + ") AS DATUM"
+                + " FROM " + TAB_MELDING
+                + " WHERE " + MDG_TEMPERATUUR + " = ?";
+
+        cursor = db.rawQuery(selectQuery, new String[]{Float.toString(stat.getMinTemp())});
+
+        if (cursor.moveToFirst()) stat.setMinTempDate(new DateTime(cursor.getLong(1)));
+        cursor.close();
+
+        selectQuery = "SELECT"
+                + " MAX(" + MDG_DATUM + ") AS DATUM"
+                + " FROM " + TAB_MELDING
+                + " WHERE " + MDG_TEMPERATUUR + " = ?";
+
+        cursor = db.rawQuery(selectQuery, new String[]{Float.toString(stat.getMaxTemp())});
+
+        if (cursor.moveToFirst()) stat.setMaxTempDate(new DateTime(cursor.getLong(1)));
+        cursor.close();
+
+        return stat;
+    }
 }
+
