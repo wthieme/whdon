@@ -4,151 +4,133 @@ import org.joda.time.DateTime;
 
 class StatistiekRecords {
 
-    private DateTime MaxWindSpeedDate;
-    private float maxWindSpeed;
-    private DateTime MinTempDate;
+    private DateTime MaxWindDatum;
+    private float maxWind;
+    private DateTime MinTempDatum;
     private float minTemp;
-    private DateTime MaxTempDate;
+    private DateTime MaxTempDatum;
     private float maxTemp;
-    private DateTime wettestMonth;
-    private float percentWet;
+    private DateTime natsteMaand;
+    private float percentNat;
+    private DateTime droogsteMaand;
+    private float percentDroog;
+    private DateTime langstePeriodeDroogVanaf;
+    private DateTime langstePeriodeDroogTm;
+    private DateTime langstePeriodeNatVanaf;
 
-    public DateTime getMaxWindSpeedDate() {
-        return MaxWindSpeedDate;
+    private DateTime langstePeriodeNatTm;
+
+    DateTime getMaxWindDatum() {
+        return MaxWindDatum;
     }
 
-    public void setMaxWindSpeedDate(DateTime maxWindSpeedDate) {
-        MaxWindSpeedDate = maxWindSpeedDate;
+    void setMaxWindDatum(DateTime maxWindDatum) {
+        MaxWindDatum = maxWindDatum;
     }
 
-    public float getMaxWindSpeed() {
-        return maxWindSpeed;
+    float getMaxWind() {
+        return maxWind;
     }
 
-    public void setMaxWindSpeed(float maxWindSpeed) {
-        this.maxWindSpeed = maxWindSpeed;
+    void setMaxWind(float maxWind) {
+        this.maxWind = maxWind;
     }
 
-    public DateTime getMinTempDate() {
-        return MinTempDate;
+    DateTime getMinTempDatum() {
+        return MinTempDatum;
     }
 
-    public void setMinTempDate(DateTime minTempDate) {
-        MinTempDate = minTempDate;
+    void setMinTempDatum(DateTime minTempDatum) {
+        MinTempDatum = minTempDatum;
     }
 
-    public float getMinTemp() {
+    float getMinTemp() {
         return minTemp;
     }
 
-    public void setMinTemp(float minTemp) {
+    void setMinTemp(float minTemp) {
         this.minTemp = minTemp;
     }
 
-    public DateTime getMaxTempDate() {
-        return MaxTempDate;
+    DateTime getMaxTempDatum() {
+        return MaxTempDatum;
     }
 
-    public void setMaxTempDate(DateTime maxTempDate) {
-        MaxTempDate = maxTempDate;
+    void setMaxTempDatum(DateTime maxTempDatum) {
+        MaxTempDatum = maxTempDatum;
     }
 
-    public float getMaxTemp() {
+    float getMaxTemp() {
         return maxTemp;
     }
 
-    public void setMaxTemp(float maxTemp) {
+    void setMaxTemp(float maxTemp) {
         this.maxTemp = maxTemp;
     }
 
-    public DateTime getWettestMonth() {
-        return wettestMonth;
+    DateTime getNatsteMaand() {
+        return natsteMaand;
     }
 
-    public void setWettestMonth(DateTime wettestMonth) {
-        this.wettestMonth = wettestMonth;
+    void setNatsteMaand(DateTime natsteMaand) {
+        this.natsteMaand = natsteMaand;
     }
 
-    public float getPercentWet() {
-        return percentWet;
+    float getPercentNat() {
+        return percentNat;
     }
 
-    public void setPercentWet(float percentWet) {
-        this.percentWet = percentWet;
+    void setPercentNat(float percentNat) {
+        this.percentNat = percentNat;
     }
 
-    public DateTime getDriestMonth() {
-        return driestMonth;
+    DateTime getDroogsteMaand() {
+        return droogsteMaand;
     }
 
-    public void setDriestMonth(DateTime driestMonth) {
-        this.driestMonth = driestMonth;
+    void setDroogsteMaand(DateTime droogsteMaand) {
+        this.droogsteMaand = droogsteMaand;
     }
 
-    public float getPercentDry() {
-        return percentDry;
+    float getPercentDroog() {
+        return percentDroog;
     }
 
-    public void setPercentDry(float percentDry) {
-        this.percentDry = percentDry;
+    void setPercentDroog(float percentDroog) {
+        this.percentDroog = percentDroog;
     }
 
-    public int getLongestStreakDry() {
-        return longestStreakDry;
+    DateTime getLangstePeriodeDroogVanaf() {
+        return langstePeriodeDroogVanaf;
     }
 
-    public void setLongestStreakDry(int longestStreakDry) {
-        this.longestStreakDry = longestStreakDry;
+    void setLangstePeriodeDroogVanaf(DateTime langstePeriodeDroogVanaf) {
+        this.langstePeriodeDroogVanaf = langstePeriodeDroogVanaf;
     }
 
-    public DateTime getLongestStreakDryFrom() {
-        return longestStreakDryFrom;
+    DateTime getLangstePeriodeDroogTm() {
+        return langstePeriodeDroogTm;
     }
 
-    public void setLongestStreakDryFrom(DateTime longestStreakDryFrom) {
-        this.longestStreakDryFrom = longestStreakDryFrom;
+    void setLangstePeriodeDroogTm(DateTime langstePeriodeDroogTm) {
+        this.langstePeriodeDroogTm = langstePeriodeDroogTm;
     }
 
-    public DateTime getLongestStreakDryTill() {
-        return longestStreakDryTill;
+    DateTime getLangstePeriodeNatVanaf() {
+        return langstePeriodeNatVanaf;
     }
 
-    public void setLongestStreakDryTill(DateTime longestStreakDryTill) {
-        this.longestStreakDryTill = longestStreakDryTill;
+    void setLangstePeriodeNatVanaf(DateTime langstePeriodeNatVanaf) {
+        this.langstePeriodeNatVanaf = langstePeriodeNatVanaf;
     }
 
-    public int getLongestStreakWet() {
-        return longestStreakWet;
+    DateTime getLangstePeriodeNatTm() {
+        return langstePeriodeNatTm;
     }
 
-    public void setLongestStreakWet(int longestStreakWet) {
-        this.longestStreakWet = longestStreakWet;
+    void setLangstePeriodeNatTm(DateTime langstePeriodeNatTm) {
+        this.langstePeriodeNatTm = langstePeriodeNatTm;
     }
-
-    public DateTime getLongestStreakWetFrom() {
-        return longestStreakWetFrom;
-    }
-
-    public void setLongestStreakWetFrom(DateTime longestStreakWetFrom) {
-        this.longestStreakWetFrom = longestStreakWetFrom;
-    }
-
-    public DateTime getLongestStreakWetTill() {
-        return longestStreakWetTill;
-    }
-
-    public void setLongestStreakWetTill(DateTime longestStreakWetTill) {
-        this.longestStreakWetTill = longestStreakWetTill;
-    }
-
-    private DateTime driestMonth;
-    private float percentDry;
-    private int longestStreakDry;
-    private DateTime longestStreakDryFrom;
-    private DateTime longestStreakDryTill;
-    private int longestStreakWet;
-    private DateTime longestStreakWetFrom;
-    private DateTime longestStreakWetTill;
 
 }
 

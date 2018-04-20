@@ -773,9 +773,10 @@ class DatabaseHelper extends SQLiteOpenHelper {
     StatistiekRecords GetStatistiekRecords() {
 
         String selectQuery = "SELECT"
-                + " MIN(" + MDG_TEMPERATUUR + ") AS MINTEMPERATUUR,"
-                + " MAX(" + MDG_TEMPERATUUR + ") AS MAXTEMPERATUUR "
-                + " FROM " + TAB_MELDING;
+                + " " + MDG_TEMPERATUUR + " AS MINTEMPERATUUR,"
+                + " " + MDG_DATUM
+                + " FROM " + TAB_MELDING
+                + " ORDER BY " + MDG_TEMPERATUUR + " ASC";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor;
@@ -785,29 +786,83 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             stat.setMinTemp(cursor.getFloat(1));
-            stat.setMaxTemp(cursor.getFloat(2));
+            stat.setMinTempDatum(new DateTime(cursor.getLong(2)));
         }
         cursor.close();
 
         selectQuery = "SELECT"
-                + " MAX(" + MDG_DATUM + ") AS DATUM"
+                + " " + MDG_TEMPERATUUR + " AS MAXTEMPERATUUR,"
+                + " " + MDG_DATUM
                 + " FROM " + TAB_MELDING
-                + " WHERE " + MDG_TEMPERATUUR + " = ?";
+                + " ORDER BY " + MDG_TEMPERATUUR + " DESC";
 
-        cursor = db.rawQuery(selectQuery, new String[]{Float.toString(stat.getMinTemp())});
+        cursor = db.rawQuery(selectQuery, null);
 
-        if (cursor.moveToFirst()) stat.setMinTempDate(new DateTime(cursor.getLong(1)));
+        if (cursor.moveToFirst()) {
+            stat.setMaxTemp(cursor.getFloat(1));
+            stat.setMaxTempDatum(new DateTime(cursor.getLong(2)));
+        }
         cursor.close();
 
         selectQuery = "SELECT"
-                + " MAX(" + MDG_DATUM + ") AS DATUM"
+                + " " + MDG_WINDSPEED + " AS MAXWINDSPEED,"
+                + " " + MDG_DATUM
                 + " FROM " + TAB_MELDING
-                + " WHERE " + MDG_TEMPERATUUR + " = ?";
+                + " ORDER BY " + MDG_WINDSPEED + " DESC";
 
-        cursor = db.rawQuery(selectQuery, new String[]{Float.toString(stat.getMaxTemp())});
+        cursor = db.rawQuery(selectQuery, null);
 
-        if (cursor.moveToFirst()) stat.setMaxTempDate(new DateTime(cursor.getLong(1)));
+        if (cursor.moveToFirst()) {
+            stat.setMaxWind(cursor.getFloat(1));
+            stat.setMaxWindDatum(new DateTime(cursor.getLong(2)));
+        }
         cursor.close();
+
+        selectQuery = "SELECT"
+                + " STRFTIME('%Y-%m', " + MDG_DATUM + " / 1000, 'unixepoch', 'localtime') AS yyyymm,"
+                + " COUNT(*) AS AANTAL,"
+                + " SUM(CASE WHEN " + MDG_NAT + " = 1 THEN 1 ELSE 0 END) AS nat,"
+                + " SUM(CASE WHEN " + MDG_DROOG + " = 1 THEN 1 ELSE 0 END) AS droog"
+                + " FROM " + TAB_MELDING
+                + " GROUP BY STRFTIME('%Y-%m', " + MDG_DATUM + " / 1000, 'unixepoch', 'localtime')";
+
+        cursor = db.rawQuery(selectQuery, null);
+
+        String droogJM = "2015-01";
+        String natJM = "2015-01";
+        float droogPercent = 0;
+        float natPercent = 0;
+
+        if (cursor.moveToFirst()) {
+            do {
+                String jaarmaand = cursor.getString(1);
+                float totaal = cursor.getFloat(2);
+                float aantalDroog = cursor.getFloat(3);
+                float aantalNat = cursor.getFloat(4);
+                float percDroog = 100f * aantalDroog / totaal;
+                float percNat = 100f * aantalNat / totaal;
+                if (percDroog > droogPercent) {
+                    droogPercent = percDroog;
+                    droogJM = jaarmaand;
+                }
+                if (percNat > natPercent) {
+                    natPercent = percNat;
+                    natJM = jaarmaand;
+                }
+            } while (cursor.moveToNext());
+
+        }
+        cursor.close();
+        int droogJaar = Integer.parseInt(droogJM.substring(0, 4));
+        int droogMaand = Integer.parseInt(droogJM.substring(5));
+        stat.setDroogsteMaand(new DateTime(droogJaar, droogMaand, 1, 0, 0));
+        stat.setPercentDroog(droogPercent);
+
+        int natJaar = Integer.parseInt(natJM.substring(0, 4));
+        int natMaand = Integer.parseInt(natJM.substring(5));
+        stat.setDroogsteMaand(new DateTime(natJaar, natMaand, 1, 0, 0));
+        stat.setPercentNat(natPercent);
+        stat.setMaxWindDatum(new DateTime(cursor.getLong(2)));
 
         return stat;
     }
