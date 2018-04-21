@@ -864,6 +864,62 @@ class DatabaseHelper extends SQLiteOpenHelper {
         stat.setPercentNat(natPercent);
         stat.setMaxWindDatum(new DateTime(cursor.getLong(2)));
 
+
+        selectQuery = "SELECT"
+                + " " + MDG_DATUM + ","
+                + " " + MDG_NAT + ","
+                + " " + MDG_DROOG
+                + " FROM " + TAB_MELDING
+                + " ORDER BY MDG_DATUM";
+
+        cursor = db.rawQuery(selectQuery, null);
+
+        DateTime langsteDroogVanaf = new DateTime(2015, 1, 1, 0, 0);
+        DateTime langsteDroogTm = new DateTime(2015, 1, 1, 0, 0);
+        DateTime langsteNatVanaf = new DateTime(2015, 1, 1, 0, 0);
+        DateTime langsteNatTm = new DateTime(2015, 1, 1, 0, 0);
+        DateTime vorigeDatumNat = new DateTime(2015, 1, 1, 0, 0);
+        DateTime vorigeDatumDroog = new DateTime(2015, 1, 1, 0, 0);
+        Long maxVerschilNat = 0L;
+        Long maxVerschilDroog = 0L;
+        Boolean vorigeNat = true;
+        Boolean vorigeDroog = false;
+
+        if (cursor.moveToFirst()) {
+            do {
+                DateTime datum = new DateTime(cursor.getLong(1));
+                Long verschilNat = datum.getMillis() - vorigeDatumNat.getMillis();
+                Long verschilDroog = datum.getMillis() - vorigeDatumDroog.getMillis();
+                Boolean nat = cursor.getInt(2) == 1;
+                Boolean droog = cursor.getInt(3) == 1;
+
+
+                vorigeNat = nat;
+                vorigeDroog = droog;
+
+                if (nat && vorigeNat) {
+                    if (verschilNat > maxVerschilNat) {
+                        langsteNatVanaf = vorigeDatumNat;
+                        langsteNatTm = datum;
+                        maxVerschilNat = verschilNat;
+                    }
+                    else {
+                        vorigeDatumNat = datum;
+                    }
+                }
+
+                if (droog && vorigeDroog)
+                {}
+
+            } while (cursor.moveToNext());
+
+        }
+        cursor.close();
+        stat.setLangstePeriodeNatVanaf(langsteNatVanaf);
+        stat.setLangstePeriodeNatTm(langsteNatTm);
+        stat.setLangstePeriodeDroogVanaf(langsteDroogVanaf);
+        stat.setLangstePeriodeDroogTm(langsteDroogTm);
+
         return stat;
     }
 }

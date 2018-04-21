@@ -17,7 +17,6 @@ class StatistiekRecords {
     private DateTime langstePeriodeDroogVanaf;
     private DateTime langstePeriodeDroogTm;
     private DateTime langstePeriodeNatVanaf;
-
     private DateTime langstePeriodeNatTm;
 
     DateTime getMaxWindDatum() {
