@@ -5,11 +5,12 @@ import org.joda.time.DateTime;
 class StatistiekRecords {
 
     private DateTime MaxWindDatum;
-    private float maxWind;
+    private int maxWind;
+    private WeerHelper.WindDirection maxWindRichting;
     private DateTime MinTempDatum;
-    private float minTemp;
+    private int minTemp;
     private DateTime MaxTempDatum;
-    private float maxTemp;
+    private int maxTemp;
     private DateTime natsteMaand;
     private float percentNat;
     private DateTime droogsteMaand;
@@ -27,12 +28,20 @@ class StatistiekRecords {
         MaxWindDatum = maxWindDatum;
     }
 
-    float getMaxWind() {
+    int getMaxWind() {
         return maxWind;
     }
 
-    void setMaxWind(float maxWind) {
+    void setMaxWind(int maxWind) {
         this.maxWind = maxWind;
+    }
+
+    WeerHelper.WindDirection getMaxWindRichting() {
+        return maxWindRichting;
+    }
+
+    void setMaxWindRichting(WeerHelper.WindDirection maxWindRichting) {
+        this.maxWindRichting = maxWindRichting;
     }
 
     DateTime getMinTempDatum() {
@@ -43,11 +52,11 @@ class StatistiekRecords {
         MinTempDatum = minTempDatum;
     }
 
-    float getMinTemp() {
+    int getMinTemp() {
         return minTemp;
     }
 
-    void setMinTemp(float minTemp) {
+    void setMinTemp(int minTemp) {
         this.minTemp = minTemp;
     }
 
@@ -59,11 +68,11 @@ class StatistiekRecords {
         MaxTempDatum = maxTempDatum;
     }
 
-    float getMaxTemp() {
+    int getMaxTemp() {
         return maxTemp;
     }
 
-    void setMaxTemp(float maxTemp) {
+    void setMaxTemp(int maxTemp) {
         this.maxTemp = maxTemp;
     }
 

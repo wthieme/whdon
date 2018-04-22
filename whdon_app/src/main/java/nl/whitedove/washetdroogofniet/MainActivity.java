@@ -261,6 +261,7 @@ public class MainActivity extends Activity {
         contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.pie), getString(R.string.WeerType)));
         contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.winddir), getString(R.string.Windrichting)));
         contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.windspeed), getString(R.string.Windsnelheid)));
+        contextMenuItems.add(new ContextMenuItem(ContextCompat.getDrawable(this, R.drawable.records), getString(R.string.Weerrecords)));
 
         adapter = new ContextMenuAdapter(this, contextMenuItems);
         listView.setAdapter(adapter);
@@ -282,6 +283,10 @@ public class MainActivity extends Activity {
 
                     case 2:
                         GrafiekWindSnelheid();
+                        return;
+
+                    case 3:
+                        WeerRecords();
                 }
             }
         });
@@ -398,6 +403,11 @@ public class MainActivity extends Activity {
 
     private void GrafiekWindSnelheid() {
         Intent intent = new Intent(this, StatsWindSnelheidActivity.class);
+        startActivity(intent);
+    }
+
+    private void WeerRecords() {
+        Intent intent = new Intent(this, StatsRecordsActivity.class);
         startActivity(intent);
     }
 

@@ -772,149 +772,162 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
     StatistiekRecords GetStatistiekRecords() {
 
-        String selectQuery = "SELECT"
-                + " " + MDG_TEMPERATUUR + " AS MINTEMPERATUUR,"
-                + " " + MDG_DATUM
-                + " FROM " + TAB_MELDING
-                + " ORDER BY " + MDG_TEMPERATUUR + " ASC";
-
+        StatistiekRecords stat = new StatistiekRecords();
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor;
-        cursor = db.rawQuery(selectQuery, null);
 
-        StatistiekRecords stat = new StatistiekRecords();
-
-        if (cursor.moveToFirst()) {
-            stat.setMinTemp(cursor.getFloat(1));
-            stat.setMinTempDatum(new DateTime(cursor.getLong(2)));
-        }
-        cursor.close();
-
-        selectQuery = "SELECT"
-                + " " + MDG_TEMPERATUUR + " AS MAXTEMPERATUUR,"
-                + " " + MDG_DATUM
-                + " FROM " + TAB_MELDING
-                + " ORDER BY " + MDG_TEMPERATUUR + " DESC";
-
-        cursor = db.rawQuery(selectQuery, null);
-
-        if (cursor.moveToFirst()) {
-            stat.setMaxTemp(cursor.getFloat(1));
-            stat.setMaxTempDatum(new DateTime(cursor.getLong(2)));
-        }
-        cursor.close();
-
-        selectQuery = "SELECT"
-                + " " + MDG_WINDSPEED + " AS MAXWINDSPEED,"
-                + " " + MDG_DATUM
-                + " FROM " + TAB_MELDING
-                + " ORDER BY " + MDG_WINDSPEED + " DESC";
-
-        cursor = db.rawQuery(selectQuery, null);
-
-        if (cursor.moveToFirst()) {
-            stat.setMaxWind(cursor.getFloat(1));
-            stat.setMaxWindDatum(new DateTime(cursor.getLong(2)));
-        }
-        cursor.close();
-
-        selectQuery = "SELECT"
-                + " STRFTIME('%Y-%m', " + MDG_DATUM + " / 1000, 'unixepoch', 'localtime') AS yyyymm,"
-                + " COUNT(*) AS AANTAL,"
-                + " SUM(CASE WHEN " + MDG_NAT + " = 1 THEN 1 ELSE 0 END) AS nat,"
-                + " SUM(CASE WHEN " + MDG_DROOG + " = 1 THEN 1 ELSE 0 END) AS droog"
-                + " FROM " + TAB_MELDING
-                + " GROUP BY STRFTIME('%Y-%m', " + MDG_DATUM + " / 1000, 'unixepoch', 'localtime')";
-
-        cursor = db.rawQuery(selectQuery, null);
-
-        String droogJM = "2015-01";
-        String natJM = "2015-01";
-        float droogPercent = 0;
-        float natPercent = 0;
-
-        if (cursor.moveToFirst()) {
-            do {
-                String jaarmaand = cursor.getString(1);
-                float totaal = cursor.getFloat(2);
-                float aantalDroog = cursor.getFloat(3);
-                float aantalNat = cursor.getFloat(4);
-                float percDroog = 100f * aantalDroog / totaal;
-                float percNat = 100f * aantalNat / totaal;
-                if (percDroog > droogPercent) {
-                    droogPercent = percDroog;
-                    droogJM = jaarmaand;
-                }
-                if (percNat > natPercent) {
-                    natPercent = percNat;
-                    natJM = jaarmaand;
-                }
-            } while (cursor.moveToNext());
-
-        }
-        cursor.close();
-        int droogJaar = Integer.parseInt(droogJM.substring(0, 4));
-        int droogMaand = Integer.parseInt(droogJM.substring(5));
-        stat.setDroogsteMaand(new DateTime(droogJaar, droogMaand, 1, 0, 0));
-        stat.setPercentDroog(droogPercent);
-
-        int natJaar = Integer.parseInt(natJM.substring(0, 4));
-        int natMaand = Integer.parseInt(natJM.substring(5));
-        stat.setDroogsteMaand(new DateTime(natJaar, natMaand, 1, 0, 0));
-        stat.setPercentNat(natPercent);
-        stat.setMaxWindDatum(new DateTime(cursor.getLong(2)));
-
-
-        selectQuery = "SELECT"
+        String selectQuery = "SELECT"
                 + " " + MDG_DATUM + ","
                 + " " + MDG_NAT + ","
-                + " " + MDG_DROOG
+                + " " + MDG_DROOG + ","
+                + " " + MDG_TEMPERATUUR + ","
+                + " " + MDG_WINDSPEED + ","
+                + " " + MDG_WINDDIR
                 + " FROM " + TAB_MELDING
-                + " ORDER BY MDG_DATUM";
+                + " ORDER BY " + MDG_DATUM;
 
         cursor = db.rawQuery(selectQuery, null);
+
+        DateTime recordWindDatum = new DateTime(2015, 1, 1, 0, 0);
+        DateTime recordMaxTempDatum = new DateTime(2015, 1, 1, 0, 0);
+        DateTime recordMinTempDatum = new DateTime(2015, 1, 1, 0, 0);
+        int recordWind = 0;
+        WeerHelper.WindDirection recordWindRichting = WeerHelper.WindDirection.Zuid;
+        int recordMaxTemp = 0;
+        int recordMinTemp = 0;
+
+        DateTime recordDroogJM = new DateTime(2015, 1, 1, 0, 0);
+        DateTime recordNatJM = new DateTime(2015, 1, 1, 0, 0);
+        float percRecordDroog = 0;
+        float percRecordNat = 0;
+
+        int totaalInMaand = 0;
+        int totaalDroogInMaand = 0;
+        int totaalNatInMaand = 0;
 
         DateTime langsteDroogVanaf = new DateTime(2015, 1, 1, 0, 0);
         DateTime langsteDroogTm = new DateTime(2015, 1, 1, 0, 0);
         DateTime langsteNatVanaf = new DateTime(2015, 1, 1, 0, 0);
         DateTime langsteNatTm = new DateTime(2015, 1, 1, 0, 0);
-        DateTime vorigeDatumNat = new DateTime(2015, 1, 1, 0, 0);
-        DateTime vorigeDatumDroog = new DateTime(2015, 1, 1, 0, 0);
+
         Long maxVerschilNat = 0L;
         Long maxVerschilDroog = 0L;
+
+        DateTime vorigeDatum = new DateTime(2015, 1, 1, 0, 0);
+        DateTime vorigeDatumNat = new DateTime(2015, 1, 1, 0, 0);
+        DateTime vorigeDatumDroog = new DateTime(2015, 1, 1, 0, 0);
         Boolean vorigeNat = true;
         Boolean vorigeDroog = false;
 
         if (cursor.moveToFirst()) {
             do {
-                DateTime datum = new DateTime(cursor.getLong(1));
-                Long verschilNat = datum.getMillis() - vorigeDatumNat.getMillis();
+                // Haal waardes uit cursor
+                DateTime datum = new DateTime(cursor.getLong(0));
+                Boolean nat = cursor.getInt(1) == 1;
+                Boolean droog = cursor.getInt(2) == 1;
+                int temperatuur = cursor.getInt(3);
+                int windspeed = cursor.getInt(4);
+                WeerHelper.WindDirection windrichting = WeerHelper.WindDirection.valueOf(cursor.getLong(5));
+
+                if (windspeed != 999 && windspeed > recordWind) {
+                    recordWind = windspeed;
+                    recordWindDatum = datum;
+                    recordWindRichting = windrichting;
+                }
+
+                if (temperatuur != 999 && temperatuur < recordMinTemp) {
+                    recordMinTemp = temperatuur;
+                    recordMinTempDatum = datum;
+                }
+
+                if (temperatuur != 999 && temperatuur > recordMaxTemp) {
+                    recordMaxTemp = temperatuur;
+                    recordMaxTempDatum = datum;
+                }
+
+                // Bereken maand totalen en droogste en natste maand
+                totaalInMaand++;
+
+                // Controleer nieuwe maand
+                if (datum.getYear() != vorigeDatum.getYear() ||
+                        (datum.getMonthOfYear() != vorigeDatum.getMonthOfYear())) {
+
+                    float percDroog = 100f * totaalDroogInMaand / totaalInMaand;
+                    if (percDroog > percRecordDroog) {
+                        // Record droog
+                        percRecordDroog = percDroog;
+                        recordDroogJM = vorigeDatum;
+                    }
+
+                    float percNat = 100f * totaalNatInMaand / totaalInMaand;
+                    if (percNat > percRecordNat) {
+                        // Record nat
+                        percRecordNat = percNat;
+                        recordNatJM = vorigeDatum;
+                    }
+
+                    // Reset de tellers
+                    totaalInMaand = 1;
+                    totaalDroogInMaand = droog ? 1 : 0;
+                    totaalNatInMaand = nat ? 1 : 0;
+
+                } else {
+                    // Zelfde maand, blijf tellen
+                    totaalDroogInMaand += droog ? 1 : 0;
+                    totaalNatInMaand += nat ? 1 : 0;
+                }
+
+                // Bereken langste natte en droge periode
                 Long verschilDroog = datum.getMillis() - vorigeDatumDroog.getMillis();
-                Boolean nat = cursor.getInt(2) == 1;
-                Boolean droog = cursor.getInt(3) == 1;
+                Long verschilNat = datum.getMillis() - vorigeDatumNat.getMillis();
 
-
-                vorigeNat = nat;
-                vorigeDroog = droog;
+                if (droog && vorigeDroog) {
+                    if (verschilDroog > maxVerschilDroog) {
+                        langsteDroogVanaf = vorigeDatumDroog;
+                        langsteDroogTm = datum;
+                        maxVerschilDroog = verschilDroog;
+                    } else {
+                        vorigeDatumDroog = datum;
+                    }
+                }
 
                 if (nat && vorigeNat) {
                     if (verschilNat > maxVerschilNat) {
                         langsteNatVanaf = vorigeDatumNat;
                         langsteNatTm = datum;
                         maxVerschilNat = verschilNat;
-                    }
-                    else {
+                    } else {
                         vorigeDatumNat = datum;
                     }
                 }
 
-                if (droog && vorigeDroog)
-                {}
+                // Bewaar gegevens van de vorige rij
+                vorigeDatum = datum;
+                vorigeNat = nat;
+                vorigeDroog = droog;
 
             } while (cursor.moveToNext());
 
         }
         cursor.close();
+
+        // Zet resultaten
+        stat.setMinTemp(recordMinTemp);
+        stat.setMinTempDatum(recordMinTempDatum);
+
+        stat.setMaxTemp(recordMaxTemp);
+        stat.setMaxTempDatum(recordMaxTempDatum);
+
+        stat.setMaxWind(recordWind);
+        stat.setMaxWindDatum(recordWindDatum);
+        stat.setMaxWindRichting(recordWindRichting);
+
+        stat.setDroogsteMaand(recordDroogJM);
+        stat.setPercentDroog(percRecordDroog);
+
+        stat.setNatsteMaand(recordNatJM);
+        stat.setPercentNat(percRecordNat);
+
         stat.setLangstePeriodeNatVanaf(langsteNatVanaf);
         stat.setLangstePeriodeNatTm(langsteNatTm);
         stat.setLangstePeriodeDroogVanaf(langsteDroogVanaf);

@@ -88,6 +88,10 @@
             android:name=".StatsPerDagVdWeekActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".StatsRecordsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".SetPreferenceActivity" />
     </application>
 </manifest>

@@ -80,4 +80,15 @@
     <string name="fa_signal">&#xf012;</string>
     <string name="Alles">Alles</string>
     <string name="AantalPerDagVdWeek">Per dag v/d week</string>
+    <string name="Weerrecords">Weerrecords</string>
+    <string name="laagste_temperatuur">Laagste temperatuur</string>
+    <string name="hoogste_temperatuur">Hoogste temperatuur</string>
+    <string name="meeste_wind">Meeste wind</string>
+    <string name="MinMaxTemp">%d °C op %s</string>
+    <string name="MaxWind">%s %d km/h op %s</string>
+    <string name="Natste_maand">Natste maand</string>
+    <string name="Koud">Koud</string>
+    <string name="Droogste_maand">Droogste maand</string>
+    <string name="NatsteMaandTxt">%.1f %s nat in %s-%s</string>
+    <string name="DroogsteMaandTxt">%.1f %s droog in %s-%s</string>
 </resources>
