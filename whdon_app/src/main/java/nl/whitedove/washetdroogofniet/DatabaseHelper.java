@@ -816,8 +816,8 @@ class DatabaseHelper extends SQLiteOpenHelper {
         DateTime vorigeDatum = new DateTime(2015, 1, 1, 0, 0);
         DateTime vorigeDatumNat = new DateTime(2015, 1, 1, 0, 0);
         DateTime vorigeDatumDroog = new DateTime(2015, 1, 1, 0, 0);
-        Boolean vorigeNat = true;
-        Boolean vorigeDroog = false;
+        DateTime laatsteDatumNat = new DateTime(2015, 1, 1, 0, 0);
+        DateTime laatsteDatumDroog = new DateTime(2015, 1, 1, 0, 0);
 
         if (cursor.moveToFirst()) {
             do {
@@ -877,34 +877,41 @@ class DatabaseHelper extends SQLiteOpenHelper {
                     totaalNatInMaand += nat ? 1 : 0;
                 }
 
+                if (vorigeDatumNat.getYear() == 2015)
+                    vorigeDatumNat = datum;
+                if (vorigeDatumDroog.getYear() == 2015)
+                    vorigeDatumDroog = datum;
+
                 // Bereken langste natte en droge periode
                 Long verschilDroog = datum.getMillis() - vorigeDatumDroog.getMillis();
                 Long verschilNat = datum.getMillis() - vorigeDatumNat.getMillis();
 
-                if (droog && vorigeDroog) {
+                // Voor de langste droge periode geldt dat er geen dag met nat tussen mag zitten
+                if (droog && datum.minusDays(1).isBefore(laatsteDatumDroog)) {
                     if (verschilDroog > maxVerschilDroog) {
                         langsteDroogVanaf = vorigeDatumDroog;
                         langsteDroogTm = datum;
                         maxVerschilDroog = verschilDroog;
-                    } else {
-                        vorigeDatumDroog = datum;
                     }
+                } else {
+                    vorigeDatumDroog = datum;
                 }
 
-                if (nat && vorigeNat) {
+                // Voor de langste natte periode geldt dat de vorige natte dag minder dan 1 dag geleden moet zijn
+                if (datum.minusDays(1).isBefore(laatsteDatumNat)) {
                     if (verschilNat > maxVerschilNat) {
                         langsteNatVanaf = vorigeDatumNat;
                         langsteNatTm = datum;
                         maxVerschilNat = verschilNat;
-                    } else {
-                        vorigeDatumNat = datum;
                     }
+                } else {
+                    vorigeDatumNat = datum;
                 }
 
                 // Bewaar gegevens van de vorige rij
                 vorigeDatum = datum;
-                vorigeNat = nat;
-                vorigeDroog = droog;
+                if (nat) laatsteDatumNat = datum;
+                if (droog) laatsteDatumDroog = datum;
 
             } while (cursor.moveToNext());
 

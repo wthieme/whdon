@@ -10,6 +10,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 import android.widget.TextView;
 
+import org.joda.time.DateTime;
+import org.joda.time.Days;
+
 import java.lang.ref.WeakReference;
 import java.util.Locale;
 
@@ -71,6 +74,36 @@ public class StatsRecordsActivity extends Activity {
                 "%",
                 stat.getDroogsteMaand().toString("MMM", Locale.getDefault()).replace(".", ""),
                 Integer.toString(stat.getDroogsteMaand().getYear())));
+
+        TextView tvNatstePeriodeTxt = findViewById(R.id.tvNatstePeriodeTxt);
+
+        DateTime beginNat = new DateTime(stat.getLangstePeriodeNatVanaf().getYear(),
+                stat.getLangstePeriodeNatVanaf().getMonthOfYear(),
+                stat.getLangstePeriodeNatVanaf().getDayOfMonth(), 0, 0, 0);
+
+        DateTime eindNat = new DateTime(stat.getLangstePeriodeNatTm().getYear(),
+                stat.getLangstePeriodeNatTm().getMonthOfYear(),
+                stat.getLangstePeriodeNatTm().getDayOfMonth(), 0, 0, 0);
+
+        tvNatstePeriodeTxt.setText(String.format(getString(R.string.NatstePeriodeTxt),
+                Days.daysBetween(beginNat, eindNat).getDays() + 1,
+                Helper.dFormat.print(stat.getLangstePeriodeNatVanaf()),
+                Helper.dFormat.print(stat.getLangstePeriodeNatTm())));
+
+        TextView tvDroogstePeriodeTxt = findViewById(R.id.tvDroogstePeriodeTxt);
+
+        DateTime beginDroog = new DateTime(stat.getLangstePeriodeDroogVanaf().getYear(),
+                stat.getLangstePeriodeDroogVanaf().getMonthOfYear(),
+                stat.getLangstePeriodeDroogVanaf().getDayOfMonth(), 0, 0, 0);
+
+        DateTime eindDroog = new DateTime(stat.getLangstePeriodeDroogTm().getYear(),
+                stat.getLangstePeriodeDroogTm().getMonthOfYear(),
+                stat.getLangstePeriodeDroogTm().getDayOfMonth(), 0, 0, 0);
+
+        tvDroogstePeriodeTxt.setText(String.format(getString(R.string.DroogstePeriodeTxt),
+                Days.daysBetween(beginDroog, eindDroog).getDays() + 1,
+                Helper.dFormat.print(stat.getLangstePeriodeDroogVanaf()),
+                Helper.dFormat.print(stat.getLangstePeriodeDroogTm())));
     }
 
     private static class AsyncGetWeerRecords extends AsyncTask<Context, Void, StatistiekRecords> {

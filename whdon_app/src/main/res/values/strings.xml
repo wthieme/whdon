@@ -91,4 +91,8 @@
     <string name="Droogste_maand">Droogste maand</string>
     <string name="NatsteMaandTxt">%.1f %s nat in %s-%s</string>
     <string name="DroogsteMaandTxt">%.1f %s droog in %s-%s</string>
+    <string name="Droogste_periode">Droogste periode</string>
+    <string name="Natste_periode">Natste periode</string>
+    <string name="NatstePeriodeTxt">%d dagen nat %s t/m %s</string>
+    <string name="DroogstePeriodeTxt">%d dagen droog %s t/m %s</string>
 </resources>

@@ -163,7 +163,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
         android:contentDescription="@string/NatTxt"
-        android:src="@drawable/dry" />
+        android:src="@drawable/droog" />
 
     <TextView
         android:id="@+id/tvDroogsteMaand"
@@ -182,6 +182,70 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvDroogsteMaand"
+        android:layout_marginStart="10sp"
+        android:layout_toEndOf="@id/ivNat"
+        android:textColor="@color/colorTekst"
+        android:textSize="14sp" />
+
+    <ImageView
+        android:id="@+id/ivPeriodeNat"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_below="@+id/tvDroogsteMaandTxt"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:contentDescription="@string/NatTxt"
+        android:src="@drawable/periodenat" />
+
+    <TextView
+        android:id="@+id/tvNatstePeriode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/ivPeriodeNat"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@id/ivPeriodeNat"
+        android:text="@string/Natste_periode"
+        android:textColor="@color/colorPrimary"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvNatstePeriodeTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvNatstePeriode"
+        android:layout_marginStart="10sp"
+        android:layout_toEndOf="@id/ivNat"
+        android:textColor="@color/colorTekst"
+        android:textSize="14sp" />
+
+    <ImageView
+        android:id="@+id/ivPeriodeDroog"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_below="@+id/tvNatstePeriodeTxt"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:contentDescription="@string/NatTxt"
+        android:src="@drawable/periodedroog" />
+
+    <TextView
+        android:id="@+id/tvDroogstePeriode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/ivPeriodeDroog"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@id/ivPeriodeDroog"
+        android:text="@string/Droogste_periode"
+        android:textColor="@color/colorPrimary"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvDroogstePeriodeTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvDroogstePeriode"
         android:layout_marginStart="10sp"
         android:layout_toEndOf="@id/ivNat"
         android:textColor="@color/colorTekst"

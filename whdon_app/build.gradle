@@ -23,8 +23,8 @@ android {
         applicationId "nl.whitedove.washetdroogofniet"
         minSdkVersion 17
         targetSdkVersion 27
-        versionCode 89
-        versionName "1.9.4"
+        versionCode 90
+        versionName "1.9.5"
     }
     buildTypes {
         release {
