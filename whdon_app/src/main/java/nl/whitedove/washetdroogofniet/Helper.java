@@ -21,7 +21,7 @@ import java.util.UUID;
 import nl.whitedove.washetdroogofniet.backend.whdonApi.WhdonApi;
 
 class Helper {
-    enum Periode {Alles, Jaar, Maand};
+    enum Periode {Alles, Jaar, Maand}
 
     private static final String ApiUrl = "https://11-dot-washetdroogofnietbackend.appspot.com/_ah/api/";
     static WhdonApi myApiService = new WhdonApi.Builder(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), null)
@@ -38,6 +38,9 @@ class Helper {
     static final int ONE_KM = 1000;
     static final boolean DEBUG = false;
     static final float ZOOM = 9.0f;
+    final static String SCACTION = "SCACTION";
+    static final String MELDING_DROOG = "MELDING_DROOG";
+    static final String MELDING_NAT = "MELDING_NAT";
 
 
     static void Log(String log) {

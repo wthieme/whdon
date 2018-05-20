@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/whdon.iml" filepath="$PROJECT_DIR$/whdon.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/whdon.iml" filepath="$PROJECT_DIR$/.idea/whdon.iml" />
       <module fileurl="file://$PROJECT_DIR$/whdon_app/whdon_app.iml" filepath="$PROJECT_DIR$/whdon_app/whdon_app.iml" />
       <module fileurl="file://$PROJECT_DIR$/whdon_backend/whdon_backend.iml" filepath="$PROJECT_DIR$/whdon_backend/whdon_backend.iml" />

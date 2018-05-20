@@ -115,7 +115,7 @@ class WeerHelper {
         return cxt.getString(R.string.DroogTxt);
     }
 
-    static BuienData BepaalBuien() throws IOException {
+    static BuienData BepaalBuien() {
 
         BuienData result = new BuienData();
         String brString = null;

@@ -95,4 +95,6 @@
     <string name="Natste_periode">Natste periode</string>
     <string name="NatstePeriodeTxt">%d dagen nat %s t/m %s</string>
     <string name="DroogstePeriodeTxt">%d dagen droog %s t/m %s</string>
+    <string name="melding_droog">Melding droog</string>
+    <string name="melding_nat">Melding nat</string>
 </resources>
