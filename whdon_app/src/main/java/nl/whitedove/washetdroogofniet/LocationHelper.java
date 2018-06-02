@@ -110,7 +110,7 @@ class LocationHelper {
             if (Helper.mCountry != null)
                 loc = loc + "," + Helper.mCountry;
 
-            Typeface iconFont = FontManager.GetTypeface(context, FontManager.FONTAWESOME_SOLID);
+            Typeface iconFont = FontManager.INSTANCE.GetTypeface(context, FontManager.INSTANCE.getFONTAWESOME_SOLID());
 
             String icon = "";
             if (srt == LocationHelper.LocationType.Gps)
@@ -119,7 +119,7 @@ class LocationHelper {
             if (srt == LocationHelper.LocationType.Net)
                 icon = context.getString(R.string.fa_signal);
 
-            FontManager.SetIconAndText(tvlocatie,
+            FontManager.INSTANCE.SetIconAndText(tvlocatie,
                     iconFont,
                     icon,
                     ContextCompat.getColor(context, R.color.colorPrimary),

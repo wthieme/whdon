@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 apply plugin: 'com.google.cloud.tools.endpoints-framework-client'
 
 buildscript {
@@ -59,4 +60,5 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
     implementation 'com.google.api-client:google-api-client-android:+' exclude module: 'httpclient'
     endpointsServer project(path: ':whdon_backend', configuration: 'endpoints')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }

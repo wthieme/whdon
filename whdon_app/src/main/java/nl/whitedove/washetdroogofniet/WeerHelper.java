@@ -186,6 +186,7 @@ class WeerHelper {
 
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
+                .addHeader("Cache-Control", "no-cache")
                 .url(url)
                 .build();
 
@@ -221,6 +222,7 @@ class WeerHelper {
 
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
+                .addHeader("Cache-Control", "no-cache")
                 .url(url)
                 .build();
 

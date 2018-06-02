@@ -111,16 +111,6 @@ public class MainActivity extends Activity {
         Init();
         ToondataBackground();
         SyncLocalDb();
-
-        Intent scIntent = getIntent();
-        String scaction = scIntent.getStringExtra(Helper.SCACTION);
-
-        if (scaction != null && scaction.equals(Helper.MELDING_DROOG))
-            VerwerkJa();
-
-        if (scaction != null && scaction.equals(Helper.MELDING_NAT))
-            VerwerkNee();
-
     }
 
     @SuppressLint("InflateParams")
@@ -436,7 +426,7 @@ public class MainActivity extends Activity {
         DateTime nu = DateTime.now();
         int maand = nu.getMonthOfYear();
         int dag = nu.getDayOfMonth();
-        String spreuk = SpreukenHelper.GeefSpreuk(maand, dag);
+        String spreuk = SpreukenHelper.INSTANCE.geefSpreuk(maand, dag);
         tvSpreuk.setText(spreuk);
     }
 
