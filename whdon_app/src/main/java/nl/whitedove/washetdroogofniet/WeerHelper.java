@@ -120,10 +120,10 @@ class WeerHelper {
         BuienData result = new BuienData();
         String brString = null;
 
-        if (Helper.mCurrentBestLocation != null) {
+        if (Helper.INSTANCE.getMCurrentBestLocation() != null) {
 
-            Double lat = Helper.mCurrentBestLocation.getLatitude();
-            Double lon = Helper.mCurrentBestLocation.getLongitude();
+            Double lat = Helper.INSTANCE.getMCurrentBestLocation().getLatitude();
+            Double lon = Helper.INSTANCE.getMCurrentBestLocation().getLongitude();
 
             String sLat = String.format(Locale.ROOT, "%.6f", lat);
             String sLon = String.format(Locale.ROOT, "%.6f", lon);
@@ -159,7 +159,7 @@ class WeerHelper {
                 i = 0;
             }
 
-            if (Helper.tryParseInt(tr[0]))
+            if (Helper.INSTANCE.tryParseInt(tr[0]))
                 re.setRegen(i + Integer.parseInt(tr[0]));
             else
                 re.setRegen(i);
@@ -182,7 +182,7 @@ class WeerHelper {
                 .appendQueryParameter("lon", lon);
 
         String url = builder.build().toString();
-        Helper.Log("Buienradar url:" + url);
+        Helper.INSTANCE.l("Buienradar url:" + url);
 
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
@@ -203,8 +203,8 @@ class WeerHelper {
 
     private static String getWeatherData() {
 
-        String locatie = LocationHelper.GetLocatieVoorWeer();
-        String country = LocationHelper.GetCountryVoorWeer();
+        String locatie = LocationHelper.INSTANCE.getLocatieVoorWeer();
+        String country = LocationHelper.INSTANCE.getCountryVoorWeer();
 
         Uri.Builder builder = new Uri.Builder();
         builder.scheme("http")
@@ -218,7 +218,7 @@ class WeerHelper {
                 .appendQueryParameter("units", "metric");
 
         String url = builder.build().toString();
-        Helper.Log("weather url:" + url);
+        Helper.INSTANCE.l("weather url:" + url);
 
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()

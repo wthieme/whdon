@@ -44,7 +44,7 @@ class BuienradarActivity : Activity() {
 
     private fun ToondataBackground() {
         val cxt = applicationContext
-        if (!Helper.TestInternet(cxt)) {
+        if (!Helper.testInternet(cxt)) {
             return
         }
         AsyncGetWeerVoorspellingTask(this).execute(cxt)

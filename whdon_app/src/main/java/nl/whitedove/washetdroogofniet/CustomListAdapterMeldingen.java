@@ -65,7 +65,7 @@ class CustomListAdapterMeldingen extends BaseAdapter {
         Melding melding = listData.get(position);
 
         DateTime datum = new DateTime(melding.getDatum());
-        holder.tvPsDatum.setText(Helper.dtFormat.print(datum));
+        holder.tvPsDatum.setText(Helper.INSTANCE.getDtFormat().print(datum));
         holder.tvPsLocatie.setText(melding.getLocatie());
         holder.tvPsDroogNat.setText(melding.getDroog() ? "Droog" : "Nat");
 

@@ -104,7 +104,7 @@ public class Laatste25Activity extends Activity {
         @Override
         protected ArrayList<Melding> doInBackground(Context... params) {
             Context context = params[0];
-            DatabaseHelper dh = DatabaseHelper.getInstance(context);
+            DatabaseHelper dh = DatabaseHelper.Companion.getInstance(context);
             return dh.GetLaatste25Meldingen();
         }
 

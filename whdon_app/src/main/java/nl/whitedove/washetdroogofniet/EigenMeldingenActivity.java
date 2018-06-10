@@ -83,7 +83,7 @@ public class EigenMeldingenActivity extends Activity {
         int aantalDagen = Days.daysBetween(datum, DateTime.now()).getDays() + 1;
         aantalGemm = (aantalNat + aantalDroog) / (1.0f * aantalDagen);
 
-        tvPsSinds.setText(Helper.dFormat.print(datum));
+        tvPsSinds.setText(Helper.INSTANCE.getDFormat().print(datum));
         tvPsAantalDroog.setText(String.format("%d", aantalDroog));
         tvPsAantalNat.setText(String.format("%d", aantalNat));
         tvPsGemm.setText(String.format("%.1f", aantalGemm));
@@ -106,8 +106,8 @@ public class EigenMeldingenActivity extends Activity {
         @Override
         protected ArrayList<Melding> doInBackground(Context... params) {
             Context context = params[0];
-            String id = Helper.GetGuid(context);
-            DatabaseHelper dh = DatabaseHelper.getInstance(context);
+            String id = Helper.INSTANCE.getGuid(context);
+            DatabaseHelper dh = DatabaseHelper.Companion.getInstance(context);
             return dh.GetMeldingen(id);
         }
 

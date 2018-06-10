@@ -129,7 +129,7 @@ public class StatsPerDagVdWeekActivity extends Activity {
         final BarChart bcPerDagVdWeek = findViewById(R.id.bcPerDagVdWeek);
         bcPerDagVdWeek.setOnTouchListener(sl);
 
-        Helper.ShowMessage(StatsPerDagVdWeekActivity.this, getString(R.string.SwipeLinksOfRechts));
+        Helper.INSTANCE.showMessage(StatsPerDagVdWeekActivity.this, getString(R.string.SwipeLinksOfRechts));
     }
 
     private void Terug() {
@@ -245,7 +245,7 @@ public class StatsPerDagVdWeekActivity extends Activity {
         @Override
         protected ArrayList<StatistiekDagVdWeek> doInBackground(Context... params) {
             Context context = params[0];
-            DatabaseHelper dh = DatabaseHelper.getInstance(context);
+            DatabaseHelper dh = DatabaseHelper.Companion.getInstance(context);
             return dh.GetStatistiekDagVdWeek(mAllesJaarMaand, mJaar, mMaand);
         }
 

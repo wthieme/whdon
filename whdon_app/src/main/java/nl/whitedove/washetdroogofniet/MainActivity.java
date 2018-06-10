@@ -330,22 +330,20 @@ public class MainActivity extends Activity {
 
     private void ClearCache() {
         Context cxt = getApplicationContext();
-        DatabaseHelper dh = DatabaseHelper.getInstance(cxt);
+        DatabaseHelper dh = DatabaseHelper.Companion.getInstance(cxt);
         dh.DeleteMeldingen();
-        Helper.SetLastSyncDate(cxt, new DateTime(2000, 1, 1, 0, 0));
+        Helper.INSTANCE.setLastSyncDate(cxt, new DateTime(2000, 1, 1, 0, 0));
     }
 
     private void VerwerkJa() {
         Context cxt = getApplicationContext();
-        if (!Helper.TestInternet(cxt)) {
-            return;
-        }
+        if (!Helper.INSTANCE.testInternet(cxt)) return;
         SlaMeldingOp(true);
     }
 
     private void VerwerkNee() {
         Context cxt = getApplicationContext();
-        if (!Helper.TestInternet(cxt)) {
+        if (!Helper.INSTANCE.testInternet(cxt)) {
             return;
         }
         SlaMeldingOp(false);
@@ -434,10 +432,10 @@ public class MainActivity extends Activity {
     private void ToonWeerdata(Weer weerData) {
         Context context = getApplicationContext();
 
-        String locatie = LocationHelper.GetLocatieVoorWeer();
+        String locatie = LocationHelper.INSTANCE.getLocatieVoorWeer();
         if (weerData == null) {
             String weeronbekend = this.getString(R.string.WeerOnbekend);
-            Helper.ShowMessage(this, weeronbekend);
+            Helper.INSTANCE.showMessage(this, weeronbekend);
             TextView tvWeerkop = findViewById(R.id.tvWeerkop);
             tvWeerkop.setText(String.format(this.getString(R.string.Weer3uur), locatie));
             InitWeerViews(false);
@@ -598,12 +596,12 @@ public class MainActivity extends Activity {
 
     private void ToondataBackground() {
         Context cxt = getApplicationContext();
-        String id = Helper.GetGuid(cxt);
+        String id = Helper.INSTANCE.getGuid(cxt);
         //noinspection unchecked
         new AsyncGetLaatsteMeldingTask(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, Pair.create(cxt, id));
         //noinspection unchecked
         new AsyncGetPersoonlijkeStatsTask(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, Pair.create(cxt, id));
-        if (!Helper.TestInternet(cxt)) {
+        if (!Helper.INSTANCE.testInternet(cxt)) {
             return;
         }
         new AsyncGetWeerVoorspelling(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -613,13 +611,13 @@ public class MainActivity extends Activity {
     private void SlaMeldingOp(Boolean droog) {
         ShowMeldingProgress();
         Context context = getApplicationContext();
-        String locatie = LocationHelper.GetLocatieVoorWeer();
-        String land = LocationHelper.GetCountryVoorWeer();
+        String locatie = LocationHelper.INSTANCE.getLocatieVoorWeer();
+        String land = LocationHelper.INSTANCE.getCountryVoorWeer();
         Melding melding = new Melding();
         melding.setDroog(droog);
         melding.setLocatie(locatie);
         melding.setLand(land);
-        melding.setId(Helper.GetGuid(context));
+        melding.setId(Helper.INSTANCE.getGuid(context));
         melding.setNat(!droog);
         melding.setTemperatuur((long) WeerHelper.GetHuidigeTemperatuur());
         melding.setWeerType(WeerHelper.getHuidigeWeertype().getValue());
@@ -640,7 +638,7 @@ public class MainActivity extends Activity {
         }
 
         if (melding == null) {
-            Helper.ShowMessage(cxt, getString(R.string.OnverwachteFoutOpslaanMelding));
+            Helper.INSTANCE.showMessage(cxt, getString(R.string.OnverwachteFoutOpslaanMelding));
             return;
         }
 
@@ -662,7 +660,7 @@ public class MainActivity extends Activity {
         String locatie = melding.getLocatie();
         String lastDroogNat = melding.getDroog() ? "Droog" : "Nat";
 
-        tvDt.setText(Helper.dtFormat.print(lastDate));
+        tvDt.setText(Helper.INSTANCE.getDtFormat().print(lastDate));
         tvLocatie.setText(locatie);
         tvDroogNat.setText(lastDroogNat);
 
@@ -684,7 +682,7 @@ public class MainActivity extends Activity {
     private void ToonPersoonlijkeStat(Statistiek stat) {
         Context cxt = getApplicationContext();
         if (stat == null) {
-            Helper.ShowMessage(cxt, "Onverwachte fout tijdens ophalen statistiek");
+            Helper.INSTANCE.showMessage(cxt, "Onverwachte fout tijdens ophalen statistiek");
             return;
         }
 
@@ -707,7 +705,7 @@ public class MainActivity extends Activity {
 
     private void InitViews(Boolean visible) {
         TextView tvHuidigeLocatie = findViewById(R.id.tvHuidigeLocatie);
-        LocationHelper.ToonHuidigeLocatie(this, tvHuidigeLocatie, LocationHelper.LocationType.Unknown);
+        LocationHelper.INSTANCE.toonHuidigeLocatie(this, tvHuidigeLocatie, LocationHelper.LocationType.Unknown);
         TextView tvPersStats = findViewById(R.id.tvPersStats);
         TextView tvDroog = findViewById(R.id.tvDroog);
         TextView tvNat = findViewById(R.id.tvNat);
@@ -838,7 +836,7 @@ public class MainActivity extends Activity {
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     InitLocation();
                 } else {
-                    Helper.ShowMessage(this, "Zonder locatietoegang is het niet mogelijk om meldingen te doen en de buienradar te bekijken");
+                    Helper.INSTANCE.showMessage(this, "Zonder locatietoegang is het niet mogelijk om meldingen te doen en de buienradar te bekijken");
                 }
             }
         }
@@ -852,25 +850,25 @@ public class MainActivity extends Activity {
     }
 
     private void makeUseOfNewLocation(Location location, LocationHelper.LocationType loctype) {
-        Helper.mCurrentBestLocation = location;
-        LocationHelper.BepaalLocatie(this);
+        Helper.INSTANCE.setMCurrentBestLocation(location);
+        LocationHelper.INSTANCE.bepaalLocatie(this);
         TextView tvHuidigeLocatie = findViewById(R.id.tvHuidigeLocatie);
-        LocationHelper.ToonHuidigeLocatie(this, tvHuidigeLocatie, loctype);
+        LocationHelper.INSTANCE.toonHuidigeLocatie(this, tvHuidigeLocatie, loctype);
         new AsyncGetWeerVoorspelling(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     private void SetDbSyncDate() {
         Context cxt = getApplicationContext();
-        Helper.SetLastSyncDate(cxt, DateTime.now());
+        Helper.INSTANCE.setLastSyncDate(cxt, DateTime.now());
     }
 
     private void SyncLocalDb() {
         Context cxt = getApplicationContext();
-        DateTime last = Helper.GetLastSyncDate(cxt);
+        DateTime last = Helper.INSTANCE.getLastSyncDate(cxt);
         DateTime nu = DateTime.now();
         // We syncen max 1 keer per uur om gegevens van anderen op te halen
         if (last.plusHours(1).isBefore(nu)) {
-            if (!Helper.TestInternet(cxt)) {
+            if (!Helper.INSTANCE.testInternet(cxt)) {
                 return;
             }
             // We tonen een progressbar als het lang geleden was sinds de laatste sync
@@ -912,11 +910,11 @@ public class MainActivity extends Activity {
             DateTime last = params[0].second;
             try {
                 // We vragen 24 uur extra op, om de kans dat we gegevens missen kleiner te maken
-                MeldingCollection meldingen = Helper.myApiService.getAlleMeldingenVanaf(last.minusHours(24).getMillis()).execute();
+                MeldingCollection meldingen = Helper.INSTANCE.getMyApiService().getAlleMeldingenVanaf(last.minusHours(24).getMillis()).execute();
                 if (meldingen == null || meldingen.size() == 0 || meldingen.getItems() == null || meldingen.getItems().size() == 0) {
                     return null;
                 }
-                DatabaseHelper dh = DatabaseHelper.getInstance(context);
+                DatabaseHelper dh = DatabaseHelper.Companion.getInstance(context);
                 dh.addMeldingen(meldingen.getItems());
 
             } catch (IOException ignored) {
@@ -946,7 +944,7 @@ public class MainActivity extends Activity {
         protected final Melding doInBackground(Pair<Context, String>... params) {
             Context context = params[0].first;
             String id = params[0].second;
-            DatabaseHelper dh = DatabaseHelper.getInstance(context);
+            DatabaseHelper dh = DatabaseHelper.Companion.getInstance(context);
             return dh.GetLaatsteMelding(id);
         }
 
@@ -1024,7 +1022,7 @@ public class MainActivity extends Activity {
             Melding melding = params[0].second;
             Melding meld = null;
             try {
-                meld = Helper.myApiService.meldingOpslaan(melding).execute();
+                meld = Helper.INSTANCE.getMyApiService().meldingOpslaan(melding).execute();
             } catch (IOException ignored) {
             }
             return Pair.create(context, meld);
@@ -1041,13 +1039,13 @@ public class MainActivity extends Activity {
             if (melding == null) return;
             String err = melding.getError();
             if (err != null && !err.isEmpty()) {
-                Helper.ShowMessage(context, err);
+                Helper.INSTANCE.showMessage(context, err);
             } else {
                 ArrayList<Melding> meldingen = new ArrayList<>();
                 meldingen.add(melding);
-                DatabaseHelper dh = DatabaseHelper.getInstance(context);
+                DatabaseHelper dh = DatabaseHelper.Companion.getInstance(context);
                 dh.addMeldingen(meldingen);
-                Helper.ShowMessage(context, activity.getString(R.string.BedanktMelding));
+                Helper.INSTANCE.showMessage(context, activity.getString(R.string.BedanktMelding));
             }
             activity.ToondataBackground();
         }
@@ -1065,7 +1063,7 @@ public class MainActivity extends Activity {
         protected final Statistiek doInBackground(Pair<Context, String>... params) {
             Context context = params[0].first;
             String id = params[0].second;
-            DatabaseHelper dh = DatabaseHelper.getInstance(context);
+            DatabaseHelper dh = DatabaseHelper.Companion.getInstance(context);
             return dh.GetPersoonlijkeStatistiek(id);
         }
 

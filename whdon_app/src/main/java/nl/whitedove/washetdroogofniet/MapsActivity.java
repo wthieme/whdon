@@ -59,7 +59,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        LatLng latlng = LocationHelper.BepaalLatLng(this);
+        LatLng latlng = LocationHelper.INSTANCE.bepaalLatLng(this);
         if (latlng != null) {
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, Helper.ZOOM));
         }
@@ -101,8 +101,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         @Override
         protected final ArrayList<Statistiek> doInBackground(Context... params) {
             Context context = params[0];
-            String id = Helper.GetGuid(context);
-            DatabaseHelper dh = DatabaseHelper.getInstance(context);
+            String id = Helper.INSTANCE.getGuid(context);
+            DatabaseHelper dh = DatabaseHelper.Companion.getInstance(context);
             return dh.GetPersoonlijkeStatsPerPlaats(id);
         }
 
@@ -125,7 +125,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         protected final Pair<Statistiek, LatLng> doInBackground(Pair<Context, Statistiek>... params) {
             Context context = params[0].first;
             Statistiek stat = params[0].second;
-            LatLng ll = LocationHelper.getLocationFromAddress(context, stat.getLocatie() + ", " + stat.getLand());
+            LatLng ll = LocationHelper.INSTANCE.getLocationFromAddress(context, stat.getLocatie() + ", " + stat.getLand());
             return Pair.create(stat, ll);
         }
 

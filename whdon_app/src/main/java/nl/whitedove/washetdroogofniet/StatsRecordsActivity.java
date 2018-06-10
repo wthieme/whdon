@@ -50,16 +50,16 @@ public class StatsRecordsActivity extends Activity {
         }
 
         TextView tvMinTemperatuur = findViewById(R.id.tvMinTemperatuur);
-        tvMinTemperatuur.setText(String.format(getString(R.string.MinMaxTemp), stat.getMinTemp(), Helper.dFormat.print(stat.getMinTempDatum())));
+        tvMinTemperatuur.setText(String.format(getString(R.string.MinMaxTemp), stat.getMinTemp(), Helper.INSTANCE.getDFormat().print(stat.getMinTempDatum())));
 
         TextView tvMaxTemperatuur = findViewById(R.id.tvMaxTemperatuur);
-        tvMaxTemperatuur.setText(String.format(getString(R.string.MinMaxTemp), stat.getMaxTemp(), Helper.dFormat.print(stat.getMaxTempDatum())));
+        tvMaxTemperatuur.setText(String.format(getString(R.string.MinMaxTemp), stat.getMaxTemp(), Helper.INSTANCE.getDFormat().print(stat.getMaxTempDatum())));
 
         TextView tvMaxWind = findViewById(R.id.tvMaxWind);
         tvMaxWind.setText(String.format(getString(R.string.MaxWind),
                 WeerHelper.WindDirectionToOmschrijving(stat.getMaxWindRichting()),
                 stat.getMaxWind(),
-                Helper.dFormat.print(stat.getMaxWindDatum())));
+                Helper.INSTANCE.getDFormat().print(stat.getMaxWindDatum())));
 
         TextView tvNatsteMaandTxt = findViewById(R.id.tvNatsteMaandTxt);
         tvNatsteMaandTxt.setText(String.format(getString(R.string.NatsteMaandTxt),
@@ -87,8 +87,8 @@ public class StatsRecordsActivity extends Activity {
 
         tvNatstePeriodeTxt.setText(String.format(getString(R.string.NatstePeriodeTxt),
                 Days.daysBetween(beginNat, eindNat).getDays() + 1,
-                Helper.dFormat.print(stat.getLangstePeriodeNatVanaf()),
-                Helper.dFormat.print(stat.getLangstePeriodeNatTm())));
+                Helper.INSTANCE.getDFormat().print(stat.getLangstePeriodeNatVanaf()),
+                Helper.INSTANCE.getDFormat().print(stat.getLangstePeriodeNatTm())));
 
         TextView tvDroogstePeriodeTxt = findViewById(R.id.tvDroogstePeriodeTxt);
 
@@ -102,8 +102,8 @@ public class StatsRecordsActivity extends Activity {
 
         tvDroogstePeriodeTxt.setText(String.format(getString(R.string.DroogstePeriodeTxt),
                 Days.daysBetween(beginDroog, eindDroog).getDays() + 1,
-                Helper.dFormat.print(stat.getLangstePeriodeDroogVanaf()),
-                Helper.dFormat.print(stat.getLangstePeriodeDroogTm())));
+                Helper.INSTANCE.getDFormat().print(stat.getLangstePeriodeDroogVanaf()),
+                Helper.INSTANCE.getDFormat().print(stat.getLangstePeriodeDroogTm())));
     }
 
     private static class AsyncGetWeerRecords extends AsyncTask<Context, Void, StatistiekRecords> {
@@ -116,7 +116,7 @@ public class StatsRecordsActivity extends Activity {
         @Override
         protected StatistiekRecords doInBackground(Context... params) {
             Context context = params[0];
-            DatabaseHelper dh = DatabaseHelper.getInstance(context);
+            DatabaseHelper dh = DatabaseHelper.Companion.getInstance(context);
             return dh.GetStatistiekRecords();
         }
 

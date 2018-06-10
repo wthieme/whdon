@@ -123,7 +123,7 @@ public class StatsWeerTypeActivity extends Activity {
         final PieChart pChart = findViewById(R.id.pcPerWeertype);
         pChart.setOnTouchListener(sl);
 
-        Helper.ShowMessage(StatsWeerTypeActivity.this, getString(R.string.SwipeLinksOfRechts));
+        Helper.INSTANCE.showMessage(StatsWeerTypeActivity.this, getString(R.string.SwipeLinksOfRechts));
     }
 
     private void Terug() {
@@ -226,7 +226,7 @@ public class StatsWeerTypeActivity extends Activity {
         @Override
         protected ArrayList<StatistiekWeertype> doInBackground(Context... params) {
             Context context = params[0];
-            DatabaseHelper dh = DatabaseHelper.getInstance(context);
+            DatabaseHelper dh = DatabaseHelper.Companion.getInstance(context);
             return dh.GetStatistiekWeerType(mAllesJaarMaand, mJaar, mMaand);
         }
 

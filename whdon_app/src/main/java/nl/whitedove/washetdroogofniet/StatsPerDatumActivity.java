@@ -74,7 +74,7 @@ public class StatsPerDatumActivity extends Activity {
         final LineChart lChart = findViewById(R.id.lcPerDatum);
         lChart.setOnTouchListener(sl);
 
-        Helper.ShowMessage(StatsPerDatumActivity.this, getString(R.string.SwipeLinksOfRechts));
+        Helper.INSTANCE.showMessage(StatsPerDatumActivity.this, getString(R.string.SwipeLinksOfRechts));
     }
 
     private void Terug() {
@@ -94,8 +94,8 @@ public class StatsPerDatumActivity extends Activity {
             return;
         }
         final TextView tvDatumSubtitel = findViewById(R.id.tvDatumSubtitel);
-        String vanaf = Helper.dFormat.print(datum);
-        String tm = Helper.dFormat.print(datum.plusDays(29));
+        String vanaf = Helper.INSTANCE.getDFormat().print(datum);
+        String tm = Helper.INSTANCE.getDFormat().print(datum.plusDays(29));
         tvDatumSubtitel.setText(String.format(getString(R.string.vantmdatum), vanaf, tm));
 
         final BarChart bChart = findViewById(R.id.bcPerDatum);
@@ -136,7 +136,7 @@ public class StatsPerDatumActivity extends Activity {
 
         for (int i = 0; i < 30; i++) {
             bDataT.add(new BarEntry(i, new float[]{stats.get(i).getAantalNat(), stats.get(i).getAantalDroog()}));
-            String sDatum = (i == 0 || i == 10 || i == 20 || i == 29) ? Helper.dmFormat.print(stats.get(i).getDatum()) : "";
+            String sDatum = (i == 0 || i == 10 || i == 20 || i == 29) ? Helper.INSTANCE.getDmFormat().print(stats.get(i).getDatum()) : "";
             bLabels.add(sDatum);
         }
 
@@ -191,7 +191,7 @@ public class StatsPerDatumActivity extends Activity {
             if (tempMax != -999 && tempMax > maxVal) maxVal = Math.round(tempMax);
             lDataTMin.add(new Entry(i, tempMin == 999 ? 0 : tempMin));
             lDataTMax.add(new Entry(i, tempMax == -999 ? 0 : tempMax));
-            String sDatum = (i == 0 || i == 10 || i == 20 || i == 29) ? Helper.dmFormat.print(stats.get(i).getDatum()) : "";
+            String sDatum = (i == 0 || i == 10 || i == 20 || i == 29) ? Helper.INSTANCE.getDmFormat().print(stats.get(i).getDatum()) : "";
             lLabels.add(sDatum);
         }
 
@@ -259,7 +259,7 @@ public class StatsPerDatumActivity extends Activity {
         @Override
         protected ArrayList<Statistiek1Dag> doInBackground(Context... params) {
             Context context = params[0];
-            DatabaseHelper dh = DatabaseHelper.getInstance(context);
+            DatabaseHelper dh = DatabaseHelper.Companion.getInstance(context);
             return dh.GetStatistiek30Dagen(datum);
         }
 

@@ -102,7 +102,7 @@ public class StatsPerPlaatsActivity extends Activity {
         @Override
         protected ArrayList<Statistiek> doInBackground(Context... params) {
             Context context = params[0];
-            DatabaseHelper dh = DatabaseHelper.getInstance(context);
+            DatabaseHelper dh = DatabaseHelper.Companion.getInstance(context);
             return dh.GetStatistieken();
         }
 

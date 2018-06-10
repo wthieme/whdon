@@ -65,7 +65,7 @@ public class StatsAantalGebruikersActivity extends Activity {
         final LineChart chart = findViewById(R.id.lcAantalGebruikers);
         chart.setOnTouchListener(sl);
 
-        Helper.ShowMessage(StatsAantalGebruikersActivity.this, getString(R.string.SwipeLinksOfRechts));
+        Helper.INSTANCE.showMessage(StatsAantalGebruikersActivity.this, getString(R.string.SwipeLinksOfRechts));
     }
 
     private void Terug() {
@@ -85,8 +85,8 @@ public class StatsAantalGebruikersActivity extends Activity {
             return;
         }
         final TextView tvAantalGebruikersSubtitel = findViewById(R.id.tvAantalGebruikersSubtitel);
-        String vanaf = Helper.dFormat.print(datum);
-        String tm = Helper.dFormat.print(datum.plusDays(29));
+        String vanaf = Helper.INSTANCE.getDFormat().print(datum);
+        String tm = Helper.INSTANCE.getDFormat().print(datum.plusDays(29));
         tvAantalGebruikersSubtitel.setText(String.format(getString(R.string.vantmdatum), vanaf, tm));
 
         final LineChart lChart = findViewById(R.id.lcAantalGebruikers);
@@ -132,7 +132,7 @@ public class StatsAantalGebruikersActivity extends Activity {
 
         for (int i = 0; i < 30; i++) {
             Entry e = new Entry(i, stats.get(i).getAantalGebruikers());
-            String sDatum = (i == 0 || i == 10 || i == 20 || i == 29) ? Helper.dmFormat.print(stats.get(i).getDatum()) : "";
+            String sDatum = (i == 0 || i == 10 || i == 20 || i == 29) ? Helper.INSTANCE.getDmFormat().print(stats.get(i).getDatum()) : "";
             labels.add(sDatum);
             dataY.add(e);
         }
@@ -172,7 +172,7 @@ public class StatsAantalGebruikersActivity extends Activity {
         @Override
         protected ArrayList<StatistiekAantalGebruikers> doInBackground(Context... params) {
             Context context = params[0];
-            DatabaseHelper dh = DatabaseHelper.getInstance(context);
+            DatabaseHelper dh = DatabaseHelper.Companion.getInstance(context);
             return dh.GetAantalGebruikers30Dagen(datum);
         }
 

@@ -125,7 +125,7 @@ public class StatsWindRichtingActivity extends Activity {
         final RadarChart rChart = findViewById(R.id.rcPerWindrichting);
         rChart.setOnTouchListener(sl);
 
-        Helper.ShowMessage(StatsWindRichtingActivity.this,
+        Helper.INSTANCE.showMessage(StatsWindRichtingActivity.this,
 
                 getString(R.string.SwipeLinksOfRechts));
     }
@@ -210,7 +210,7 @@ public class StatsWindRichtingActivity extends Activity {
         @Override
         protected ArrayList<StatistiekWind> doInBackground(Context... params) {
             Context context = params[0];
-            DatabaseHelper dh = DatabaseHelper.getInstance(context);
+            DatabaseHelper dh = DatabaseHelper.Companion.getInstance(context);
             return dh.GetStatistiekWind(mAllesJaarMaand, mJaar, mMaand);
         }
 

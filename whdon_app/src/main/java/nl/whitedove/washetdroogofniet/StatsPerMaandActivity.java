@@ -76,7 +76,7 @@ public class StatsPerMaandActivity extends Activity {
         final LineChart lChart = findViewById(R.id.lcPerMaand);
         lChart.setOnTouchListener(sl);
 
-        Helper.ShowMessage(StatsPerMaandActivity.this, getString(R.string.SwipeLinksOfRechts));
+        Helper.INSTANCE.showMessage(StatsPerMaandActivity.this, getString(R.string.SwipeLinksOfRechts));
     }
 
     private void Terug() {
@@ -294,7 +294,7 @@ public class StatsPerMaandActivity extends Activity {
         @Override
         protected ArrayList<Statistiek1Maand> doInBackground(Context... params) {
             Context context = params[0];
-            DatabaseHelper dh = DatabaseHelper.getInstance(context);
+            DatabaseHelper dh = DatabaseHelper.Companion.getInstance(context);
             int maand = DateTime.now().getMonthOfYear();
             return dh.GetStatistiek12Maanden(mJaar, maand);
         }

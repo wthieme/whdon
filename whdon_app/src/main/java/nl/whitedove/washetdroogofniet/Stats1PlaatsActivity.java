@@ -86,8 +86,8 @@ public class Stats1PlaatsActivity extends Activity {
         int percNat = 100 - percDroog;
 
         tvLocatie.setText(stat.getLocatie());
-        tvPsDatumStart.setText(Helper.dFormat.print(datumStart));
-        tvPsDatumEnd.setText(Helper.dFormat.print(datumEnd));
+        tvPsDatumStart.setText(Helper.INSTANCE.getDFormat().print(datumStart));
+        tvPsDatumEnd.setText(Helper.INSTANCE.getDFormat().print(datumEnd));
         tvPsAantalDroog.setText(String.format("%d", aantalDroog));
         tvPsAantalNat.setText(String.format("%d", aantalNat));
         tvPsGemm.setText(String.format("%.1f", aantalGemm));
@@ -159,7 +159,7 @@ public class Stats1PlaatsActivity extends Activity {
         protected Statistiek1Plaats doInBackground(Pair<Context,String>... params) {
             Context context = params[0].first;
             String locatie = params[0].second;
-            DatabaseHelper dh = DatabaseHelper.getInstance(context);
+            DatabaseHelper dh = DatabaseHelper.Companion.getInstance(context);
             return dh.GetStatistiekLocatie(locatie);
         }
 

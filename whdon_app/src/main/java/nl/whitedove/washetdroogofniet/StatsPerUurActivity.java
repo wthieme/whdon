@@ -128,7 +128,7 @@ public class StatsPerUurActivity extends Activity {
         final BarChart bcPerUurVdDag = findViewById(R.id.bcPerUurVdDag);
         bcPerUurVdDag.setOnTouchListener(sl);
 
-        Helper.ShowMessage(StatsPerUurActivity.this, getString(R.string.SwipeLinksOfRechts));
+        Helper.INSTANCE.showMessage(StatsPerUurActivity.this, getString(R.string.SwipeLinksOfRechts));
     }
 
     private void Terug() {
@@ -245,7 +245,7 @@ public class StatsPerUurActivity extends Activity {
         @Override
         protected ArrayList<Statistiek1Uur> doInBackground(Context... params) {
             Context context = params[0];
-            DatabaseHelper dh = DatabaseHelper.getInstance(context);
+            DatabaseHelper dh = DatabaseHelper.Companion.getInstance(context);
             return dh.GetStatistiek24Uur(mAllesJaarMaand, mJaar, mMaand);
         }
 
