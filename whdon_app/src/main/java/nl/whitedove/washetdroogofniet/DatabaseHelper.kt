@@ -638,7 +638,7 @@ internal class DatabaseHelper private constructor(context: Context) : SQLiteOpen
                 val weerType = WeerHelper.WeerType.valueOf(cursor.getLong(0))
                 stat.weerType = weerType
                 stat.aantal = cursor.getInt(1)
-                stat.weerTypeOmschrijving = WeerHelper.WeerTypeToWeerOmschrijving(weerType)
+                stat.weerTypeOmschrijving = WeerHelper.weerTypeToWeerOmschrijving(weerType)
                 stats.add(stat)
                 totaal += stat.aantal
             } while (cursor.moveToNext())
@@ -668,7 +668,7 @@ internal class DatabaseHelper private constructor(context: Context) : SQLiteOpen
             if (!gevonden && windDir != WeerHelper.WindDirection.Onbekend) {
                 val stat = StatistiekWind()
                 stat.windDir = windDir
-                stat.windOmschrijving = WeerHelper.WindDirectionToOmschrijving(windDir)
+                stat.windOmschrijving = WeerHelper.windDirectionToOmschrijving(windDir)
                 stat.aantal = 0
                 stat.avgWindSpeed = 0f
                 stat.maxWindSpeed = 0f
@@ -722,7 +722,7 @@ internal class DatabaseHelper private constructor(context: Context) : SQLiteOpen
                 val windDir = WeerHelper.WindDirection.valueOf(cursor.getLong(0))
                 stat.windDir = windDir
                 stat.aantal = cursor.getInt(1)
-                stat.windOmschrijving = WeerHelper.WindDirectionToOmschrijving(windDir)
+                stat.windOmschrijving = WeerHelper.windDirectionToOmschrijving(windDir)
                 stat.avgWindSpeed = cursor.getFloat(2)
                 stat.minWindSpeed = cursor.getFloat(3)
                 stat.maxWindSpeed = cursor.getFloat(4)

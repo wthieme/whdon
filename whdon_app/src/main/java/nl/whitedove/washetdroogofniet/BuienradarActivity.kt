@@ -32,17 +32,17 @@ class BuienradarActivity : Activity() {
         setContentView(R.layout.buienradar)
 
         val fabTerug = findViewById<FloatingActionButton>(R.id.btnTerug)
-        fabTerug.setOnClickListener { Terug() }
-        ToondataBackground()
+        fabTerug.setOnClickListener { terug() }
+        toondataBackground()
     }
 
-    private fun Terug() {
+    private fun terug() {
         val intent = Intent(this, MainActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         startActivity(intent)
     }
 
-    private fun ToondataBackground() {
+    private fun toondataBackground() {
         val cxt = applicationContext
         if (!Helper.testInternet(cxt)) {
             return
@@ -51,8 +51,8 @@ class BuienradarActivity : Activity() {
     }
 
     @SuppressLint("DefaultLocale")
-    private fun ToonBuienData(weerData: BuienData?) {
-        if (weerData == null || weerData.regenData == null || weerData.regenData!!.size == 0) {
+    private fun toonBuienData(weerData: BuienData?) {
+        if (weerData?.regenData == null || weerData.regenData!!.size == 0) {
             return
         }
         val chart = findViewById<LineChart>(R.id.lcBuienRadar)
@@ -65,7 +65,7 @@ class BuienradarActivity : Activity() {
         chart.setScaleEnabled(false)
         chart.setNoDataText(getString(R.string.nodata))
 
-        val myYFormat = IAxisValueFormatter { value, axis ->
+        val myYFormat = IAxisValueFormatter { value, _ ->
             if (value >= 0 && value < 40)
                 "0"
             else if (value >= 40 && value < 80)
@@ -98,11 +98,11 @@ class BuienradarActivity : Activity() {
         xAs.setDrawGridLines(false)
 
         val tvDroogBr = findViewById<TextView>(R.id.tvDroogBr)
-        val sBr = WeerHelper.BepaalBrDataTxt(this, weerData)
+        val sBr = WeerHelper.bepaalBrDataTxt(this, weerData)
         tvDroogBr.text = sBr
 
         // De markeerlijn voor nu
-        val xPos = WeerHelper.BerekenNuXPositie(weerData)
+        val xPos = WeerHelper.berekenNuXPositie(weerData)
         val ll = LimitLine(xPos, "Nu")
         ll.lineColor = Color.RED
         ll.lineWidth = 1f
@@ -120,10 +120,10 @@ class BuienradarActivity : Activity() {
             val regen = weerData.regenData!![i].regen
             som += regen
             val peruur: Double
-            if (regen == 0) {
-                peruur = 0.0
+            peruur = if (regen == 0) {
+                0.0
             } else {
-                peruur = Math.pow(10.0, ((regen - 109.0f) / 32.0f).toDouble())
+                Math.pow(10.0, ((regen - 109.0f) / 32.0f).toDouble())
             }
 
             mm += peruur / 12.0f
@@ -148,7 +148,7 @@ class BuienradarActivity : Activity() {
         dsT.setDrawCircles(false)
         dsT.mode = LineDataSet.Mode.HORIZONTAL_BEZIER
         dsT.cubicIntensity = 0.2f
-        val myValueFormat = IValueFormatter { value, entry, dataSetIndex, viewPortHandler -> "" }
+        val myValueFormat = IValueFormatter { _, _, _, _ -> "" }
 
         dsT.valueFormatter = myValueFormat
         dsT.axisDependency = YAxis.AxisDependency.LEFT
@@ -166,17 +166,13 @@ class BuienradarActivity : Activity() {
     }
 
     private class AsyncGetWeerVoorspellingTask internal constructor(context: BuienradarActivity) : AsyncTask<Context, Void, BuienData>() {
-        private val activityWeakReference: WeakReference<BuienradarActivity>
-
-        init {
-            activityWeakReference = WeakReference(context)
-        }
+        private val activityWeakReference: WeakReference<BuienradarActivity> = WeakReference(context)
 
         override fun doInBackground(vararg params: Context): BuienData? {
 
             var weer: BuienData? = null
             try {
-                weer = WeerHelper.BepaalBuien()
+                weer = WeerHelper.bepaalBuien()
             } catch (ignored: Exception) {
             }
 
@@ -185,7 +181,7 @@ class BuienradarActivity : Activity() {
 
         override fun onPostExecute(result: BuienData) {
             val activity = activityWeakReference.get()
-            activity?.ToonBuienData(result)
+            activity?.toonBuienData(result)
         }
 
     }

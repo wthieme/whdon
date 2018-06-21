@@ -1,12 +1,12 @@
 package nl.whitedove.washetdroogofniet
 
-internal class Weer {
+class Weer {
 
     var graden: Int = 0
     var wind: Int = 0
-    var plaats: String? = null
-    var icon: String? = null
-    var windDir: WeerHelper.WindDirection? = null
+    var plaats: String = ""
+    var icon: String = ""
+    var windDir: WeerHelper.WindDirection = WeerHelper.WindDirection.Onbekend
         private set
 
     fun setWindDir(windRichting: Int) {

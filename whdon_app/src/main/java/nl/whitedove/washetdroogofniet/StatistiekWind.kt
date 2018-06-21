@@ -1,9 +1,9 @@
 package nl.whitedove.washetdroogofniet
 
-internal class StatistiekWind {
+class StatistiekWind {
 
-    var windDir: WeerHelper.WindDirection? = null
-    var windOmschrijving: String? = null
+    var windDir: WeerHelper.WindDirection = WeerHelper.WindDirection.Onbekend
+    var windOmschrijving: String = ""
     var aantal: Int = 0
     var avgWindSpeed: Float = 0.toFloat()
     var minWindSpeed: Float = 0.toFloat()

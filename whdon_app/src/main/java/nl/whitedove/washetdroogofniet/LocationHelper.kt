@@ -18,7 +18,7 @@ internal object LocationHelper {
 
     fun bepaalLocatie(cxt: Context) {
 
-        if (!Helper.testInternet(cxt)!!) {
+        if (!Helper.testInternet(cxt)) {
             return
         }
 

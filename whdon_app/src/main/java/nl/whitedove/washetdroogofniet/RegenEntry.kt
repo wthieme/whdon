@@ -1,6 +1,6 @@
 package nl.whitedove.washetdroogofniet
 
-internal class RegenEntry {
+class RegenEntry {
 
     var tijd: String = ""
     var regen: Int = 0
