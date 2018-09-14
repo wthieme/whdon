@@ -753,19 +753,25 @@ internal class DatabaseHelper private constructor(context: Context) : SQLiteOpen
                 + " " + MDG_DROOG + ","
                 + " " + MDG_TEMPERATUUR + ","
                 + " " + MDG_WINDSPEED + ","
-                + " " + MDG_WINDDIR
+                + " " + MDG_WINDDIR + ","
+                + " " + MDG_LOCATIE
                 + " FROM " + TAB_MELDING
                 + " ORDER BY " + MDG_DATUM)
 
         cursor = db.rawQuery(selectQuery, null)
 
         var recordWindDatum = DateTime(2015, 1, 1, 0, 0)
-        var recordMaxTempDatum = DateTime(2015, 1, 1, 0, 0)
-        var recordMinTempDatum = DateTime(2015, 1, 1, 0, 0)
         var recordWind = 0
         var recordWindRichting: WeerHelper.WindDirection = WeerHelper.WindDirection.Zuid
-        var recordMaxTemp = 0
+        var recordMaxWindLocatie = ""
+
+        var recordMinTempDatum = DateTime(2015, 1, 1, 0, 0)
         var recordMinTemp = 0
+        var recordMinTempLocatie = ""
+
+        var recordMaxTempDatum = DateTime(2015, 1, 1, 0, 0)
+        var recordMaxTemp = 0
+        var recordMaxTempLocatie = ""
 
         var recordDroogJM = DateTime(2015, 1, 1, 0, 0)
         var recordNatJM = DateTime(2015, 1, 1, 0, 0)
@@ -788,7 +794,6 @@ internal class DatabaseHelper private constructor(context: Context) : SQLiteOpen
         var vorigeDatumNat = DateTime(2015, 1, 1, 0, 0)
         var vorigeDatumDroog = DateTime(2015, 1, 1, 0, 0)
         var laatsteDatumNat = DateTime(2015, 1, 1, 0, 0)
-        var laatsteDatumDroog = DateTime(2015, 1, 1, 0, 0)
 
         if (cursor.moveToFirst()) {
             do {
@@ -799,21 +804,25 @@ internal class DatabaseHelper private constructor(context: Context) : SQLiteOpen
                 val temperatuur = cursor.getInt(3)
                 val windspeed = cursor.getInt(4)
                 val windrichting = WeerHelper.WindDirection.valueOf(cursor.getLong(5))
+                val locatie = cursor.getString(6)
 
                 if (windspeed != 999 && windspeed > recordWind) {
                     recordWind = windspeed
                     recordWindDatum = datum
                     recordWindRichting = windrichting
+                    recordMaxWindLocatie = locatie
                 }
 
                 if (temperatuur != 999 && temperatuur < recordMinTemp) {
                     recordMinTemp = temperatuur
                     recordMinTempDatum = datum
+                    recordMinTempLocatie = locatie
                 }
 
                 if (temperatuur != 999 && temperatuur > recordMaxTemp) {
                     recordMaxTemp = temperatuur
                     recordMaxTempDatum = datum
+                    recordMaxTempLocatie = locatie
                 }
 
                 // Bereken maand totalen en droogste en natste maand
@@ -857,7 +866,7 @@ internal class DatabaseHelper private constructor(context: Context) : SQLiteOpen
                 val verschilNat = datum.millis - vorigeDatumNat.millis
 
                 // Voor de langste droge periode geldt dat er geen dag met nat tussen mag zitten
-                if (droog && datum.minusDays(1).isBefore(laatsteDatumDroog)) {
+                if (datum.minusDays(1).isAfter(laatsteDatumNat)) {
                     if (verschilDroog > maxVerschilDroog) {
                         langsteDroogVanaf = vorigeDatumDroog
                         langsteDroogTm = datum
@@ -881,7 +890,6 @@ internal class DatabaseHelper private constructor(context: Context) : SQLiteOpen
                 // Bewaar gegevens van de vorige rij
                 vorigeDatum = datum
                 if (nat) laatsteDatumNat = datum
-                if (droog) laatsteDatumDroog = datum
 
             } while (cursor.moveToNext())
 
@@ -891,13 +899,16 @@ internal class DatabaseHelper private constructor(context: Context) : SQLiteOpen
         // Zet resultaten
         stat.minTemp = recordMinTemp
         stat.minTempDatum = recordMinTempDatum
+        stat.minTempLocatie = recordMinTempLocatie
 
         stat.maxTemp = recordMaxTemp
         stat.maxTempDatum = recordMaxTempDatum
+        stat.maxTempLocatie = recordMaxTempLocatie
 
         stat.maxWind = recordWind
         stat.maxWindDatum = recordWindDatum
         stat.maxWindRichting = recordWindRichting
+        stat.maxWindLocatie = recordMaxWindLocatie
 
         stat.droogsteMaand = recordDroogJM
         stat.percentDroog = percRecordDroog

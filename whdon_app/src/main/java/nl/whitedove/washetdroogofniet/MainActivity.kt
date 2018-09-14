@@ -842,7 +842,7 @@ class MainActivity : Activity() {
             return null
         }
 
-        override fun onPostExecute(nothing: Void) {
+        override fun onPostExecute(nothing: Void?) {
             val activity = activityWeakReference.get() ?: return
             activity.setDbSyncDate()
             if (activity.mProgressSync != null) activity.mProgressSync!!.hide()

@@ -44,16 +44,17 @@ class StatsRecordsActivity : Activity() {
         }
 
         val tvMinTemperatuur = findViewById<TextView>(R.id.tvMinTemperatuur)
-        tvMinTemperatuur.text = String.format(getString(R.string.MinMaxTemp), stat.minTemp, Helper.dFormat.print(stat.minTempDatum))
+        tvMinTemperatuur.text = String.format(getString(R.string.MinMaxTemp), stat.minTemp, Helper.dFormat.print(stat.minTempDatum), stat.minTempLocatie)
 
         val tvMaxTemperatuur = findViewById<TextView>(R.id.tvMaxTemperatuur)
-        tvMaxTemperatuur.text = String.format(getString(R.string.MinMaxTemp), stat.maxTemp, Helper.dFormat.print(stat.maxTempDatum))
+        tvMaxTemperatuur.text = String.format(getString(R.string.MinMaxTemp), stat.maxTemp, Helper.dFormat.print(stat.maxTempDatum), stat.maxTempLocatie)
 
         val tvMaxWind = findViewById<TextView>(R.id.tvMaxWind)
         tvMaxWind.text = String.format(getString(R.string.MaxWind),
                 WeerHelper.windDirectionToOmschrijving(stat.maxWindRichting!!),
                 stat.maxWind,
-                Helper.dFormat.print(stat.maxWindDatum))
+                Helper.dFormat.print(stat.maxWindDatum),
+                stat.maxWindLocatie)
 
         val tvNatsteMaandTxt = findViewById<TextView>(R.id.tvNatsteMaandTxt)
         tvNatsteMaandTxt.text = String.format(getString(R.string.NatsteMaandTxt),

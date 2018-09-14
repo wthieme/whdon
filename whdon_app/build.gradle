@@ -19,14 +19,14 @@ android {
     }
 
     compileSdkVersion 27
-    buildToolsVersion "27.0.3"
+    buildToolsVersion "28.0.2"
     defaultConfig {
         applicationId "nl.whitedove.washetdroogofniet"
         minSdkVersion 17
         multiDexEnabled true
         targetSdkVersion 27
-        versionCode 91
-        versionName "1.9.6"
+        versionCode 92
+        versionName "1.9.7"
     }
     buildTypes {
         release {

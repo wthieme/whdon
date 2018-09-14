@@ -30,10 +30,10 @@
         android:id="@+id/ivIjs"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:contentDescription="@string/Koud"
         android:layout_below="@+id/tvRecords"
         android:layout_marginStart="10dp"
         android:layout_marginTop="40dp"
+        android:contentDescription="@string/Koud"
         android:src="@drawable/imgijs" />
 
     <TextView
@@ -54,6 +54,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvLaagsteTemperatuur"
+        android:layout_marginEnd="10dp"
         android:layout_marginStart="10sp"
         android:layout_toEndOf="@id/ivIjs"
         android:textColor="@color/colorTekst"
@@ -65,8 +66,8 @@
         android:layout_height="48dp"
         android:layout_below="@+id/tvMinTemperatuur"
         android:layout_marginStart="10dp"
-        android:contentDescription="@string/droog"
         android:layout_marginTop="20dp"
+        android:contentDescription="@string/droog"
         android:src="@drawable/imgdroog" />
 
     <TextView
@@ -86,6 +87,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvHoogsteTemperatuur"
+        android:layout_marginEnd="10dp"
         android:layout_marginStart="10sp"
         android:layout_toEndOf="@id/ivZon"
         android:textColor="@color/colorTekst"
@@ -118,6 +120,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvMeesteWind"
+        android:layout_marginEnd="10dp"
         android:layout_marginStart="10sp"
         android:layout_toEndOf="@id/ivWind"
         android:textColor="@color/colorTekst"
