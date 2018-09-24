@@ -23,14 +23,7 @@ import android.util.Pair
 import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
-import android.widget.AdapterView
-import android.widget.FrameLayout
-import android.widget.ImageView
-import android.widget.ListView
-import android.widget.PopupMenu
-import android.widget.ProgressBar
-import android.widget.TextView
-
+import android.widget.*
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.Description
 import com.github.mikephil.charting.components.LimitLine
@@ -41,15 +34,12 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.github.mikephil.charting.utils.Utils
-
+import nl.whitedove.washetdroogofniet.backend.whdonApi.model.Melding
 import org.joda.time.DateTime
 import org.json.JSONException
-
 import java.io.IOException
 import java.lang.ref.WeakReference
-import java.util.ArrayList
-
-import nl.whitedove.washetdroogofniet.backend.whdonApi.model.Melding
+import java.util.*
 
 class MainActivity : Activity() {
 
@@ -206,7 +196,7 @@ class MainActivity : Activity() {
     }
 
     @SuppressLint("InflateParams")
-   private fun newWeerMenu() {
+    private fun newWeerMenu() {
 
         val contextMenuItems: MutableList<ContextMenuItem>
         val customDialog = Dialog(this)
@@ -881,7 +871,8 @@ class MainActivity : Activity() {
             return weer
         }
 
-        override fun onPostExecute(result: Weer) {
+        override fun onPostExecute(result: Weer?) {
+            if (result == null) return;
             val activity = activityWeakReference.get()
             activity?.toonWeerdata(result)
         }
