@@ -34,6 +34,10 @@ internal object Helper {
         Alles, Jaar, Maand
     }
 
+    internal enum class MapsDisplay {
+        Standaard, Satelliet
+    }
+
     fun l(log: String) {
         if (Helper.DEBUG) {
             println(log)

@@ -22,4 +22,37 @@
         android:layout_marginTop="0dp"
         android:src="@drawable/back"
         app:useCompatPadding="true" />
+
+    <RadioGroup
+        android:id="@+id/rgStandaardSatelliet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@id/map"
+        android:checkedButton="@+id/rbJaarMaand"
+        android:background="@color/colorAccent"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        android:orientation="horizontal">
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:id="@+id/rbStandaard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Standaard"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16sp"
+            app:buttonTint="@color/colorPrimaryDark" />
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:id="@+id/rbSatelliet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="@string/Satelliet"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16sp"
+            app:buttonTint="@color/colorPrimaryDark" />
+
+    </RadioGroup>
+
 </RelativeLayout>

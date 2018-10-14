@@ -8,7 +8,6 @@ import android.os.AsyncTask
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.content.ContextCompat
-import android.view.View
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.RelativeLayout
@@ -16,8 +15,6 @@ import android.widget.TextView
 
 import com.github.mikephil.charting.charts.RadarChart
 import com.github.mikephil.charting.components.Description
-import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.RadarData
 import com.github.mikephil.charting.data.RadarDataSet
 import com.github.mikephil.charting.data.RadarEntry

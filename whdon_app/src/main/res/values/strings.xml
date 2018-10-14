@@ -97,4 +97,6 @@
     <string name="DroogstePeriodeTxt">%d dagen droog %s t/m %s</string>
     <string name="melding_droog">Melding droog</string>
     <string name="melding_nat">Melding nat</string>
+    <string name="Standaard">Standaard</string>
+    <string name="Satelliet">Satelliet</string>
 </resources>

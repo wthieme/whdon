@@ -7,17 +7,19 @@ import android.os.AsyncTask
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.FragmentActivity
+import android.support.v4.content.ContextCompat
 import android.util.Pair
-
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
-
 import java.lang.ref.WeakReference
-import java.util.ArrayList
+import java.util.*
 
 class MapsActivity : FragmentActivity(), OnMapReadyCallback {
 
@@ -26,9 +28,8 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
-        val fabTerug = findViewById<FloatingActionButton>(R.id.btnTerug)
-        fabTerug.setOnClickListener { terug() }
-
+        initFab()
+        initRadio()
         val mapFragment = supportFragmentManager
                 .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -38,6 +39,32 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback {
         val intent = Intent(this, MainActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         startActivity(intent)
+    }
+
+    private fun initFab() {
+        val fabTerug = findViewById<FloatingActionButton>(R.id.btnTerug)
+        fabTerug.setOnClickListener { terug() }
+
+    }
+
+    private fun initRadio() {
+        val rbStandaard = findViewById<RadioButton>(R.id.rbStandaard)
+        val rbSatelliet = findViewById<RadioButton>(R.id.rbSatelliet)
+        val rgStandaardSatelliet = findViewById<RadioGroup>(R.id.rgStandaardSatelliet)
+        rbStandaard.isChecked = MapsActivity.mStandaardSatelliet === Helper.MapsDisplay.Standaard
+        rbSatelliet.isChecked = MapsActivity.mStandaardSatelliet === Helper.MapsDisplay.Satelliet
+        val cl = RadioGroup.OnCheckedChangeListener { radioGroup, checkedId ->
+            val rb = radioGroup.findViewById<RadioButton>(checkedId)
+            if (rb.id == R.id.rbStandaard) {
+                MapsActivity.mStandaardSatelliet = Helper.MapsDisplay.Standaard
+            }
+
+            if (rb.id == R.id.rbSatelliet) {
+                MapsActivity.mStandaardSatelliet = Helper.MapsDisplay.Satelliet
+            }
+            toonmapsDisplay()
+        }
+        rgStandaardSatelliet.setOnCheckedChangeListener(cl)
     }
 
     /**
@@ -55,7 +82,21 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback {
         if (latlng != null) {
             mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, Helper.ZOOM))
         }
+        toonmapsDisplay()
         toondataBackground()
+    }
+
+    private fun toonmapsDisplay() {
+        if (mStandaardSatelliet == Helper.MapsDisplay.Satelliet)
+        {
+            mMap!!.setMapType(GoogleMap.MAP_TYPE_HYBRID)
+        };
+
+        if (mStandaardSatelliet == Helper.MapsDisplay.Standaard)
+        {
+            mMap!!.setMapType(GoogleMap.MAP_TYPE_NORMAL)
+        };
+
     }
 
     private fun toondataBackground() {
@@ -69,8 +110,8 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback {
         mMap!!.isTrafficEnabled = false
         mMap!!.isMyLocationEnabled = false
 
+        val context = applicationContext
         for (stat in stats) {
-            val context = applicationContext
             AsyncDoeEenLocatie(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, Pair.create(context, stat))
         }
     }
@@ -115,4 +156,7 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback {
         }
     }
 
+    companion object {
+        internal var mStandaardSatelliet: Helper.MapsDisplay = Helper.MapsDisplay.Standaard
+    }
 }

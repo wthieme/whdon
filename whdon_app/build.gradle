@@ -18,15 +18,15 @@ android {
         resolutionStrategy.force 'com.google.code.findbugs:jsr305:2.0.+'
     }
 
-    compileSdkVersion 27
-    buildToolsVersion "28.0.2"
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
     defaultConfig {
         applicationId "nl.whitedove.washetdroogofniet"
         minSdkVersion 17
         multiDexEnabled true
-        targetSdkVersion 27
-        versionCode 93
-        versionName "1.9.8"
+        targetSdkVersion 28
+        versionCode 94
+        versionName "1.9.9"
     }
     buildTypes {
         release {
@@ -51,12 +51,14 @@ repositories {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support:support-media-compat:28.0.0'
+    implementation 'com.android.support:support-v4:28.0.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-    implementation 'com.android.support:design:27.1.1'
+    implementation 'com.android.support:design:28.0.0'
     implementation 'joda-time:joda-time:2.10'
-    implementation 'com.google.android.gms:play-services-location:15.0.1'
-    implementation 'com.google.android.gms:play-services-maps:15.0.1'
+    implementation 'com.google.android.gms:play-services-location:16.0.0'
+    implementation 'com.google.android.gms:play-services-maps:16.0.0'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
     implementation 'com.squareup.okhttp3:okhttp:3.11.0'
     implementation 'com.google.api-client:google-api-client-android:+' exclude module: 'httpclient'
