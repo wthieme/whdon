@@ -77,15 +77,19 @@ internal object LocationHelper {
         return LatLng(lat, lng)
     }
 
-    fun getLocationFromAddress(context: Context, strAddress: String): LatLng? {
+    fun getLocationFromAddress(context: Context, stad: String?, land: String?): LatLng? {
         val coder = Geocoder(context)
         var address: List<Address>?
         var p1: LatLng? = null
+        var sAddress = stad
+        if (land != null && land != "") {
+            sAddress += ", " + land
+        }
 
         try {
-            address = coder.getFromLocationName(strAddress, 1)
+            address = coder.getFromLocationName(sAddress, 1)
             if (address == null || address.isEmpty()) {
-                address = coder.getFromLocationName("Centrum $strAddress", 1)
+                address = coder.getFromLocationName("Centrum $sAddress", 1)
                 if (address == null || address.isEmpty()) {
                     return null
                 }

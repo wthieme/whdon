@@ -134,8 +134,7 @@ internal class DatabaseHelper private constructor(context: Context) : SQLiteOpen
                 + " FROM " + TAB_MELDING
                 + where
                 + " GROUP BY " + MDG_LOCATIE + "," + MDG_LAND
-                + " ORDER BY " + MDG_DATUM + " DESC"
-                + " LIMIT 100")
+                + " ORDER BY " + MDG_DATUM + " DESC")
 
         val db = this.writableDatabase
         val cursor: Cursor

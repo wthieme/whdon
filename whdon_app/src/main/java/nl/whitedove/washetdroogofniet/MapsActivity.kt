@@ -7,7 +7,6 @@ import android.os.AsyncTask
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.FragmentActivity
-import android.support.v4.content.ContextCompat
 import android.util.Pair
 import android.widget.RadioButton
 import android.widget.RadioGroup
@@ -16,10 +15,10 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
 import java.lang.ref.WeakReference
 import java.util.*
+import java.util.concurrent.Executors
 
 class MapsActivity : FragmentActivity(), OnMapReadyCallback {
 
@@ -87,13 +86,11 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback {
     }
 
     private fun toonmapsDisplay() {
-        if (mStandaardSatelliet == Helper.MapsDisplay.Satelliet)
-        {
+        if (mStandaardSatelliet == Helper.MapsDisplay.Satelliet) {
             mMap!!.setMapType(GoogleMap.MAP_TYPE_HYBRID)
         };
 
-        if (mStandaardSatelliet == Helper.MapsDisplay.Standaard)
-        {
+        if (mStandaardSatelliet == Helper.MapsDisplay.Standaard) {
             mMap!!.setMapType(GoogleMap.MAP_TYPE_NORMAL)
         };
 
@@ -111,8 +108,15 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback {
         mMap!!.isMyLocationEnabled = false
 
         val context = applicationContext
+        //for (stat in stats) {
+        //    AsyncDoeEenLocatie(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, Pair.create(context, stat))
+        //}
+
         for (stat in stats) {
-            AsyncDoeEenLocatie(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, Pair.create(context, stat))
+            val runnableTask = {
+                AsyncDoeEenLocatie(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, Pair.create(context, stat))
+            }
+            mExecutor.submit(runnableTask)
         }
     }
 
@@ -146,7 +150,7 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback {
         override fun doInBackground(vararg params: Pair<Context, Statistiek>): Pair<Statistiek, LatLng> {
             val context = params[0].first
             val stat = params[0].second
-            val ll = LocationHelper.getLocationFromAddress(context, stat.locatie + ", " + stat.land)
+            val ll = LocationHelper.getLocationFromAddress(context, stat.locatie, stat.land)
             return Pair.create(stat, ll)
         }
 
@@ -158,5 +162,6 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback {
 
     companion object {
         internal var mStandaardSatelliet: Helper.MapsDisplay = Helper.MapsDisplay.Standaard
+        internal var mExecutor = Executors.newFixedThreadPool(10)
     }
 }
