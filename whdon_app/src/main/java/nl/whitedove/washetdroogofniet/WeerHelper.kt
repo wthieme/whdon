@@ -4,69 +4,23 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
 import android.support.v4.content.ContextCompat
-
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
 import org.joda.time.DateTime
 import org.joda.time.Minutes
 import org.json.JSONException
 import org.json.JSONObject
-
 import java.io.IOException
-import java.util.ArrayList
-import java.util.HashMap
-import java.util.Locale
+import java.util.*
 import java.util.regex.Pattern
-
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Response
 
 object WeerHelper {
 
     private var HuidigeTemperatuur = 999
-
     var huidigeWeertype = WeerType.Onbekend
-
     var huidigeWindSpeed = 999
-
     var huidigeWindDir = WindDirection.Onbekend
-
-    private val weatherData: String?
-        get() {
-
-            val locatie = LocationHelper.getLocatieVoorWeer()
-            val country = LocationHelper.getCountryVoorWeer()
-
-            val builder = Uri.Builder()
-            builder.scheme("http")
-                    .authority("api.openweathermap.org")
-                    .appendPath("data")
-                    .appendPath("2.5")
-                    .appendPath("weather")
-                    .appendQueryParameter("q", String.format("%s,%s", locatie, country))
-                    .appendQueryParameter("appid", "e246fa149696b433128c8e774219bbc8")
-                    .appendQueryParameter("cnt", "1")
-                    .appendQueryParameter("units", "metric")
-
-            val url = builder.build().toString()
-            Helper.l("weather url:$url")
-
-            val client = OkHttpClient()
-            val request = Request.Builder()
-                    .addHeader("Cache-Control", "no-cache")
-                    .url(url)
-                    .build()
-
-            var weatherData: String? = null
-            val response: Response
-            try {
-                response = client.newCall(request).execute()
-                if (response.isSuccessful)
-                    weatherData = response.body()!!.string()
-            } catch (ignored: IOException) {
-            }
-
-            return weatherData
-        }
 
     enum class WeerType(val value: Long) {
         Onbekend(0L), Zonnig(1L), Halfbewolkt(2L), Bewolkt(3L), Regen(9L), Buien(10L), Onweer(11L), Sneeuw(13L), Mist(50L);
@@ -91,7 +45,6 @@ object WeerHelper {
     enum class WindDirection(val value: Long) {
         Onbekend(0L), Noord(1L), NoordOost(2L), Oost(3L), ZuidOost(4L), Zuid(5L), ZuidWest(6L), West(7L), NoordWest(8L);
 
-
         companion object {
             @SuppressLint("UseSparseArrays")
             private val map = HashMap<Long, WindDirection>()
@@ -108,10 +61,52 @@ object WeerHelper {
         }
     }
 
+    private fun getweatherData(): String? {
+
+        if (Helper.mCurrentBestLocation == null) return null
+
+        val lat = Helper.mCurrentBestLocation!!.latitude
+        val lon = Helper.mCurrentBestLocation!!.longitude
+        val sLat = String.format(Locale.ROOT, "%.6f", lat)
+        val sLon = String.format(Locale.ROOT, "%.6f", lon)
+
+        val builder = Uri.Builder()
+        builder.scheme("http")
+                .authority("api.openweathermap.org")
+                .appendPath("data")
+                .appendPath("2.5")
+                .appendPath("weather")
+                .appendQueryParameter("lat", sLat)
+                .appendQueryParameter("lon", sLon)
+                .appendQueryParameter("appid", "e246fa149696b433128c8e774219bbc8")
+                .appendQueryParameter("cnt", "1")
+                .appendQueryParameter("units", "metric")
+
+        val url = builder.build().toString()
+        Helper.l("weather url:$url")
+
+        val client = OkHttpClient()
+        val request = Request.Builder()
+                .addHeader("Cache-Control", "no-cache")
+                .url(url)
+                .build()
+
+        var weatherData: String? = null
+        val response: Response
+        try {
+            response = client.newCall(request).execute()
+            if (response.isSuccessful)
+                weatherData = response.body()!!.string()
+        } catch (ignored: IOException) {
+        }
+
+        return weatherData
+    }
+
     @Throws(JSONException::class)
     fun bepaalWeer(): Weer? {
 
-        val weatherJson = WeerHelper.weatherData
+        val weatherJson = WeerHelper.getweatherData()
         if (weatherJson == null || weatherJson.isEmpty()) {
             return null
         }
@@ -147,7 +142,6 @@ object WeerHelper {
 
             val lat = Helper.mCurrentBestLocation!!.latitude
             val lon = Helper.mCurrentBestLocation!!.longitude
-
             val sLat = String.format(Locale.ROOT, "%.6f", lat)
             val sLon = String.format(Locale.ROOT, "%.6f", lon)
 

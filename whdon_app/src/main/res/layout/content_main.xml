@@ -140,6 +140,7 @@
                     android:gravity="center"
                     android:text="@string/Weer3uur"
                     android:textColor="@color/colorPrimary"
+                    android:layout_marginEnd="100dp"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
