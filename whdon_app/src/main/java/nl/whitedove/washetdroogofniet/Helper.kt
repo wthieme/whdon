@@ -1,9 +1,12 @@
 package nl.whitedove.washetdroogofniet
 
 import android.content.Context
+import android.graphics.Color
 import android.location.Location
 import android.net.ConnectivityManager
 import android.preference.PreferenceManager
+import android.support.v4.content.ContextCompat
+import android.widget.TextView
 import android.widget.Toast
 import com.google.api.client.extensions.android.http.AndroidHttp
 import com.google.api.client.extensions.android.json.AndroidJsonFactory
@@ -84,6 +87,9 @@ internal object Helper {
         Helper.l(melding)
         val duration = Toast.LENGTH_SHORT
         val toast = Toast.makeText(cxt, melding, duration)
+        toast.view.setBackgroundColor(ContextCompat.getColor(cxt, R.color.colorPrimary))
+        val text = toast.view.findViewById(android.R.id.message) as TextView
+        text.setTextColor(ContextCompat.getColor(cxt, R.color.colorAccent))
         toast.show()
     }
 
