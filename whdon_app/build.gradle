@@ -25,16 +25,13 @@ android {
         minSdkVersion 17
         multiDexEnabled true
         targetSdkVersion 28
-        versionCode 96
-        versionName "1.9.11"
+        versionCode 97
+        versionName "1.9.12"
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-        debug {
-            applicationIdSuffix ".debug"
         }
     }
 }

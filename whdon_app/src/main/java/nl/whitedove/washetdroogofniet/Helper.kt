@@ -1,7 +1,6 @@
 package nl.whitedove.washetdroogofniet
 
 import android.content.Context
-import android.graphics.Color
 import android.location.Location
 import android.net.ConnectivityManager
 import android.preference.PreferenceManager
@@ -51,7 +50,7 @@ internal object Helper {
         val result: Boolean
         val cm = ctx.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val netInfo = cm.activeNetworkInfo
-        result = netInfo != null && netInfo.isConnectedOrConnecting
+        result = netInfo != null && netInfo.isConnected
         if (!result) Helper.showMessage(ctx, "Geen internet connectie")
         return result
     }
