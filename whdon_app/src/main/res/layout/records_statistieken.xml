@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rlRecords"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground">
@@ -26,13 +27,43 @@
         android:textSize="24sp"
         android:textStyle="bold" />
 
+    <RadioGroup
+        android:id="@+id/rgAllesJaar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvRecords"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="10dp"
+        android:checkedButton="@+id/rbJaar"
+        android:orientation="horizontal">
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:id="@+id/rbAlles"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Alles"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp"
+            app:buttonTint="@color/colorPrimary" />
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:id="@+id/rbJaar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="@string/Jaar"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp"
+            app:buttonTint="@color/colorPrimary" />
+    </RadioGroup>
+
     <ImageView
         android:id="@+id/ivIjs"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_below="@+id/tvRecords"
+        android:layout_below="@+id/rgAllesJaar"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:contentDescription="@string/Koud"
         android:src="@drawable/imgijs" />
 

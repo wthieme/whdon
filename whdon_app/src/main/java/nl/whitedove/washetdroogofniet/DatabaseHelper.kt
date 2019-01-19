@@ -740,7 +740,7 @@ internal class DatabaseHelper private constructor(context: Context) : SQLiteOpen
         return stats
     }
 
-    fun GetStatistiekRecords(): StatistiekRecords {
+    fun GetStatistiekRecords(aj: Helper.Periode, jaar: Int): StatistiekRecords {
 
         val stat = StatistiekRecords()
         val db = this.writableDatabase
@@ -755,9 +755,21 @@ internal class DatabaseHelper private constructor(context: Context) : SQLiteOpen
                 + " " + MDG_WINDDIR + ","
                 + " " + MDG_LOCATIE
                 + " FROM " + TAB_MELDING
+                + " WHERE " + MDG_DATUM + " BETWEEN ? AND ?"
                 + " ORDER BY " + MDG_DATUM)
 
-        cursor = db.rawQuery(selectQuery, null)
+        var va: DateTime
+        var tm: DateTime
+
+        va = DateTime(2015, 1, 1, 0, 0)
+        tm = DateTime.now().plusDays(1)
+
+        if (aj === nl.whitedove.washetdroogofniet.Helper.Periode.Jaar) {
+            va = DateTime(jaar, 1, 1, 0, 0)
+            tm = va.plusYears(1)
+        }
+
+        cursor = db.rawQuery(selectQuery, arrayOf(java.lang.Long.toString(va.millis), java.lang.Long.toString(tm.millis)))
 
         var recordWindDatum = DateTime(2015, 1, 1, 0, 0)
         var recordWind = 0
