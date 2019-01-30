@@ -805,11 +805,14 @@ internal class DatabaseHelper private constructor(context: Context) : SQLiteOpen
         var vorigeDatumNat = DateTime(2015, 1, 1, 0, 0)
         var vorigeDatumDroog = DateTime(2015, 1, 1, 0, 0)
         var laatsteDatumNat = DateTime(2015, 1, 1, 0, 0)
+        var vorigeDroog = false
+        var recordCorrectie = false
 
         if (cursor.moveToFirst()) {
             do {
                 // Haal waardes uit cursor
-                val datum = DateTime(cursor.getLong(0))
+                val datumTemp = DateTime(cursor.getLong(0))
+                val datum = DateTime(datumTemp.year, datumTemp.monthOfYear, datumTemp.dayOfMonth,0,0)
                 val nat = cursor.getInt(1) == 1
                 val droog = cursor.getInt(2) == 1
                 val temperatuur = cursor.getInt(3)
@@ -876,19 +879,25 @@ internal class DatabaseHelper private constructor(context: Context) : SQLiteOpen
                 val verschilDroog = datum.millis - vorigeDatumDroog.millis
                 val verschilNat = datum.millis - vorigeDatumNat.millis
 
-                // Voor de langste droge periode geldt dat er geen dag met nat tussen mag zitten
-                if (datum.minusDays(1).isAfter(laatsteDatumNat)) {
+                if (droog) {
                     if (verschilDroog > maxVerschilDroog) {
                         langsteDroogVanaf = vorigeDatumDroog
                         langsteDroogTm = datum
                         maxVerschilDroog = verschilDroog
+                        recordCorrectie = false
                     }
                 } else {
-                    vorigeDatumDroog = datum
+                    vorigeDatumDroog = datum.plusDays(1)
+                }
+
+                if (nat && vorigeDroog && !recordCorrectie)
+                {
+                    langsteDroogTm=datum
+                    recordCorrectie = true
                 }
 
                 // Voor de langste natte periode geldt dat de vorige natte dag minder dan 1 dag geleden moet zijn
-                if (datum.minusDays(1).isBefore(laatsteDatumNat)) {
+                if (datum.minusDays(1).minusSeconds(1).isBefore(laatsteDatumNat)) {
                     if (verschilNat > maxVerschilNat) {
                         langsteNatVanaf = vorigeDatumNat
                         langsteNatTm = datum
@@ -900,6 +909,7 @@ internal class DatabaseHelper private constructor(context: Context) : SQLiteOpen
 
                 // Bewaar gegevens van de vorige rij
                 vorigeDatum = datum
+                vorigeDroog = droog
                 if (nat) laatsteDatumNat = datum
 
             } while (cursor.moveToNext())
@@ -928,9 +938,9 @@ internal class DatabaseHelper private constructor(context: Context) : SQLiteOpen
         stat.percentNat = percRecordNat
 
         stat.langstePeriodeNatVanaf = langsteNatVanaf
-        stat.langstePeriodeNatTm = langsteNatTm
+        stat.langstePeriodeNatTm = langsteNatTm.minusDays(1)
         stat.langstePeriodeDroogVanaf = langsteDroogVanaf
-        stat.langstePeriodeDroogTm = langsteDroogTm
+        stat.langstePeriodeDroogTm = langsteDroogTm.minusDays(1)
 
         return stat
     }
