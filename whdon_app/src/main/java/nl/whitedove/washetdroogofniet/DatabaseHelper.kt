@@ -915,7 +915,22 @@ internal class DatabaseHelper private constructor(context: Context) : SQLiteOpen
             } while (cursor.moveToNext())
 
         }
+
         cursor.close()
+
+        val percDroog = 100f * totaalDroogInMaand / totaalInMaand
+        if (percDroog > percRecordDroog) {
+            // Record droog
+            percRecordDroog = percDroog
+            recordDroogJM = vorigeDatum
+        }
+
+        val percNat = 100f * totaalNatInMaand / totaalInMaand
+        if (percNat > percRecordNat) {
+            // Record nat
+            percRecordNat = percNat
+            recordNatJM = vorigeDatum
+        }
 
         // Zet resultaten
         stat.minTemp = recordMinTemp
