@@ -5,7 +5,6 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import nl.whitedove.washetdroogofniet.backend.whdonApi.model.Melding
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
 import java.util.*
@@ -74,7 +73,7 @@ internal class DatabaseHelper private constructor(context: Context) : SQLiteOpen
                     + " LIMIT 1")
 
             val cursor: Cursor
-            cursor = db.rawQuery(selectQuery, arrayOf(melding.id, java.lang.Long.toString(melding.datum!!)))
+            cursor = db.rawQuery(selectQuery, arrayOf(melding.id, java.lang.Long.toString(melding.datum!!.millis)))
             val bestaat = cursor.moveToFirst()
             cursor.close()
 
@@ -82,12 +81,12 @@ internal class DatabaseHelper private constructor(context: Context) : SQLiteOpen
                 val values = ContentValues()
                 values.put(MDG_TELID, melding.id)
                 values.put(MDG_LOCATIE, melding.locatie)
-                values.put(MDG_DATUM, melding.datum)
-                values.put(MDG_DROOG, if (melding.droog) 1 else 0)
-                values.put(MDG_NAT, if (melding.nat) 1 else 0)
+                values.put(MDG_DATUM, melding.datum!!.millis)
+                values.put(MDG_DROOG, if (melding.droog!!) 1 else 0)
+                values.put(MDG_NAT, if (melding.nat!!) 1 else 0)
                 values.put(MDG_TEMPERATUUR, melding.temperatuur)
-                values.put(MDG_WEERTYPE, melding.weerType)
-                values.put(MDG_WINDDIR, melding.windDir)
+                values.put(MDG_WEERTYPE, melding.weerType!!.value)
+                values.put(MDG_WINDDIR, melding.windDir!!.value)
                 values.put(MDG_WINDSPEED, melding.windSpeed)
                 values.put(MDG_LAND, melding.land)
                 db.insert(TAB_MELDING, null, values)
@@ -96,7 +95,7 @@ internal class DatabaseHelper private constructor(context: Context) : SQLiteOpen
         db.execSQL("END TRANSACTION")
     }
 
-    fun GetPersoonlijkeStatistiek(id: String): Statistiek {
+    fun getPersoonlijkeStatistiek(id: String): Statistiek {
         val selectQuery = ("SELECT"
                 + " SUM(" + MDG_DROOG + ") AS DROOG,"
                 + " SUM(" + MDG_NAT + ") AS NAT"
@@ -121,7 +120,7 @@ internal class DatabaseHelper private constructor(context: Context) : SQLiteOpen
         return response
     }
 
-    fun GetPersoonlijkeStatsPerPlaats(id: String?): ArrayList<Statistiek> {
+    fun getPersoonlijkeStatsPerPlaats(id: String?): ArrayList<Statistiek> {
         var where = ""
 
         if (id != null) where = " WHERE $MDG_TELID = ?"
@@ -159,12 +158,7 @@ internal class DatabaseHelper private constructor(context: Context) : SQLiteOpen
         return stats
     }
 
-    fun DeleteMeldingen() {
-        val db = this.writableDatabase
-        db.delete(TAB_MELDING, null, null)
-    }
-
-    fun GetLaatsteMelding(id: String): Melding {
+    fun getLaatsteMelding(id: String): Melding {
 
         val selectQuery = ("SELECT"
                 + " " + MDG_LOCATIE + ","
@@ -190,13 +184,13 @@ internal class DatabaseHelper private constructor(context: Context) : SQLiteOpen
 
         if (cursor.moveToFirst()) {
             melding.locatie = cursor.getString(0)
-            melding.datum = cursor.getLong(1)
+            melding.datum = DateTime(cursor.getLong(1))
             melding.droog = cursor.getInt(2) == 1
             melding.nat = cursor.getInt(3) == 1
-            melding.temperatuur = cursor.getLong(4)
-            melding.weerType = cursor.getLong(5)
-            melding.windDir = cursor.getLong(6)
-            melding.windSpeed = cursor.getLong(7)
+            melding.temperatuur = cursor.getInt(4)
+            melding.weerType = WeerHelper.WeerType.valueOf(cursor.getInt(5))
+            melding.windDir = WeerHelper.WindDirection.valueOf(cursor.getInt(6))
+            melding.windSpeed = cursor.getInt(7)
             melding.land = cursor.getString(8)
         } else {
             melding.error = "Geen meldingen"
@@ -206,7 +200,7 @@ internal class DatabaseHelper private constructor(context: Context) : SQLiteOpen
         return melding
     }
 
-    fun GetStatistieken(): ArrayList<Statistiek> {
+    fun getStatistieken(): ArrayList<Statistiek> {
 
         val selectQuery = ("SELECT"
                 + " " + MDG_LOCATIE + ","
@@ -246,7 +240,7 @@ internal class DatabaseHelper private constructor(context: Context) : SQLiteOpen
         return stats
     }
 
-    fun GetLaatste25Meldingen(): ArrayList<Melding> {
+    fun getLaatste25Meldingen(): ArrayList<Melding> {
 
         val selectQuery = ("SELECT"
                 + " " + MDG_LOCATIE + ","
@@ -272,13 +266,13 @@ internal class DatabaseHelper private constructor(context: Context) : SQLiteOpen
             do {
                 val melding = Melding()
                 melding.locatie = cursor.getString(0)
-                melding.datum = cursor.getLong(1)
+                melding.datum = DateTime(cursor.getLong(1))
                 melding.droog = cursor.getInt(2) == 1
                 melding.nat = cursor.getInt(3) == 1
-                melding.temperatuur = cursor.getLong(4)
-                melding.weerType = cursor.getLong(5)
-                melding.windDir = cursor.getLong(6)
-                melding.windSpeed = cursor.getLong(7)
+                melding.temperatuur = cursor.getInt(4)
+                melding.weerType = WeerHelper.WeerType.valueOf(cursor.getInt(5))
+                melding.windDir = WeerHelper.WindDirection.valueOf(cursor.getInt(6))
+                melding.windSpeed = cursor.getInt(7)
                 melding.land = cursor.getString(8)
                 meldingen.add(melding)
             } while (cursor.moveToNext())
@@ -288,7 +282,7 @@ internal class DatabaseHelper private constructor(context: Context) : SQLiteOpen
         return meldingen
     }
 
-    fun GetMeldingen(id: String): ArrayList<Melding> {
+    fun getMeldingen(id: String): ArrayList<Melding> {
 
         val selectQuery = ("SELECT"
                 + " " + MDG_LOCATIE + ","
@@ -315,13 +309,13 @@ internal class DatabaseHelper private constructor(context: Context) : SQLiteOpen
                 val melding = Melding()
                 melding.id = id
                 melding.locatie = cursor.getString(0)
-                melding.datum = cursor.getLong(1)
+                melding.datum = DateTime(cursor.getLong(1))
                 melding.droog = cursor.getInt(2) == 1
                 melding.nat = cursor.getInt(3) == 1
-                melding.temperatuur = cursor.getLong(4)
-                melding.weerType = cursor.getLong(5)
-                melding.windDir = cursor.getLong(6)
-                melding.windSpeed = cursor.getLong(7)
+                melding.temperatuur = cursor.getInt(4)
+                melding.weerType = WeerHelper.WeerType.valueOf(cursor.getInt(5))
+                melding.windDir = WeerHelper.WindDirection.valueOf(cursor.getInt(6))
+                melding.windSpeed = cursor.getInt(7)
                 melding.land = cursor.getString(8)
                 meldingen.add(melding)
             } while (cursor.moveToNext())
@@ -331,7 +325,50 @@ internal class DatabaseHelper private constructor(context: Context) : SQLiteOpen
         return meldingen
     }
 
-    fun GetStatistiek30Dagen(vanafDatum: DateTime): ArrayList<Statistiek1Dag> {
+    fun getAlleMeldingenVanaf(vanaf: DateTime): ArrayList<Melding> {
+
+        val selectQuery = ("SELECT"
+                + " " + MDG_TELID + ","
+                + " " + MDG_LOCATIE + ","
+                + " " + MDG_DATUM + ","
+                + " " + MDG_DROOG + ","
+                + " " + MDG_NAT + ","
+                + " " + MDG_TEMPERATUUR + ","
+                + " " + MDG_WEERTYPE + ","
+                + " " + MDG_WINDDIR + ","
+                + " " + MDG_WINDSPEED + ","
+                + " " + MDG_LAND
+                + " FROM " + TAB_MELDING
+                + " WHERE " + MDG_DATUM + " >= ? ")
+
+        val db = this.writableDatabase
+        val cursor: Cursor
+        cursor = db.rawQuery(selectQuery, arrayOf(java.lang.Long.toString(vanaf.millis)))
+
+        val meldingen = ArrayList<Melding>()
+
+        if (cursor.moveToFirst()) {
+            do {
+                val melding = Melding()
+                melding.id = cursor.getString(0)
+                melding.locatie = cursor.getString(1)
+                melding.datum = DateTime(cursor.getLong(2))
+                melding.droog = cursor.getInt(3) == 1
+                melding.nat = cursor.getInt(4) == 1
+                melding.temperatuur = cursor.getInt(5)
+                melding.weerType = WeerHelper.WeerType.valueOf(cursor.getInt(6))
+                melding.windDir = WeerHelper.WindDirection.valueOf(cursor.getInt(7))
+                melding.windSpeed = cursor.getInt(8)
+                melding.land = cursor.getString(9)
+                meldingen.add(melding)
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+
+        return meldingen
+    }
+
+    fun getStatistiek30Dagen(vanafDatum: DateTime): ArrayList<Statistiek1Dag> {
 
         val stats = ArrayList<Statistiek1Dag>()
 
@@ -373,7 +410,7 @@ internal class DatabaseHelper private constructor(context: Context) : SQLiteOpen
         return stats
     }
 
-    fun GetAantalGebruikers30Dagen(vanafDatum: DateTime): ArrayList<StatistiekAantalGebruikers> {
+    fun getAantalGebruikers30Dagen(vanafDatum: DateTime): ArrayList<StatistiekAantalGebruikers> {
 
         val stats = ArrayList<StatistiekAantalGebruikers>()
         for (i in 0..29) {
@@ -401,7 +438,7 @@ internal class DatabaseHelper private constructor(context: Context) : SQLiteOpen
         return stats
     }
 
-    fun GetStatistiekLocatie(locatie: String): Statistiek1Plaats {
+    fun getStatistiekLocatie(locatie: String): Statistiek1Plaats {
 
         val selectQuery: String
         val cursor: Cursor
@@ -448,7 +485,7 @@ internal class DatabaseHelper private constructor(context: Context) : SQLiteOpen
         return stat
     }
 
-    fun GetStatistiek12Maanden(jaar: Int, maand: Int): ArrayList<Statistiek1Maand> {
+    fun getStatistiek12Maanden(jaar: Int, maand: Int): ArrayList<Statistiek1Maand> {
 
         val stats = ArrayList<Statistiek1Maand>()
         val vanaf: DateTime
@@ -498,7 +535,7 @@ internal class DatabaseHelper private constructor(context: Context) : SQLiteOpen
         return stats
     }
 
-    fun GetStatistiek24Uur(ajm: Helper.Periode, jaar: Int, maand: Int): ArrayList<Statistiek1Uur> {
+    fun getStatistiek24Uur(ajm: Helper.Periode, jaar: Int, maand: Int): ArrayList<Statistiek1Uur> {
 
         val selectQuery = ("SELECT"
                 + " ((3600000 + " + MDG_DATUM + ") / 3600000) % 24 AS UUR,"
@@ -549,7 +586,7 @@ internal class DatabaseHelper private constructor(context: Context) : SQLiteOpen
         return stats
     }
 
-    fun GetStatistiekDagVdWeek(ajm: Helper.Periode, jaar: Int, maand: Int): ArrayList<StatistiekDagVdWeek> {
+    fun getStatistiekDagVdWeek(ajm: Helper.Periode, jaar: Int, maand: Int): ArrayList<StatistiekDagVdWeek> {
 
         // 1 jan 1970 is een donderdag (ma=0, di=1, wo=2, do=3 etc), daarom 3 x 86400000 erbij
 
@@ -597,7 +634,7 @@ internal class DatabaseHelper private constructor(context: Context) : SQLiteOpen
         return stats
     }
 
-    fun GetStatistiekWeerType(ajm: Helper.Periode, jaar: Int, maand: Int): ArrayList<StatistiekWeertype> {
+    fun getStatistiekWeerType(ajm: Helper.Periode, jaar: Int, maand: Int): ArrayList<StatistiekWeertype> {
 
         val selectQuery = ("SELECT"
                 + " " + MDG_WEERTYPE + ","
@@ -634,7 +671,7 @@ internal class DatabaseHelper private constructor(context: Context) : SQLiteOpen
         if (cursor.moveToFirst()) {
             do {
                 val stat = StatistiekWeertype()
-                val weerType = WeerHelper.WeerType.valueOf(cursor.getLong(0))
+                val weerType = WeerHelper.WeerType.valueOf(cursor.getInt(0))
                 stat.weerType = weerType
                 stat.aantal = cursor.getInt(1)
                 stat.weerTypeOmschrijving = WeerHelper.weerTypeToWeerOmschrijving(weerType)
@@ -654,7 +691,7 @@ internal class DatabaseHelper private constructor(context: Context) : SQLiteOpen
     }
 
 
-    private fun WindStatAddZeros(windstat: ArrayList<StatistiekWind>): ArrayList<StatistiekWind> {
+    private fun windStatAddZeros(windstat: ArrayList<StatistiekWind>): ArrayList<StatistiekWind> {
         for (windDir in WeerHelper.WindDirection.values()) {
             var gevonden = false
             for (i in windstat.indices) {
@@ -679,7 +716,7 @@ internal class DatabaseHelper private constructor(context: Context) : SQLiteOpen
         return windstat
     }
 
-    fun GetStatistiekWind(ajm: Helper.Periode, jaar: Int, maand: Int): ArrayList<StatistiekWind> {
+    fun getStatistiekWind(ajm: Helper.Periode, jaar: Int, maand: Int): ArrayList<StatistiekWind> {
 
         val selectQuery = ("SELECT"
                 + " " + MDG_WINDDIR + ","
@@ -718,7 +755,7 @@ internal class DatabaseHelper private constructor(context: Context) : SQLiteOpen
         if (cursor.moveToFirst()) {
             do {
                 val stat = StatistiekWind()
-                val windDir = WeerHelper.WindDirection.valueOf(cursor.getLong(0))
+                val windDir = WeerHelper.WindDirection.valueOf(cursor.getInt(0))
                 stat.windDir = windDir
                 stat.aantal = cursor.getInt(1)
                 stat.windOmschrijving = WeerHelper.windDirectionToOmschrijving(windDir)
@@ -736,11 +773,11 @@ internal class DatabaseHelper private constructor(context: Context) : SQLiteOpen
             stats[i].percentage = percentage
         }
 
-        stats = WindStatAddZeros(stats)
+        stats = windStatAddZeros(stats)
         return stats
     }
 
-    fun GetStatistiekRecords(aj: Helper.Periode, jaar: Int): StatistiekRecords {
+    fun getStatistiekRecords(aj: Helper.Periode, jaar: Int): StatistiekRecords {
 
         val stat = StatistiekRecords()
         val db = this.writableDatabase
@@ -812,12 +849,12 @@ internal class DatabaseHelper private constructor(context: Context) : SQLiteOpen
             do {
                 // Haal waardes uit cursor
                 val datumTemp = DateTime(cursor.getLong(0))
-                val datum = DateTime(datumTemp.year, datumTemp.monthOfYear, datumTemp.dayOfMonth,0,0)
+                val datum = DateTime(datumTemp.year, datumTemp.monthOfYear, datumTemp.dayOfMonth, 0, 0)
                 val nat = cursor.getInt(1) == 1
                 val droog = cursor.getInt(2) == 1
                 val temperatuur = cursor.getInt(3)
                 val windspeed = cursor.getInt(4)
-                val windrichting = WeerHelper.WindDirection.valueOf(cursor.getLong(5))
+                val windrichting = WeerHelper.WindDirection.valueOf(cursor.getInt(5))
                 val locatie = cursor.getString(6)
 
                 if (windspeed != 999 && windspeed > recordWind) {
@@ -890,9 +927,8 @@ internal class DatabaseHelper private constructor(context: Context) : SQLiteOpen
                     vorigeDatumDroog = datum.plusDays(1)
                 }
 
-                if (nat && vorigeDroog && !recordCorrectie)
-                {
-                    langsteDroogTm=datum
+                if (nat && vorigeDroog && !recordCorrectie) {
+                    langsteDroogTm = datum
                     recordCorrectie = true
                 }
 

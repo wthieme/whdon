@@ -155,7 +155,7 @@ class StatsAantalGebruikersActivity : Activity() {
         override fun doInBackground(vararg params: Context): ArrayList<StatistiekAantalGebruikers> {
             val context = params[0]
             val dh = DatabaseHelper.getInstance(context)
-            return dh.GetAantalGebruikers30Dagen(datum)
+            return dh.getAantalGebruikers30Dagen(datum)
         }
 
         override fun onPostExecute(stats: ArrayList<StatistiekAantalGebruikers>) {

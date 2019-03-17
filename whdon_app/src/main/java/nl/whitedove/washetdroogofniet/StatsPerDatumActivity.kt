@@ -239,7 +239,7 @@ class StatsPerDatumActivity : Activity() {
         override fun doInBackground(vararg params: Context): ArrayList<Statistiek1Dag> {
             val context = params[0]
             val dh = DatabaseHelper.getInstance(context)
-            return dh.GetStatistiek30Dagen(datum)
+            return dh.getStatistiek30Dagen(datum)
         }
 
         override fun onPostExecute(stats: ArrayList<Statistiek1Dag>) {

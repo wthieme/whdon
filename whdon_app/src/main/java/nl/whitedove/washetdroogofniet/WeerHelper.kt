@@ -22,13 +22,13 @@ object WeerHelper {
     var huidigeWindSpeed = 999
     var huidigeWindDir = WindDirection.Onbekend
 
-    enum class WeerType(val value: Long) {
-        Onbekend(0L), Zonnig(1L), Halfbewolkt(2L), Bewolkt(3L), Regen(9L), Buien(10L), Onweer(11L), Sneeuw(13L), Mist(50L);
+    enum class WeerType(val value: Int) {
+        Onbekend(0), Zonnig(1), Halfbewolkt(2), Bewolkt(3), Regen(9), Buien(10), Onweer(11), Sneeuw(13), Mist(50);
 
 
         companion object {
             @SuppressLint("UseSparseArrays")
-            private val map = HashMap<Long, WeerType>()
+            private val map = HashMap<Int, WeerType>()
 
             init {
                 for (weerType in WeerType.values()) {
@@ -36,18 +36,18 @@ object WeerHelper {
                 }
             }
 
-            fun valueOf(weerType: Long): WeerType {
+            fun valueOf(weerType: Int): WeerType {
                 return map[weerType] ?: Onbekend
             }
         }
     }
 
-    enum class WindDirection(val value: Long) {
-        Onbekend(0L), Noord(1L), NoordOost(2L), Oost(3L), ZuidOost(4L), Zuid(5L), ZuidWest(6L), West(7L), NoordWest(8L);
+    enum class WindDirection(val value: Int) {
+        Onbekend(0), Noord(1), NoordOost(2), Oost(3), ZuidOost(4), Zuid(5), ZuidWest(6), West(7), NoordWest(8);
 
         companion object {
             @SuppressLint("UseSparseArrays")
-            private val map = HashMap<Long, WindDirection>()
+            private val map = HashMap<Int, WindDirection>()
 
             init {
                 for (windDirection in WindDirection.values()) {
@@ -55,7 +55,7 @@ object WeerHelper {
                 }
             }
 
-            fun valueOf(windDirection: Long): WindDirection {
+            fun valueOf(windDirection: Int): WindDirection {
                 return map[windDirection] ?: Onbekend
             }
         }

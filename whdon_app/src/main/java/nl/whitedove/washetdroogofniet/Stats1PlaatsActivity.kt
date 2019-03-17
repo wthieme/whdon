@@ -149,7 +149,7 @@ class Stats1PlaatsActivity : Activity() {
             val context = params[0].first
             val locatie = params[0].second
             val dh = DatabaseHelper.getInstance(context)
-            return dh.GetStatistiekLocatie(locatie)
+            return dh.getStatistiekLocatie(locatie)
         }
 
         override fun onPostExecute(stat: Statistiek1Plaats) {

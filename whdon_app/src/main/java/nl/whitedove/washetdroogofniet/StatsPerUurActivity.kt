@@ -225,7 +225,7 @@ class StatsPerUurActivity : Activity() {
         override fun doInBackground(vararg params: Context): ArrayList<Statistiek1Uur> {
             val context = params[0]
             val dh = DatabaseHelper.getInstance(context)
-            return dh.GetStatistiek24Uur(mAllesJaarMaand, mJaar, mMaand)
+            return dh.getStatistiek24Uur(mAllesJaarMaand, mJaar, mMaand)
         }
 
         override fun onPostExecute(stats: ArrayList<Statistiek1Uur>) {

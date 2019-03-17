@@ -271,7 +271,7 @@ class StatsPerMaandActivity : Activity() {
             val context = params[0]
             val dh = DatabaseHelper.getInstance(context)
             val maand = DateTime.now().monthOfYear
-            return dh.GetStatistiek12Maanden(mJaar, maand)
+            return dh.getStatistiek12Maanden(mJaar, maand)
         }
 
         override fun onPostExecute(stats: ArrayList<Statistiek1Maand>) {

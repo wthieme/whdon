@@ -14,8 +14,6 @@ import org.joda.time.DateTime
 
 import java.util.ArrayList
 
-import nl.whitedove.washetdroogofniet.backend.whdonApi.model.Melding
-
 internal class CustomListAdapterMeldingen(private val context: Context, listData: ArrayList<Melding>) : BaseAdapter() {
 
     private val listData: List<Melding>
@@ -61,7 +59,7 @@ internal class CustomListAdapterMeldingen(private val context: Context, listData
         val datum = DateTime(melding.datum)
         holder.tvPsDatum!!.text = Helper.dtFormat.print(datum)
         holder.tvPsLocatie!!.text = melding.locatie
-        holder.tvPsDroogNat!!.text = if (melding.droog) "Droog" else "Nat"
+        holder.tvPsDroogNat!!.text = if (melding.droog!!) "Droog" else "Nat"
 
         if (melding.droog!!) {
             holder.tvPsDroogNat!!.setTextColor(ContextCompat.getColor(context, R.color.colorDroogStart))
@@ -70,14 +68,13 @@ internal class CustomListAdapterMeldingen(private val context: Context, listData
         }
 
         val temperatuur = melding.temperatuur!!
-        if (temperatuur == 999L) {
+        if (temperatuur == 999) {
             holder.tvPsTemperatuur!!.text = ""
         } else {
             holder.tvPsTemperatuur!!.text = String.format("%d °C", temperatuur)
         }
 
-        val weerType = WeerHelper.WeerType.valueOf(melding.weerType!!)
-        val icon = WeerHelper.weerTypeToWeerIcoon(weerType)
+        val icon = WeerHelper.weerTypeToWeerIcoon(melding.weerType!!)
         if (icon == null) {
             holder.imWeer!!.visibility = View.GONE
         } else {
@@ -86,7 +83,7 @@ internal class CustomListAdapterMeldingen(private val context: Context, listData
             holder.imWeer!!.setImageResource(id)
         }
 
-        if (temperatuur == 999L) {
+        if (temperatuur == 999) {
             holder.tvPsTemperatuur!!.text = ""
         } else {
             holder.tvPsTemperatuur!!.text = String.format("%d °C", temperatuur)

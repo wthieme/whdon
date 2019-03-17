@@ -83,7 +83,7 @@ class StatsPerPlaatsActivity : Activity() {
         override fun doInBackground(vararg params: Context): ArrayList<Statistiek> {
             val context = params[0]
             val dh = DatabaseHelper.getInstance(context)
-            return dh.GetStatistieken()
+            return dh.getStatistieken()
         }
 
         override fun onPostExecute(stats: ArrayList<Statistiek>) {

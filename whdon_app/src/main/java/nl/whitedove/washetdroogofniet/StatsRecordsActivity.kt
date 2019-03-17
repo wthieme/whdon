@@ -195,7 +195,7 @@ class StatsRecordsActivity : Activity() {
         override fun doInBackground(vararg params: Context): StatistiekRecords {
             val context = params[0]
             val dh = DatabaseHelper.getInstance(context)
-            return dh.GetStatistiekRecords(mAllesJaar, mJaar)
+            return dh.getStatistiekRecords(mAllesJaar, mJaar)
         }
 
         override fun onPostExecute(stat: StatistiekRecords) {

@@ -211,7 +211,7 @@ class StatsWindSnelheidActivity : Activity() {
         override fun doInBackground(vararg params: Context): ArrayList<StatistiekWind> {
             val context = params[0]
             val dh = DatabaseHelper.getInstance(context)
-            return dh.GetStatistiekWind(mAllesJaarMaand, mJaar, mMaand)
+            return dh.getStatistiekWind(mAllesJaarMaand, mJaar, mMaand)
         }
 
         override fun onPostExecute(stats: ArrayList<StatistiekWind>) {

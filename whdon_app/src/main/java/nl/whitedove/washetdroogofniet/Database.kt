@@ -30,13 +30,7 @@ internal object Database {
             return Database.Names.collectionName
     }
 
-    fun setListener(callback: Runnable) {
-        val db = FirebaseFirestore.getInstance()
-        db.collection(getCollectionName())
-                .addSnapshotListener { _, _ -> callback.run() }
-    }
-
-    fun MeldingOpslaan(melding: Melding): Melding {
+    fun meldingOpslaan(melding: Melding): Melding {
 
         if (melding.locatie == null ||
                 melding.locatie.equals("", ignoreCase = true) ||
@@ -47,13 +41,10 @@ internal object Database {
             return response
         }
 
-        val dtNu = DateTime.now()
-        melding.datum = dtNu
-
         val db = FirebaseFirestore.getInstance()
         val doc = java.util.HashMap<String, Any>()
 
-        doc[Names.datum] = dtNu.toString()
+        doc[Names.datum] = melding.datum!!.millis
         doc[Names.droog] = melding.droog!!
         doc[Names.nat] = melding.nat!!
         doc[Names.id] = melding.id!!
@@ -62,13 +53,14 @@ internal object Database {
         doc[Names.weerType] = melding.weerType!!.value
         doc[Names.windDir] = melding.windDir!!.value
         doc[Names.windSpeed] = melding.windSpeed!!
+        doc[Names.locatie] = melding.locatie!!
         db.collection(getCollectionName()).document().set(doc)
 
         melding.error = ""
         return melding
     }
 
-    private fun GetLaatsteMelding(id: String, callback: Runnable) {
+    fun getLaatsteMelding(id: String, callback: Runnable) {
         mMelding = Melding()
         mMelding.error = "Geen meldingen"
         val db = FirebaseFirestore.getInstance()
@@ -83,14 +75,14 @@ internal object Database {
                         for (document in task.result!!) {
                             val doc = document.data
 
-                            mMelding.datum = fmt.parseDateTime(doc[Database.Names.datum] as String)
+                            mMelding.datum = DateTime(doc[Database.Names.datum] as Long)
                             mMelding.droog = doc[Names.droog] as Boolean
                             mMelding.nat = doc[Names.nat] as Boolean
                             mMelding.id = doc[Names.id] as String
                             mMelding.land = doc[Names.land] as String
                             mMelding.temperatuur = doc[Names.temperatuur] as Int
-                            mMelding.weerType = WeerHelper.WeerType.valueOf(doc[Names.weerType] as Long)
-                            mMelding.windDir = WeerHelper.WindDirection.valueOf(doc[Names.windDir] as Long)
+                            mMelding.weerType = WeerHelper.WeerType.valueOf(doc[Names.weerType] as Int)
+                            mMelding.windDir = WeerHelper.WindDirection.valueOf(doc[Names.windDir] as Int)
                             mMelding.windSpeed = doc[Names.windSpeed] as Int
                         }
                         callback.run()
@@ -98,13 +90,12 @@ internal object Database {
                 }
     }
 
-    fun GetAlleMeldingenVanaf(datumVanaf: DateTime, callback: Runnable
+    fun getAlleMeldingenVanaf(datumVanaf: DateTime, callback: Runnable
     ) {
         val meldingen = ArrayList<Melding>()
         val db = FirebaseFirestore.getInstance()
-        val fmt = ISODateTimeFormat.dateTime()
         db.collection(getCollectionName())
-                .whereGreaterThanOrEqualTo(Names.datum, datumVanaf)
+                .whereGreaterThanOrEqualTo(Names.datum, datumVanaf.millis)
                 .get()
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
@@ -113,36 +104,16 @@ internal object Database {
 
                             val melding = Melding()
                             melding.error = ""
-                            melding.datum = fmt.parseDateTime(doc[Database.Names.datum] as String)
+                            melding.datum = DateTime(doc[Database.Names.datum] as Long)
                             melding.droog = doc[Names.droog] as Boolean
                             melding.nat = doc[Names.nat] as Boolean
                             melding.id = doc[Names.id] as String
                             melding.land = doc[Names.land] as String
                             if (melding.land.isNullOrEmpty()) melding.land = "NL"
-
-                            try {
-                                melding.temperatuur = doc[Names.temperatuur] as Int
-                            } catch (e: Exception) {
-                                melding.temperatuur = 999
-                            }
-
-                            try {
-                                melding.weerType = WeerHelper.WeerType.valueOf(doc[Names.weerType] as Long)
-                            } catch (e: Exception) {
-                                melding.weerType = null
-                            }
-
-                            try {
-                                melding.windSpeed = doc[Names.windSpeed] as Int
-                            } catch (e: Exception) {
-                                melding.windSpeed = 0
-                            }
-
-                            try {
-                                melding.windDir = WeerHelper.WindDirection.valueOf(doc[Names.windDir] as Long)
-                            } catch (e: Exception) {
-                                melding.windDir = WeerHelper.WindDirection.Onbekend
-                            }
+                            melding.temperatuur = doc[Names.temperatuur] as Int
+                            melding.weerType = WeerHelper.WeerType.valueOf(doc[Names.weerType] as Int)
+                            melding.windSpeed = doc[Names.windSpeed] as Int
+                            melding.windDir = WeerHelper.WindDirection.valueOf(doc[Names.windDir] as Int)
 
                             meldingen.add(melding)
                         }

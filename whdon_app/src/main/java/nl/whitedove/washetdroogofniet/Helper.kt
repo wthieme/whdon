@@ -7,19 +7,11 @@ import android.preference.PreferenceManager
 import android.support.v4.content.ContextCompat
 import android.widget.TextView
 import android.widget.Toast
-import com.google.api.client.extensions.android.http.AndroidHttp
-import com.google.api.client.extensions.android.json.AndroidJsonFactory
-import nl.whitedove.washetdroogofniet.backend.whdonApi.WhdonApi
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 import java.util.*
 
 internal object Helper {
-
-    private const val ApiUrl = "https://11-dot-washetdroogofnietbackend.appspot.com/_ah/api/"
-    var myApiService = WhdonApi.Builder(AndroidHttp.newCompatibleTransport(), AndroidJsonFactory(), null)
-            .setRootUrl(Helper.ApiUrl)
-            .build()!!
 
     var dFormat = DateTimeFormat.forPattern("dd-MM-yyyy").withLocale(Locale.getDefault())!!
     var dmFormat = DateTimeFormat.forPattern("dd-MM").withLocale(Locale.getDefault())!!
@@ -62,7 +54,6 @@ internal object Helper {
         } catch (e: NumberFormatException) {
             false
         }
-
     }
 
     fun getGuid(cxt: Context): String {

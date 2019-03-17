@@ -1,25 +1,9 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'com.google.cloud.tools.endpoints-framework-client'
-
-buildscript {
-    repositories {
-        jcenter()
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.google.cloud.tools:appengine-gradle-plugin:1.3.5'
-        classpath 'com.google.cloud.tools:endpoints-framework-gradle-plugin:1.0.3'
-    }
-}
+apply plugin: 'com.google.gms.google-services'
 
 android {
-    configurations.all {
-        resolutionStrategy.force 'com.google.code.findbugs:jsr305:2.0.+'
-    }
-
     compileSdkVersion 28
-    buildToolsVersion '28.0.3'
     defaultConfig {
         applicationId "nl.whitedove.washetdroogofniet"
         minSdkVersion 17
@@ -55,13 +39,12 @@ dependencies {
     implementation 'com.android.support:design:28.0.0'
     implementation 'joda-time:joda-time:2.10'
     implementation 'com.google.android.gms:play-services-maps:16.1.0'
-    implementation 'com.google.firebase:firebase-core:16.0.7'
+    implementation 'com.google.firebase:firebase-core:16.0.8'
     implementation 'com.google.firebase:firebase-messaging:17.4.0'
     implementation 'com.google.firebase:firebase-firestore:18.1.0'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
     implementation 'com.squareup.okhttp3:okhttp:3.11.0'
-    implementation 'com.google.api-client:google-api-client-android:+' exclude module: 'httpclient'
+    implementation 'com.google.firebase:firebase-database:16.1.0'
     implementation 'com.android.support:multidex:1.0.3'
-    endpointsServer project(path: ':whdon_backend', configuration: 'endpoints')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }

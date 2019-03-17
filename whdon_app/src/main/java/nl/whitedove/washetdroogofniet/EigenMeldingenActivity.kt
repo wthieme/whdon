@@ -16,8 +16,6 @@ import org.joda.time.Days
 import java.lang.ref.WeakReference
 import java.util.ArrayList
 
-import nl.whitedove.washetdroogofniet.backend.whdonApi.model.Melding
-
 class EigenMeldingenActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,9 +60,9 @@ class EigenMeldingenActivity : Activity() {
 
 
         for (rMeld in meldingen) {
-            aantalDroog += if (rMeld.droog) 1 else 0
-            aantalNat += if (rMeld.nat) 1 else 0
-            if (rMeld.temperatuur != 999L) {
+            aantalDroog += if (rMeld.droog!!) 1 else 0
+            aantalNat += if (rMeld.nat!!) 1 else 0
+            if (rMeld.temperatuur != 999) {
                 tempSom += rMeld.temperatuur!!
                 aantalTemp++
             }
@@ -97,7 +95,7 @@ class EigenMeldingenActivity : Activity() {
             val context = params[0]
             val id = Helper.getGuid(context)
             val dh = DatabaseHelper.getInstance(context)
-            return dh.GetMeldingen(id)
+            return dh.getMeldingen(id)
         }
 
         override fun onPostExecute(meldingen: ArrayList<Melding>) {

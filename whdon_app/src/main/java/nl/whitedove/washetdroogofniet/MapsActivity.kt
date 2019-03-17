@@ -134,7 +134,7 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback {
             val context = params[0]
             val id = Helper.getGuid(context)
             val dh = DatabaseHelper.getInstance(context)
-            return dh.GetPersoonlijkeStatsPerPlaats(id)
+            return dh.getPersoonlijkeStatsPerPlaats(id)
         }
 
         override fun onPostExecute(stats: ArrayList<Statistiek>) {

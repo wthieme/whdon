@@ -211,7 +211,7 @@ class StatsWeerTypeActivity : Activity() {
         override fun doInBackground(vararg params: Context): ArrayList<StatistiekWeertype> {
             val context = params[0]
             val dh = DatabaseHelper.getInstance(context)
-            return dh.GetStatistiekWeerType(mAllesJaarMaand, mJaar, mMaand)
+            return dh.getStatistiekWeerType(mAllesJaarMaand, mJaar, mMaand)
         }
 
         override fun onPostExecute(stats: ArrayList<StatistiekWeertype>) {

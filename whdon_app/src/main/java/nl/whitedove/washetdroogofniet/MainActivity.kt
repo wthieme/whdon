@@ -34,10 +34,8 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.github.mikephil.charting.utils.Utils
-import nl.whitedove.washetdroogofniet.backend.whdonApi.model.Melding
 import org.joda.time.DateTime
 import org.json.JSONException
-import java.io.IOException
 import java.lang.ref.WeakReference
 import java.util.*
 
@@ -274,15 +272,9 @@ class MainActivity : Activity() {
     }
 
     private fun resetCache() {
-        clearCache()
+        val context = applicationContext
+        Helper.setLastSyncDate(context, DateTime(2000, 1, 1, 0, 0))
         syncLocalDb()
-    }
-
-    private fun clearCache() {
-        val cxt = applicationContext
-        val dh = DatabaseHelper.getInstance(cxt)
-        dh.DeleteMeldingen()
-        Helper.setLastSyncDate(cxt, DateTime(2000, 1, 1, 0, 0))
     }
 
     private fun verwerkJa() {
@@ -528,6 +520,7 @@ class MainActivity : Activity() {
         AsyncGetLaatsteMeldingTask(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, Pair.create(cxt, id))
 
         AsyncGetPersoonlijkeStatsTask(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, Pair.create(cxt, id))
+
         if (!Helper.testInternet(cxt)) {
             return
         }
@@ -536,23 +529,34 @@ class MainActivity : Activity() {
     }
 
     private fun slaMeldingOp(droog: Boolean) {
-        showMeldingProgress()
         val context = applicationContext
+        val dh = DatabaseHelper.getInstance(context)
+        val id = Helper.getGuid(context)
+        val laatste = dh.getLaatsteMelding(id)
+        val dtNu = DateTime.now()
+        if (laatste.datum!!.plusMinutes(15).isAfter(dtNu)) {
+            Helper.showMessage(context, getString(R.string.max1perkwartier))
+            return
+        }
+
         val locatie = LocationHelper.getLocatieVoorWeer()
         val land = LocationHelper.getCountryVoorWeer()
         val melding = Melding()
+        melding.datum = DateTime.now()
         melding.droog = droog
         melding.locatie = locatie
         melding.land = land
-        melding.id = Helper.getGuid(context)
+        melding.id = id
         melding.nat = !droog
-        melding.temperatuur = WeerHelper.getHuidigeTemperatuur().toLong()
-        melding.weerType = WeerHelper.huidigeWeertype.value
-        melding.windSpeed = WeerHelper.huidigeWindSpeed.toLong()
-        melding.windDir = WeerHelper.huidigeWindDir.value
+        melding.temperatuur = WeerHelper.getHuidigeTemperatuur()
+        melding.weerType = WeerHelper.huidigeWeertype
+        melding.windSpeed = WeerHelper.huidigeWindSpeed
+        melding.windDir = WeerHelper.huidigeWindDir
+        Database.meldingOpslaan(melding)
 
-
-        AsyncSlaMeldingOpTask(this).execute(Pair.create(context, melding))
+        dh.addMeldingen(listOf(melding))
+        Helper.showMessage(context, getString(R.string.BedanktMelding))
+        toondataBackground()
     }
 
     @SuppressLint("DefaultLocale")
@@ -581,7 +585,7 @@ class MainActivity : Activity() {
 
         val lastDate = DateTime(melding.datum)
         val locatie = melding.locatie
-        val lastDroogNat = if (melding.droog) "Droog" else "Nat"
+        val lastDroogNat = if (melding.droog!!) "Droog" else "Nat"
 
         tvDt.text = Helper.dtFormat.print(lastDate)
         tvLocatie.text = locatie
@@ -594,7 +598,7 @@ class MainActivity : Activity() {
         }
 
         val temperatuur = melding.temperatuur!!
-        if (temperatuur == 999L) {
+        if (temperatuur == 999) {
             tvTemperatuur.text = ""
         } else {
             tvTemperatuur.text = String.format("%d °C", temperatuur)
@@ -811,6 +815,7 @@ class MainActivity : Activity() {
     private class AsyncSyncLocalDbTask internal constructor(context: MainActivity) : AsyncTask<Pair<Context, DateTime>, Void, Void>() {
 
         private val activityWeakReference: WeakReference<MainActivity> = WeakReference(context)
+        private var mDbMeldingen = ArrayList<Melding>()
 
         @SafeVarargs
         override fun doInBackground(vararg params: Pair<Context, DateTime>): Void? {
@@ -819,23 +824,40 @@ class MainActivity : Activity() {
             val last = params[0].second
             try {
                 // We vragen 24 uur extra op, om de kans dat we gegevens missen kleiner te maken
-                val meldingen = Helper.myApiService.getAlleMeldingenVanaf(last.minusHours(24).millis).execute()
-                if (meldingen == null || meldingen.size == 0 || meldingen.items == null || meldingen.items.size == 0) {
-                    return null
-                }
                 val dh = DatabaseHelper.getInstance(context)
-                dh.addMeldingen(meldingen.items)
+                mDbMeldingen = dh.getAlleMeldingenVanaf(last.minusHours(24))
 
-            } catch (ignored: IOException) {
+                Database.getAlleMeldingenVanaf(last.minusHours(24), Runnable { fbMeldingen(context) })
+            } catch (ignored: Exception) {
             }
-
             return null
         }
 
-        override fun onPostExecute(nothing: Void?) {
+        override fun onPostExecute(void: Void?) {
             val activity = activityWeakReference.get() ?: return
             activity.setDbSyncDate()
             if (activity.mProgressSync != null) activity.mProgressSync!!.hide()
+        }
+
+        private fun fbMeldingen(context: Context) {
+            val fbMeldingen = Database.mMeldingen
+            val dbMeldingen = mDbMeldingen
+            val dh = DatabaseHelper.getInstance(context)
+
+            for (fbMelding in fbMeldingen) {
+                val bestaat = dbMeldingen.any { dbMelding -> dbMelding.id == fbMelding.id && dbMelding.datum == fbMelding.datum }
+                if (!bestaat) {
+                    // Voeg toe in database
+                    dh.addMeldingen(listOf(fbMelding))
+                }
+            }
+            for (dbMelding in dbMeldingen) {
+                val bestaat = fbMeldingen.any { fbMelding -> fbMelding.id == dbMelding.id && fbMelding.datum == dbMelding.datum }
+                if (!bestaat) {
+                    // Voeg toe in firebase
+                    Database.meldingOpslaan(dbMelding)
+                }
+            }
         }
     }
 
@@ -848,7 +870,7 @@ class MainActivity : Activity() {
             val context = params[0].first
             val id = params[0].second
             val dh = DatabaseHelper.getInstance(context)
-            return dh.GetLaatsteMelding(id)
+            return dh.getLaatsteMelding(id)
         }
 
         override fun onPostExecute(melding: Melding) {
@@ -899,44 +921,6 @@ class MainActivity : Activity() {
         }
     }
 
-    private class AsyncSlaMeldingOpTask internal constructor(context: MainActivity) : AsyncTask<Pair<Context, Melding>, Void, Pair<Context, Melding>>() {
-
-        private val activityWeakReference: WeakReference<MainActivity> = WeakReference(context)
-
-        @SafeVarargs
-        override fun doInBackground(vararg params: Pair<Context, Melding>): Pair<Context, Melding> {
-
-            val context = params[0].first
-            val melding = params[0].second
-            var meld: Melding? = null
-            try {
-                meld = Helper.myApiService.meldingOpslaan(melding).execute()
-            } catch (ignored: IOException) {
-            }
-
-            return Pair.create(context, meld)
-        }
-
-        override fun onPostExecute(result: Pair<Context, Melding>) {
-            val activity = activityWeakReference.get() ?: return
-            if (activity.mProgressSave != null) activity.mProgressSave!!.hide()
-
-            val context = result.first
-            val melding = result.second ?: return
-            val err = melding.error
-            if (err != null && !err.isEmpty()) {
-                Helper.showMessage(context, err)
-            } else {
-                val meldingen = ArrayList<Melding>()
-                meldingen.add(melding)
-                val dh = DatabaseHelper.getInstance(context)
-                dh.addMeldingen(meldingen)
-                Helper.showMessage(context, activity.getString(R.string.BedanktMelding))
-            }
-            activity.toondataBackground()
-        }
-    }
-
     private class AsyncGetPersoonlijkeStatsTask internal constructor(context: MainActivity) : AsyncTask<Pair<Context, String>, Void, Statistiek>() {
         private val activityWeakReference: WeakReference<MainActivity> = WeakReference(context)
 
@@ -945,7 +929,7 @@ class MainActivity : Activity() {
             val context = params[0].first
             val id = params[0].second
             val dh = DatabaseHelper.getInstance(context)
-            return dh.GetPersoonlijkeStatistiek(id)
+            return dh.getPersoonlijkeStatistiek(id)
         }
 
         override fun onPostExecute(stat: Statistiek) {
