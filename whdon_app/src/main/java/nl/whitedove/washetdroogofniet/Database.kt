@@ -80,10 +80,11 @@ internal object Database {
                             mMelding.nat = doc[Names.nat] as Boolean
                             mMelding.id = doc[Names.id] as String
                             mMelding.land = doc[Names.land] as String
-                            mMelding.temperatuur = doc[Names.temperatuur] as Int
-                            mMelding.weerType = WeerHelper.WeerType.valueOf(doc[Names.weerType] as Int)
-                            mMelding.windDir = WeerHelper.WindDirection.valueOf(doc[Names.windDir] as Int)
-                            mMelding.windSpeed = doc[Names.windSpeed] as Int
+                            mMelding.locatie = doc[Names.locatie] as String
+                            mMelding.temperatuur = (doc[Names.temperatuur] as Long).toInt()
+                            mMelding.weerType = WeerHelper.WeerType.valueOf((doc[Names.weerType] as Long).toInt())
+                            mMelding.windSpeed = (doc[Names.windSpeed] as Long).toInt()
+                            mMelding.windDir = WeerHelper.WindDirection.valueOf((doc[Names.windDir] as Long).toInt())
                         }
                         callback.run()
                     }
@@ -110,10 +111,11 @@ internal object Database {
                             melding.id = doc[Names.id] as String
                             melding.land = doc[Names.land] as String
                             if (melding.land.isNullOrEmpty()) melding.land = "NL"
-                            melding.temperatuur = doc[Names.temperatuur] as Int
-                            melding.weerType = WeerHelper.WeerType.valueOf(doc[Names.weerType] as Int)
-                            melding.windSpeed = doc[Names.windSpeed] as Int
-                            melding.windDir = WeerHelper.WindDirection.valueOf(doc[Names.windDir] as Int)
+                            melding.locatie = doc[Names.locatie] as String
+                            melding.temperatuur = (doc[Names.temperatuur] as Long).toInt()
+                            melding.weerType = WeerHelper.WeerType.valueOf((doc[Names.weerType] as Long).toInt())
+                            melding.windSpeed = (doc[Names.windSpeed] as Long).toInt()
+                            melding.windDir = WeerHelper.WindDirection.valueOf((doc[Names.windDir] as Long).toInt())
 
                             meldingen.add(melding)
                         }

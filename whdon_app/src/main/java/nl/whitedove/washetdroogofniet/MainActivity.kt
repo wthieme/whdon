@@ -534,7 +534,7 @@ class MainActivity : Activity() {
         val id = Helper.getGuid(context)
         val laatste = dh.getLaatsteMelding(id)
         val dtNu = DateTime.now()
-        if (laatste.datum!!.plusMinutes(15).isAfter(dtNu)) {
+        if (laatste.datum != null && laatste.datum!!.plusMinutes(15).isAfter(dtNu)) {
             Helper.showMessage(context, getString(R.string.max1perkwartier))
             return
         }
