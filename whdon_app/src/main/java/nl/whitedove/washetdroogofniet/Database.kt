@@ -1,9 +1,7 @@
 package nl.whitedove.washetdroogofniet
 
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 import org.joda.time.DateTime
-import org.joda.time.format.ISODateTimeFormat
 
 internal object Database {
     var mMelding = Melding()
@@ -34,8 +32,7 @@ internal object Database {
 
         if (melding.locatie == null ||
                 melding.locatie.equals("", ignoreCase = true) ||
-                melding.locatie.equals("Onbekend", ignoreCase = true) ||
-                melding.locatie.equals("Nederland", ignoreCase = true)) {
+                melding.locatie.equals("Onbekend", ignoreCase = true)) {
             val response = Melding()
             response.error = "Melding niet mogelijk, locatie onbekend"
             return response
