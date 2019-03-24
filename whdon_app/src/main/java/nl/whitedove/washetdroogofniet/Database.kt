@@ -60,36 +60,6 @@ internal object Database {
         return melding
     }
 
-    fun getLaatsteMelding(id: String, callback: Runnable) {
-        mMelding = Melding()
-        mMelding.error = "Geen meldingen"
-        val db = FirebaseFirestore.getInstance()
-        db.collection(getCollectionName())
-                .whereEqualTo(Names.id, id)
-                .orderBy(Names.datum, Query.Direction.DESCENDING)
-                .limit(1)
-                .get()
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        for (document in task.result!!) {
-                            val doc = document.data
-
-                            mMelding.datum = DateTime(doc[Database.Names.datum] as Long)
-                            mMelding.droog = doc[Names.droog] as Boolean
-                            mMelding.nat = doc[Names.nat] as Boolean
-                            mMelding.id = doc[Names.id] as String
-                            mMelding.land = doc[Names.land] as String
-                            mMelding.locatie = doc[Names.locatie] as String
-                            mMelding.temperatuur = (doc[Names.temperatuur] as Long).toInt()
-                            mMelding.weerType = WeerHelper.WeerType.valueOf((doc[Names.weerType] as Long).toInt())
-                            mMelding.windSpeed = (doc[Names.windSpeed] as Long).toInt()
-                            mMelding.windDir = WeerHelper.WindDirection.valueOf((doc[Names.windDir] as Long).toInt())
-                        }
-                        callback.run()
-                    }
-                }
-    }
-
     fun getAlleMeldingenVanaf(datumVanaf: DateTime, callback: Runnable
     ) {
         val meldingen = ArrayList<Melding>()
