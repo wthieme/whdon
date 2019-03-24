@@ -836,7 +836,6 @@ class MainActivity : Activity() {
         override fun onPostExecute(void: Void?) {
             val activity = activityWeakReference.get() ?: return
             activity.setDbSyncDate()
-            if (activity.mProgressSync != null) activity.mProgressSync!!.hide()
         }
 
         private fun fbMeldingen(context: Context) {
@@ -858,6 +857,8 @@ class MainActivity : Activity() {
                     Database.meldingOpslaan(dbMelding)
                 }
             }
+            val activity = activityWeakReference.get() ?: return
+            if (activity.mProgressSync != null) activity.mProgressSync!!.hide()
         }
     }
 

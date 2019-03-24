@@ -64,7 +64,6 @@ internal object Database {
         mMelding = Melding()
         mMelding.error = "Geen meldingen"
         val db = FirebaseFirestore.getInstance()
-        val fmt = ISODateTimeFormat.dateTime()
         db.collection(getCollectionName())
                 .whereEqualTo(Names.id, id)
                 .orderBy(Names.datum, Query.Direction.DESCENDING)
@@ -121,9 +120,7 @@ internal object Database {
                         }
 
                         mMeldingen = ArrayList()
-                        for (m in meldingen)
-                            mMeldingen.add(m)
-
+                        mMeldingen.addAll(meldingen)
                         callback.run()
                     }
                 }
