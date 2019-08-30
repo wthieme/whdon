@@ -3,7 +3,7 @@ package nl.whitedove.washetdroogofniet
 import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response

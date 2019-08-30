@@ -1,21 +1,27 @@
 package nl.whitedove.washetdroogofniet
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.AsyncTask
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.MotionEvent
+import android.view.View
+import android.view.View.OnTouchListener
 import android.widget.AdapterView
 import android.widget.EditText
 import android.widget.ListView
-
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.lang.ref.WeakReference
-import java.util.ArrayList
+import java.util.*
+
 
 class StatsPerPlaatsActivity : Activity() {
+
+    private var touchPositionX: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,9 +35,17 @@ class StatsPerPlaatsActivity : Activity() {
         fabTerug.setOnClickListener { terug() }
     }
 
-    private fun stat1Plaats(locatie: String?) {
+    private fun stat1Plaats(stat: Statistiek) {
         val intent = Intent(this, Stats1PlaatsActivity::class.java)
-        intent.putExtra("Locatie", locatie)
+        intent.putExtra("Locatie", stat.locatie)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        startActivity(intent)
+    }
+
+    private fun map1Plaats(stat: Statistiek) {
+        val intent = Intent(this, MapsActivity::class.java)
+        intent.putExtra("Locatie", stat.locatie)
+        intent.putExtra("Land", stat.land)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         startActivity(intent)
     }
@@ -47,6 +61,7 @@ class StatsPerPlaatsActivity : Activity() {
         AsyncGetStatistiekenPerPlaatsTask(this).execute(context)
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun toonPerPlaatsStatistieken(stats: ArrayList<Statistiek>?) {
         if (stats == null || stats.size <= 1) {
             return
@@ -70,11 +85,21 @@ class StatsPerPlaatsActivity : Activity() {
             override fun afterTextChanged(s: Editable) {}
         })
 
+        lvStats.setOnTouchListener(object : OnTouchListener {
+            override fun onTouch(view: View, event: MotionEvent): Boolean {
+                touchPositionX = event.x.toInt()
+                return false
+            }
+        })
+
         lvStats.onItemClickListener = AdapterView.OnItemClickListener { parent, _, position, _ ->
             val stat = parent.getItemAtPosition(position) as Statistiek
-            stat1Plaats(stat.locatie)
+            val x = touchPositionX.toFloat() / parent.width.toFloat()
+            if (x > 0.9f)
+                map1Plaats(stat)
+            else
+                stat1Plaats(stat)
         }
-
     }
 
     private class AsyncGetStatistiekenPerPlaatsTask internal constructor(context: StatsPerPlaatsActivity) : AsyncTask<Context, Void, ArrayList<Statistiek>>() {

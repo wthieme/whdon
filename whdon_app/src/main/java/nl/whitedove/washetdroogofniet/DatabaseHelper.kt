@@ -205,7 +205,8 @@ internal class DatabaseHelper private constructor(context: Context) : SQLiteOpen
         val selectQuery = ("SELECT"
                 + " " + MDG_LOCATIE + ","
                 + " SUM(" + MDG_DROOG + ") AS DROOG,"
-                + " SUM(" + MDG_NAT + ") AS NAT"
+                + " SUM(" + MDG_NAT + ") AS NAT,"
+                + " MAX(" + MDG_LAND + ") AS LAND"
                 + " FROM " + TAB_MELDING
                 + " GROUP BY " + MDG_LOCATIE
                 + " ORDER BY " + MDG_LOCATIE)
@@ -227,6 +228,7 @@ internal class DatabaseHelper private constructor(context: Context) : SQLiteOpen
                 totaalAantalDroog += cursor.getInt(1)
                 stat.aantalNat = cursor.getInt(2)
                 totaalAantalNat += cursor.getInt(2)
+                stat.land = cursor.getString(3)
                 stats.add(stat)
             } while (cursor.moveToNext())
         }

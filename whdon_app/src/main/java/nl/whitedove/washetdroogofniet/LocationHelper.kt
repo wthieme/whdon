@@ -4,7 +4,7 @@ import android.content.Context
 import android.graphics.Typeface
 import android.location.Address
 import android.location.Geocoder
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import android.widget.TextView
 import com.google.android.gms.maps.model.LatLng
 import java.io.IOException

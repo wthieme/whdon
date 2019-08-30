@@ -4,7 +4,7 @@ import android.content.Context
 import android.location.Location
 import android.net.ConnectivityManager
 import android.preference.PreferenceManager
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import android.widget.TextView
 import android.widget.Toast
 import org.joda.time.DateTime
@@ -23,6 +23,7 @@ internal object Helper {
     const val ONE_KM = 1000
     const val DEBUG = false
     const val ZOOM = 9.0f
+    const val ZOOM1Plaats = 7.0f
 
     internal enum class Periode {
         Alles, Jaar, Maand

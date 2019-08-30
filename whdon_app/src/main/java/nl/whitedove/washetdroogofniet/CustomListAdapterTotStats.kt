@@ -2,18 +2,16 @@ package nl.whitedove.washetdroogofniet
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
-import android.widget.Filter
-import android.widget.Filterable
-import android.widget.ProgressBar
-import android.widget.TextView
+import android.widget.*
+import androidx.core.content.ContextCompat
+import java.util.*
+import kotlin.math.roundToInt
 
-import java.util.ArrayList
-
-internal class CustomListAdapterTotStats(context: Context, listData: ArrayList<Statistiek>) : BaseAdapter(), Filterable {
+internal class CustomListAdapterTotStats(private val context: Context, listData: ArrayList<Statistiek>) : BaseAdapter(), Filterable {
 
     private val listData: List<Statistiek>
     private var filteredData: List<Statistiek>? = null
@@ -22,7 +20,6 @@ internal class CustomListAdapterTotStats(context: Context, listData: ArrayList<S
     private val layoutInflater: LayoutInflater
 
     init {
-
         this.listData = listData
         this.filteredData = listData
         layoutInflater = LayoutInflater.from(context)
@@ -49,6 +46,7 @@ internal class CustomListAdapterTotStats(context: Context, listData: ArrayList<S
             holder = ViewHolder()
             holder.tvLocatie = cv!!.findViewById(R.id.tvLocatie)
             holder.tvLocatieAantal = cv.findViewById(R.id.tvLocatieAantal)
+            holder.tvLocatieLink = cv.findViewById(R.id.tvLocatieLink)
             holder.tvDroog = cv.findViewById(R.id.tvDroog)
             holder.tvNat = cv.findViewById(R.id.tvNat)
             holder.pbProgress = cv.findViewById(R.id.pbDroogNatStat)
@@ -61,24 +59,34 @@ internal class CustomListAdapterTotStats(context: Context, listData: ArrayList<S
         val aantalDroog = stat.aantalDroog
         val aantalNat = stat.aantalNat
         val totaal = aantalDroog + aantalNat
+        val iconFont = FontManager.GetTypeface(context, FontManager.FONTAWESOME_SOLID)
+        val icon = context.getString(R.string.fa_map_marker)
 
-        holder.tvLocatie!!.text = stat.locatie
-        holder.tvLocatieAantal!!.text = String.format("(%d)", totaal)
-        holder.pbProgress!!.progress = 100 * aantalDroog / totaal
-        val percDroog = Math.round(100.0f * aantalDroog / totaal)
+        holder.tvLocatie.text = stat.locatie
+        holder.tvLocatieAantal.text = String.format("(%d)", totaal)
+        FontManager.SetIconAndText(holder.tvLocatieLink,
+                iconFont,
+                icon,
+                ContextCompat.getColor(context, R.color.colorMax),
+                Typeface.DEFAULT,
+                "",
+                ContextCompat.getColor(context, R.color.colorPrimary))
+        holder.pbProgress.progress = 100 * aantalDroog / totaal
+        val percDroog = (100.0f * aantalDroog / totaal).roundToInt()
         val percNat = 100 - percDroog
 
-        holder.tvDroog!!.text = String.format("%d%%", percDroog)
-        holder.tvNat!!.text = String.format("%d%%", percNat)
+        holder.tvDroog.text = String.format("%d%%", percDroog)
+        holder.tvNat.text = String.format("%d%%", percNat)
         return cv
     }
 
     private class ViewHolder {
-        internal var tvLocatie: TextView? = null
-        internal var tvLocatieAantal: TextView? = null
-        internal var tvDroog: TextView? = null
-        internal var tvNat: TextView? = null
-        internal var pbProgress: ProgressBar? = null
+        internal lateinit var tvLocatie: TextView
+        internal lateinit var tvLocatieAantal: TextView
+        internal lateinit var tvLocatieLink: TextView
+        internal lateinit var tvDroog: TextView
+        internal lateinit var tvNat: TextView
+        internal lateinit var pbProgress: ProgressBar
     }
 
     override fun getFilter(): Filter {
@@ -86,11 +94,12 @@ internal class CustomListAdapterTotStats(context: Context, listData: ArrayList<S
     }
 
     private inner class ItemFilter : Filter() {
-        override fun performFiltering(constraint: CharSequence): Filter.FilterResults {
+        @SuppressLint("DefaultLocale")
+        override fun performFiltering(constraint: CharSequence): FilterResults {
 
             val filterString = constraint.toString().toLowerCase()
 
-            val results = Filter.FilterResults()
+            val results = FilterResults()
 
             val list = listData
 
@@ -112,7 +121,7 @@ internal class CustomListAdapterTotStats(context: Context, listData: ArrayList<S
             return results
         }
 
-        override fun publishResults(constraint: CharSequence, results: Filter.FilterResults) {
+        override fun publishResults(constraint: CharSequence, results: FilterResults) {
             @Suppress("UNCHECKED_CAST")
             filteredData = results.values as ArrayList<Statistiek>
             notifyDataSetChanged()

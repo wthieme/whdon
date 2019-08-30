@@ -5,17 +5,17 @@ import android.content.Context
 import android.content.Intent
 import android.os.AsyncTask
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
-import android.support.v4.app.FragmentActivity
 import android.util.Pair
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import androidx.fragment.app.FragmentActivity
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.lang.ref.WeakReference
 import java.util.*
 import java.util.concurrent.Executors
@@ -35,31 +35,39 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback {
     }
 
     private fun terug() {
-        val intent = Intent(this, MainActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-        startActivity(intent)
+        val myIntent = intent // gets the previously created intent
+        val locatie = myIntent.getStringExtra("Locatie")
+
+        if (locatie.isNullOrEmpty()) {
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            startActivity(intent)
+        } else {
+            val intent = Intent(this, StatsPerPlaatsActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            startActivity(intent)
+        }
     }
 
     private fun initFab() {
         val fabTerug = findViewById<FloatingActionButton>(R.id.btnTerug)
         fabTerug.setOnClickListener { terug() }
-
     }
 
     private fun initRadio() {
         val rbStandaard = findViewById<RadioButton>(R.id.rbStandaard)
         val rbSatelliet = findViewById<RadioButton>(R.id.rbSatelliet)
         val rgStandaardSatelliet = findViewById<RadioGroup>(R.id.rgStandaardSatelliet)
-        rbStandaard.isChecked = MapsActivity.mStandaardSatelliet === Helper.MapsDisplay.Standaard
-        rbSatelliet.isChecked = MapsActivity.mStandaardSatelliet === Helper.MapsDisplay.Satelliet
+        rbStandaard.isChecked = mStandaardSatelliet === Helper.MapsDisplay.Standaard
+        rbSatelliet.isChecked = mStandaardSatelliet === Helper.MapsDisplay.Satelliet
         val cl = RadioGroup.OnCheckedChangeListener { radioGroup, checkedId ->
             val rb = radioGroup.findViewById<RadioButton>(checkedId)
             if (rb.id == R.id.rbStandaard) {
-                MapsActivity.mStandaardSatelliet = Helper.MapsDisplay.Standaard
+                mStandaardSatelliet = Helper.MapsDisplay.Standaard
             }
 
             if (rb.id == R.id.rbSatelliet) {
-                MapsActivity.mStandaardSatelliet = Helper.MapsDisplay.Satelliet
+                mStandaardSatelliet = Helper.MapsDisplay.Satelliet
             }
             toonmapsDisplay()
         }
@@ -77,28 +85,46 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback {
      */
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-        val latlng = LocationHelper.bepaalLatLng(this)
-        if (latlng != null) {
-            mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, Helper.ZOOM))
-        }
         toonmapsDisplay()
         toondataBackground()
     }
 
     private fun toonmapsDisplay() {
         if (mStandaardSatelliet == Helper.MapsDisplay.Satelliet) {
-            mMap!!.setMapType(GoogleMap.MAP_TYPE_HYBRID)
-        };
+            mMap!!.mapType = GoogleMap.MAP_TYPE_HYBRID
+        }
 
         if (mStandaardSatelliet == Helper.MapsDisplay.Standaard) {
-            mMap!!.setMapType(GoogleMap.MAP_TYPE_NORMAL)
-        };
+            mMap!!.mapType = GoogleMap.MAP_TYPE_NORMAL
+        }
 
     }
 
     private fun toondataBackground() {
         val context = applicationContext
-        MapsActivity.AsyncGetPersoonlijkeStatsTask(this).execute(context)
+        val myIntent = intent // gets the previously created intent
+        val locatie = myIntent.getStringExtra("Locatie")
+        val land = myIntent.getStringExtra("Land")
+        if (locatie.isNullOrEmpty()) {
+            val latlng = LocationHelper.bepaalLatLng(this)
+            if (latlng != null) {
+                mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, Helper.ZOOM))
+            }
+            AsyncGetPersoonlijkeStatsTask(this).execute(context)
+        } else {
+            val dh = DatabaseHelper.getInstance(context)
+            val stat1 = dh.getStatistiekLocatie(locatie)
+            val stat = Statistiek()
+            stat.aantalDroog = stat1.aantalDroog
+            stat.aantalNat = stat1.aantalNat
+            stat.locatie = locatie
+            stat.land = land
+            val latlng = LocationHelper.getLocationFromAddress(context, stat.locatie, stat.land)
+            if (latlng != null) {
+                mMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, Helper.ZOOM1Plaats))
+            }
+            AsyncDoeEenLocatie(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, Pair.create(context, stat))
+        }
     }
 
     @SuppressLint("MissingPermission")
@@ -108,10 +134,6 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback {
         mMap!!.isMyLocationEnabled = false
 
         val context = applicationContext
-        //for (stat in stats) {
-        //    AsyncDoeEenLocatie(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, Pair.create(context, stat))
-        //}
-
         for (stat in stats) {
             val runnableTask = {
                 AsyncDoeEenLocatie(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, Pair.create(context, stat))
@@ -123,8 +145,8 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback {
     private fun toon1Locatie(stat: Statistiek, ll: LatLng?) {
         if (ll == null) return
         mMap!!.addMarker(MarkerOptions().position(ll).title(stat.locatie +
-                " (" + Integer.toString(stat.aantalDroog) + " " + getString(R.string.DroogTxt) +
-                " " + Integer.toString(stat.aantalNat) + " " + getString(R.string.NatTxt) + ")"))
+                " (" + stat.aantalDroog.toString() + " " + getString(R.string.DroogTxt) +
+                " " + stat.aantalNat.toString() + " " + getString(R.string.NatTxt) + ")"))
     }
 
     private class AsyncGetPersoonlijkeStatsTask internal constructor(context: MapsActivity) : AsyncTask<Context, Void, ArrayList<Statistiek>>() {
