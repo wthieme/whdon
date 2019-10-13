@@ -1,1 +1,1 @@
-include ':whdon_app'
+include ':app'
