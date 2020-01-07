@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "490019127608",
+    "firebase_url": "https://whdon-529b4.firebaseio.com",
+    "project_id": "whdon-529b4",
+    "storage_bucket": "whdon-529b4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:490019127608:android:450d5fd0a7f5f40e",
+        "android_client_info": {
+          "package_name": "nl.whitedove.washetdroogofniet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "490019127608-ul778uistsl33nhtd906uai93i2p06sj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC2_Ko1tdL8TGZCcN23DXIh9XmtARR4puM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

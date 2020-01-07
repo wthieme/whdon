@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="Gebruiker"
+        android:layout="@layout/preferences_category">
+        <EditTextPreference
+            android:key="guid"
+            android:title="Unieke gebruikers ID" />
+    </PreferenceCategory>
+</PreferenceScreen>
