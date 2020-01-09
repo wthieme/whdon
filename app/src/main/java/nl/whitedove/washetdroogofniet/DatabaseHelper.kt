@@ -805,7 +805,7 @@ internal class DatabaseHelper private constructor(context: Context) : SQLiteOpen
 
         if (aj === nl.whitedove.washetdroogofniet.Helper.Periode.Jaar) {
             va = DateTime(jaar, 1, 1, 0, 0)
-            tm = va.plusYears(1)
+            tm = va.plusYears(1).minusDays(1)
         }
 
         cursor = db.rawQuery(selectQuery, arrayOf(java.lang.Long.toString(va.millis), java.lang.Long.toString(tm.millis)))
@@ -816,11 +816,11 @@ internal class DatabaseHelper private constructor(context: Context) : SQLiteOpen
         var recordMaxWindLocatie = ""
 
         var recordMinTempDatum = DateTime(2015, 1, 1, 0, 0)
-        var recordMinTemp = 0
+        var recordMinTemp = 100
         var recordMinTempLocatie = ""
 
         var recordMaxTempDatum = DateTime(2015, 1, 1, 0, 0)
-        var recordMaxTemp = 0
+        var recordMaxTemp = -100
         var recordMaxTempLocatie = ""
 
         var recordDroogJM = DateTime(2015, 1, 1, 0, 0)
